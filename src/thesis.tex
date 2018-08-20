@@ -23,11 +23,11 @@
 \begin{document}
 
     %Basic configuration
-    \title{Panduan Tugas Akhir Informatika}
+    \title{\textit{Voice Assistant} untuk Aplikasi Berbasis Audio di PT. Zamrud Technology}
     \date{}
     \author{
-        Peb Ruswono Aryan \\
-        NIM 13502044
+        Rafi Dwi Rizqullah \\
+        NIM: 18214035
     }
 
     \pagenumbering{roman}
@@ -40,24 +40,39 @@
     \pagestyle{plain}
 
     \input{chapters/abstract-id}
-    \input{chapters/abstract-en}
+    %\input{chapters/abstract-en}
     \input{chapters/forewords}
 
     \titleformat*{\section}{\centering\bfseries\Large\MakeUpperCase}
-
+	
+	\clearpage
     \tableofcontents
-    \listoffigures
-    \listoftables
+    
+    \clearpage
+    {%
+		\let\oldnumberline\numberline%
+		\renewcommand{\numberline}{\figurename~\oldnumberline}%
+		\listoffigures%
+	}
+	
+	\clearpage
+    {%
+		\let\oldnumberline\numberline%
+		\renewcommand{\numberline}{\tablename~\oldnumberline}%
+		\listoftables%
+	}
+    \newpage
+    \setcounter{savepage}{\arabic{page}}
 
     \titleformat*{\section}{\bfseries\Large}
-    \pagenumbering{arabic}
 
     %----------------------------------------------------------------%
     % Konfigurasi Bab
-    %----------------------------------------------------------------%
-    \setcounter{page}{0}
+    %----------------------------------------------------------------%    
     \renewcommand{\chaptername}{BAB}
     \renewcommand{\thechapter}{\Roman{chapter}}
+    \pagenumbering{bychapter}
+    \setlength{\parindent}{1cm}
     %----------------------------------------------------------------%
 
     %----------------------------------------------------------------%
@@ -72,15 +87,23 @@
     %----------------------------------------------------------------%
 
     % Daftar pustaka
-    \printbibliography
+    \begin{flushleft}
+    	\clearpage
+    	\pagenumbering{roman}
+    	\setcounter{page}{\thesavepage}
+    	\addcontentsline{toc}{chapter}{Daftar Pustaka}
+    	\printbibliography[title=Daftar Pustaka]
+    \end{flushleft}
 
     % Index
+    \clearpage
     \appendix
-
-    \addcontentsline{toc}{part}{Lampiran}
-    \part*{Lampiran}
-
+    \addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{Lampiran }}
+    \addtocontents{toc}{\protect\renewcommand{\protect\cftchapnumwidth}{6em}}
+    \renewcommand{\chaptername}{Lampiran}
+    \pagenumbering{bychapter}
+    	
     \input{chapters/appendix-1}
     \input{chapters/appendix-2}
-
+    
 \end{document}

@@ -22,23 +22,31 @@
 \usepackage[bahasa]{babel}
 
 % Format citation
-\usepackage[backend=bibtex,citestyle=authoryear]{biblatex}
+\usepackage[backend=bibtex,style=ieee,citestyle=numeric]{biblatex}
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage[labelfont=bf]{caption}	% Package dengan opsi untuk mempertebal label caption
+\usepackage{enumitem}				
+\usepackage{tocbibind}				% Package untuk memasukkan Daftar Pustaka ke dalam Daftar Isi
+\usepackage{tocloft}				% Package untuk mengatur Daftar Isi, Daftar Gambar dan Daftar Tabel
+\usepackage{float}					% Package untuk membantu penetapan lokasi gambar
+\usepackage{indentfirst}			% Package untuk indentasi pada paragraf pertama
+\usepackage[auto]{chappg}			% Package untuk penomoran halaman Bab-Halaman
 \usepackage{titling}
 \usepackage{blindtext}
 \usepackage{sectsty}
 \usepackage{chngcntr}
 \usepackage{etoolbox}
-\usepackage{hyperref}       % Package untuk link di daftar isi.
-\usepackage{titlesec}       % Package Format judul
+\usepackage{hyperref}       		% Package untuk link di daftar isi.
+\usepackage{titlesec}       		% Package Format judul
 \usepackage{parskip}
 
 % Line satu setengah spasi
 \renewcommand{\baselinestretch}{1.5}
 
 % Setting judul
+\titlespacing*{\chapter}{0pt}{-50pt}{10pt}
 \chapterfont{\centering \Large}
 \titleformat{\chapter}[display]
   {\Large\centering\bfseries}
@@ -53,5 +61,33 @@
 \makeatother
 
 % Counter untuk figure dan table.
-\counterwithin{figure}{section}
-\counterwithin{table}{section}
+\counterwithin{figure}{chapter}
+\counterwithin{table}{chapter}
+
+% Counter untuk penomoran halaman lanjut
+\newcounter{savepage}
+
+% Pengaturan caption
+\captionsetup{labelsep=space}
+
+% Pengaturan spasi untuk justify
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+
+% Pengaturan untuk title Daftar Isi, Tabel, dan Gambar
+\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\Large\bfseries}
+\renewcommand{\cftaftertoctitle}{\hspace*{\fill}}
+\renewcommand{\cftlottitlefont}{\hspace*{\fill}\Large\bfseries}
+\renewcommand{\cftafterlottitle}{\hspace*{\fill}}
+\renewcommand{\cftloftitlefont}{\hspace*{\fill}\Large\bfseries}
+\renewcommand{\cftafterloftitle}{\hspace*{\fill}} 
+
+\renewcommand{\cftchappresnum}{Bab }
+\renewcommand{\cftchapaftersnum}{}
+\renewcommand{\cftchapnumwidth}{3.7em}
+
+\setlength{\cftbeforetoctitleskip}{-3em}
+\setlength{\cftbeforeloftitleskip}{-3em}
+\setlength{\cftbeforelottitleskip}{-3em}
