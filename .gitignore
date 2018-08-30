@@ -18,7 +18,4 @@ thesis.pdf
 .directory
 output/*
 build/*
-*-blx.bib
-*.fdb_latexmk
-*.fls
-*.run.xml
+persiapan/*

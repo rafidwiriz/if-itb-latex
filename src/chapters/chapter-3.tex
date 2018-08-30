@@ -1,173 +1,132 @@
-\chapter{Analisis Produk}
+\chapter{Ajuan Sistem Baru}
 
-Acuan yang digunakan sebagai analisis dalam pengerjaan Tugas Akhir adalah proyek sistem NLU yang dikerjakan oleh perusahaan PT. Zamrud Technology untuk salah satu aplikasi musik bernama SVARA.
+\section{Rancangan Latihan Klasifikasi}
 
-\section{Kebutuhan Proyek}
-
-Kebutuhan yang harus dipenuhi oleh sistem NLU ini adalah sebagai berikut:
+Rancangan sistem untuk tahap latihan klasifikasi disajikan dalam bagan pada Gambar \ref{fig:design_training} berikut. Proses-proses yang harus dilewati dalam tahap latihan klasifikasi dapat dijelaskan sebagai berikut:
 
 \begin{enumerate}
-	\item sistem dapat menerima masukan teks dari ASR luar perusahaan,
-	\item sistem dapat mengirimkan \textit{file} JSON menuju aplikasi yang telah dipasangkan oleh pengguna,
-	\item sistem dapat dipasangkan pada \textit{server} tersendiri, dan,
-	\item sistem dapat menampung masukan teks baru untuk dijadikan bahan latihan selanjutnya.
-\end{enumerate}
-
-\section{Arsitektur Produk}
-
-Untuk dapat menjelaskan bagaimana sistem ini bekerja, berikut adalah arsitektur keseluruhan dari seluruh sistem yang terlibat, ditunjukkan oleh Gambar \ref{fig:svara_arch}. Cara kerja sistem akhir dijelaskan dalam lima tahap proses. Proses pertama, pengguna akan melakukan perekaman suara menggunakan aplikasi yang dipasangkan pada ponsel. Rekaman tersebut akan dikirimkan menuju ASR untuk dapat diolah menjadi sebuah kalimat berbentuk teks. Proses kedua, ASR mengirimkan teks olahan menuju sistem NLU untuk dapat diproses menjadi sebuah \textit{query}. Sistem NLU menggunakan model yang telah dilatih sebelumnya untuk melakukan prediksi \textit{query}. Proses ketiga, \textit{query} hasil olahan sistem NLU dikirimkan ke API yang disediakan oleh SVARA. Proses keempat, API SVARA mengirimkan \textit{file} JSON hasil \textit{query} menuju sistem NLU. Dan proses terakhir, sistem NLU mengirimkan \textit{file} JSON menuju aplikasi pengguna.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.6\textwidth, trim=2 2 2 2, clip]{resources/3-svara_arch.pdf}
-	\caption{Aristektur keseluruhan untuk sistem NLU SVARA}
-	\label{fig:svara_arch}
-\end{figure}
-
-\section{Alat-Alat yang Digunakan}
-
-Sistem NLU SVARA dibangun dengan menggunakan bahasa pemrograman Python dan tiga \textit{library} utama, yaitu Rasa sebagai \textit{library} untuk membangun sistem NLU, spaCy sebagai \textit{library} pembantu Rasa dalam melakukan pengolahan teks, dan fastText sebagai model vektor kata yang digunakan untuk membantu spaCy dalam mengolah teks.
-
-\subsection{Rasa}
-
-Rasa, terdiri dari Rasa NLU dan Rasa Core, adalah sepasang \textit{open-source library} Python yang digunakan untuk membangun perangkat lunak berbasis percakapan \parencite{bocklisch2017rasa}. Rasa biasanya digunakan untuk pengembangan robot percakapan atau dikenal dengan \textit{chatbot} berbentuk teks. Tujuan dari Rasa adalah membantu para pengembang untuk mengembangkan manajemen dialog dan pemahaman bahasa berdasarkan pembelajaran mesin. Pengembangan Rasa terinspirasi dari beberapa \textit{library} yang telah ada, seperti scikit-learn dan Keras untuk API, fastText untuk klasifikasi teks, dan GloVe untuk penyediaan data latih untuk \textit{word embedding}. Versi Rasa yang digunakan untuk pengerjaan sistem NLU SVARA, yaitu Rasa NLU versi 0.11.4 dan Rasa Core versi 0.8.6.
-
-Arsitektur Rasa dapat dilihat pada Gambar \ref{fig:rasa_arch}. Terdapat empat bagian di dalam arsitektur Rasa, yaitu \textit{Interpreter, Tracker, Policy,} dan \textit{Action}. Bagian Interpreter ditangani oleh Rasa NLU, sedangkan bagian yang lain ditangani oleh Rasa Core. Rasa bersifat modular, sehingga \textit{library} dapat diintegrasikan dengan \textit{library} lain, seperti Rasa Core dapat dihubungkan dengan \textit{Interpreter} selain Rasa NLU, dan sebaliknya.
-
-Tahap-tahap proses yang ada di dalam arsitektur Rasa dapat dijelaskan sebagai berikut. Pertama, pesan yang dimasukkan oleh pengguna dikirimkan ke \textit{Interpreter}. Di dalam \textit{Interpreter} dilakukan proses untuk mengekstrasi \textit{intent}, entities, dan beberapa informasi terstruktur lain dari pesan yang telah dimasukkan. Kedua, luaran dari \textit{Interpreter} diteruskan menuju \textit{Tracker}. \textit{Tracker} akan melacak \textit{state} dari percakapan dan memberikan pemberitahuan baru bahwa pesan telah diterima oleh \textit{Tracker}. Ketiga, \textit{Policy} menerima  \textit{state} dari \textit{Tracker}. Keempat, \textit{Policy} menentukan \textit{Action} yang harus dilakukan sebagai tanggapan pesan dari pengguna.Kelima, \textit{Action} yang terpilih dicatat oleh \textit{Tracker}. Terakhir, \textit{Action} mulai dieksekusi kepada pengguna, baik berupa pencarian atau mengeluarkan pesan.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.9\textwidth, trim=2 2 2 2, clip]{resources/3-rasa_arch.pdf}
-	\caption{Bagan arsitektur Rasa \parencite{bocklisch2017rasa}}
-	\label{fig:rasa_arch}
-\end{figure}
-
-Secara sederhana, cara Rasa bekerja ditunjukkan oleh bagan pada Gambar \ref{fig:rasa_process}. Terdapat tiga proses utama dari Rasa NLU dan Rasa Core, yaitu melatih NLU, melatih dialog, dan menjalankan agen dialog.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth, trim=2 2 2 2, clip]{resources/3-rasa_process.pdf}
-	\caption{Bagan proses utama Rasa}
-	\label{fig:rasa_process}
-\end{figure}
-
-\subsubsection{Melatih NLU}
-
-Pelatihan NLU dilakukan oleh Rasa NLU dengan bantuan pengolah teks seperti spaCy dan MITIE. Pelatihan NLU berguna untuk melatih sistem untuk dapat memahami teks dan entitas didalamnya yang akan dimasukkan oleh pengguna dan menyimpan model latihan untuk digunakan saat agen dialog siap untuk dijalankan.
-
-Untuk dapat menjalankan proses ini, dibutuhkan dua data masing-masing dalam berbentuk file JSON, yaitu data latihan dan data konfigurasi. Data latihan berisi teks masukan yang dijadikan contoh, maksud dari teks tersebut, serta entitas yang terkandung di dalamnya. Sedangkan data konfigurasi berisikan konfigurasi yang digunakan sebagai acuan dalam melatih NLU, seperti bahasa, pipeline yang digunakan untuk latihan, lokasi data latihan, dan lain-lain.
-
-Proses-proses untuk melatih NLU dapat dilihat pada Gambar \ref{fig:rasaNLU_train}, dan penjelasan tiap proses adalah sebagai berikut:
-
-\begin{enumerate}
-	\item Rasa NLU mengambil data konfigurasi, setelah itu mengambil data latihan,
-	\item memuat data latihan dan mengubahnya menjadi obyek TrainingData,
-	\item memuat data konfigurasi dan mengubahnya menjadi obyek RasaNLUConfig,
-	\item membuat obyek Trainer sebagai “pelatih” dan mempersiapkan obyek tersebut dengan menggunakan obyek RasaNLUConfig sebagai masukan,
-	\item memanggil prosedur latihan pada obyek Trainer dengan menggunakan obyek TrainingData sebagai masukan, dan,
-	\item menyimpan model hasil latihan menuju direktori sistem.
+	\item sistem akan memuat \textit{file} JSON yang berisi data latihan yang digunakan untuk membangun NLU,
+	\item sistem mengambil data latihan tersebut lalu mengubahnya menjadi sekumpulan obyek SentenceData,
+	\item sistem mengambil informasi maksud kalimat yang telah didefinisikan di dalam data latihan dan menyimpan sekumpulan maksud kalimat,
+	\item sistem memecahkan sebuah kalimat menjadi sekumpulan \textit{token} kata,
+	\item sistem mengekstraksi entitas yang telah didefinisikan di dalam data latihan dan mengumpulkan semua entitas yang terekstrasi,
+	\item sistem menciptakan tas kata-kata dengan menggunakan metode \textit{one-hot encoding},
+	\item sekumpulan maksud kalimat dan tas kata-kata digunakan sebagai masukan untuk latihan model NLU, menghasilkan model klasifikasi, dan,
+	\item model klasifikasi disimpan ke dalam direktori sistem untuk digunakan pada tahap klasifikasi teks.
 \end{enumerate}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth, trim=2 2 2 2, clip]{resources/3-rasaNLU_train.pdf}
-	\caption{Bagan alur latihan NLU dari Rasa NLU}
-	\label{fig:rasaNLU_train}
+	\includegraphics[width=\textwidth, trim=2 2 2 2, clip]{resources/4-design_training.pdf}
+	\caption{Bagan rancangan sistem tahap latihan klasifikasi}
+	\label{fig:design_training}
 \end{figure}
 
-Di dalam data konfigurasi, terdapat pengaturan \textit{pipeline} yang digunakan untuk mengatur data latihan akan dilatih dengan menggunakan komponen apa saja. Alur persiapan \textit{pipeline} yang digunakan adalah, pertama menginisiasi semua komponen, lalu melakukan latihan jika terdapat prosedur latihan didalamnya, dan terakhir menyimpan hasil latihan per komponen ke dalam direktori sistem. Untuk pengerjaan sistem NLU SVARA, \textit{pipeline template} yang digunakan adalah spacy\_sklearn yang berisikan komponen latih sebagai berikut:
+\section{Rancangan Klasifikasi Teks}
+
+Rancangan sistem untuk tahap klasifikasi teks disajikan dalam bagan pada Gambar \ref{fig:design_classification}. Proses-proses yang harus dilewati dalam tahap klasifikasi teks dapat dijelaskan sebagai berikut:
 
 \begin{enumerate}
-	\item nlp\_spacy, digunakan untuk inisialisasi spaCy sebelum menggunakan komponen latih spaCy yang lain,
-	\item tokenizer\_spacy, digunakan untuk melakukan tokenisasi dari teks masukan dengan menggunakan tokenisasi dari spaCy,
-	\item intent\_featurizer\_spacy, digunakan untuk membuat definisi ekstrasi fitur dari teks masukan dengan menggunakan spaCy. Fitur tersebut akan digunakan untuk melakukan klasifikasi maksud kalimat,
-	\item intent\_entity\_featurizer\_regex, digunakan untuk mencatatkan seluruh \textit{regular expressio}n yang telah didefinisikan dalam data latihan,
-	\item ner\_crf, digunakan untuk melakukan pengenalan entitas dengan menggunakan metode latihan \textit{conditional random field} (CRF) yang disediakan oleh \textit{library} sklearn-crfsuite,
-	\item ner\_synonym, digunakan untuk menampung teks-teks yang memiliki nilai entitas yang sama, dan,
-	\item intent\_classifier\_sklearn, digunakan untuk melakukan latihan klasifikasi maksud kalimat dengan masukan berupa fitur teks yang telah dilakukan oleh intent\_featurizer\_spacy. Latihan klasifikasi dilakukan dengan menggunakan \textit{support vector machine} (SVM) dan pengaturan parameter latih menggunakan metode \textit{grid-search} yang disediakan oleh scikit-learn.
+	\item sistem menerima masukan teks dari \textit{speech recognition} yang dimasukkan oleh suara pengguna,
+	\item sistem memecahkan teks menjadi sekumpulan \textit{token},
+	\item sistem mengenali entitas yang berada di dalam teks, kemudian mengekstraksi entitas tersebut,
+	\item sistem menciptakan tas kata-kata untuk teks masukan,
+	\item sistem melakukan prediksi maksud kalimat dari masukan tas kata-kata menggunakan model klasifikasi yang dihasilkan pada tahap latihan klasifikasi,
+	\item maksud kalimat yang telah dihasilkan, bersama dengan kumpulan entitas hasil ekstrasi, menjadi masukan untuk memenggil aksi sistem, dan,
+	\item sistem melakukan aksi kepada pengguna sebagai tanggapan dari masukan teks dari sistem ASR.
 \end{enumerate}
-
-\subsubsection{Melatih Dialog}
-
-Pelatihan dialog dilakukan dengan menggunakan Rasa Core. Pelatihan dialog berguna untuk mendefinisikan domain NLU dari sistem serta melatih agen dialog untuk menciptakan prediksi respon yang tepat berdasarkan masukan dari pengguna sebelumnya. Prediksi didapatkan dengan menggunakan sebuah komponen yaitu \textit{policy}.
-
-Untuk dapat menjalankan proses ini, dibutuhkan dua data masing-masing dalam bentuk file \textit{markdown} dan YML, yaitu data cerita dan data domain. Data cerita digunakan untuk mengkonstruksi alur percakapan yang mungkin terjadi antara pengguna dengan sistem. Data cerita terdiri dari balok-balok cerita, berisi maksud kalimat yang diekstraksi dari teks masukan pengguna dan respon sistem terhadap masukan tersebut. Jumlah respon dan timbal balik dalam satu balok cerita tidak terbatas. Data domain digunakan untuk inisialisasi definisi dari maksud kalimat, entitas yang terlibat, slot yang tersedia, serta aksi yang akan dilakukan oleh sistem.
-
-Proses-proses untuk melatih agen dialog dijelaskan sebagai berikut:
-
-\begin{enumerate}
-	\item Rasa Core mengambil data domain dan data cerita,
-	\item membuat agen dialog dengan membuat obyek Agent menggunakan masukan data domain dan policy yang digunakan,
-	\item memanggil prosedur latih dari obyek Agent dengan menyertakan data cerita sebagai masukan. Prosedur ini juga membuat obyek PolicyTrainer dan melakukan pelatihan, dan,
-	\item menyimpan agen dialog terlatih ke dalam direktori sistem.
-\end{enumerate}
-
-\subsubsection{Menjalankan Agen Dialog}
-
-Setelah model NLU dan agen dialog telah tersimpan ke dalam direktori, sistem sudah siap untuk menjalankan agen dialognya. Sistem akan melakukan \textit{loop} selamanya terhadap proses memasukkan teks. Teks yang telah dimasukkan oleh pengguna akan diprediksi maksud kalimatnya sehingga sistem dapat menentukan aksi yang tepat.
-
-\subsection{spaCy}
-
-spaCy adalah sebuah \textit{open-source library} Python digunakan untuk melakukan pengolahan teks, khususnya NLP, dalam tingkat industri \parencite{spacy2}. spaCy mendukung banyak bahasa selain MITIE, dan lebih mudah untuk menambahkan bahasa baru, cukup dengan menyediakan model bahasa yang dibutuhkan ke dalam spaCy. Versi spaCy yang digunakan adalah versi 2.0.11.
-
-Arsitektur spaCy dapat terlihat di dalam Gambar \ref{fig:spaCy_arch} \parencite{spacy2}. Terdapat dua struktur data pusat yang berada di dalam spaCy, yaitu Doc dan Vocab. Doc berisi rangkaian dari \textit{token} dan semua anotasinya, sedangkan Vocab berisi sekumpulan tabel \textit{look-up} untuk menyediakan informasi umum ke seluruh dokumen, bertujuan untuk mencegah terjadinya duplikasi data dan memastikan bahwa fakta hanya tersimpan di dalam satu sumber.
-
-Dengan menyimpan semua fakta di dalam satu sumber dapat menghemat penyimpanan di dalam arsitektur spaCy itu sendiri. Seperti, Doc menyimpan seluruh data-data anotasi teks, sedangkan Token dan Span hanya berupa \textit{view} yang berisi \textit{pointer} untuk merujuk kepada data yang ada di Doc.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth, trim=2 2 2 2, clip]{resources/3-spacy_arch.pdf}
-	\caption{Bagan arsitektur spaCy \parencite{spacy2}}
-	\label{fig:spaCy_arch}
+	\includegraphics[width=\textwidth, trim=2 2 2 2, clip]{resources/4-design_classification.pdf}
+	\caption{Bagan rancangan sistem tahap klasifikasi teks}
+	\label{fig:design_classification}
 \end{figure}
 
-\subsection{fastText}
+\section{Penjelasan Proses}
 
-fastText adalah \textit{library} untuk klasifikasi dan representasi teks yang dibangun oleh peneliti AI dari Facebook. Pemrosesan yang dilakukan adalah mengubah sebuah kalimat-kalimat yang tersedia menjadi sebuah model vektor. Model vektor merepresentasikan kedekatan antara suatu kata dengan kata yang lain, memiliki nilai rentang antara 0 hingga 1. Model vektor tersebut dapat dipakai tidak hanya oleh library fastText, namun juga dapat digunakan oleh library luar, seperti spaCy.
+\subsection{Memuat Data}
 
-Untuk pengerjaan sistem NLU SVARA, digunakan model vektor yang telah tersedia oleh fastText di dalam repositori GitHub. Model vektor yang digunakan adalah model vektor berbahasa Indonesia, yang diproses dari teks-teks yang tersedia di Wikipedia. Untuk dapat menggunakan model vektor, terlebih dahulu model vektor dikonversi menjadi model bahasa spaCy, dalam hal ini model bahasa Indonesia.
+Data latihan yang disediakan di dalam direktori sistem memiliki format JSON. Data tersebut berisikan teks yang akan dilatih beserta informasi maksud kalimat dan entitas yang terkandung di dalamnya jika ada. Dalam tahap latihan klasifikasi, sistem akan memuat data latihan dan memasukkan data-data menjadi obyek SentenceData. Obyek SentenceData memiliki atribut-atribut berupa teks, \textit{token-token}, dan tanda entitas tiap \textit{token}. Selain itu, proses memuat data juga menghasilkan nilai entitas yang terkandung di dalam kalimat data latihan.
 
-\section{Teori yang Diterapkan}
+\subsection{Tokenisasi}
 
-\subsection{Pengenalan Entitas dengan \textit{Conditional Random Field}}
+Tokenisasi adalah proses untuk memecahkan sebuah teks kalimat menjadi sekumpulan \textit{token}. Selain kata dan angka, \textit{token} dapat juga berbentuk tanda baca. Rancangan proses tokenisasi untuk sistem NLU baru yang akan dibangun ditunjukkan dalam bagan pada Gambar \ref{fig:design_token}. Teks yang dihadapi oleh sistem berupa kalimat yang dibentuk dari huruf-huruf tanpa tanda baca, mengingat bahwa teks merupakan keluaran dari sistem ASR. Teks dipecahkan dengan menggunakan prosedur split() yang telah disediakan oleh Python. Hasil pecahan teks disimpan kembali ke dalam obyek SentenceData.
 
-\textit{Conditional random field} (CRF) adalah metode pembelajaran yang digunakan untuk data-data yang bersifat berurutan. CRF menggunakan fitur-fitur yang dimiliki oleh sebuah kata untuk melakukan pelatihan. Fitur yang digunakan untuk CRF dapat bervariasi sesuai kebutuhan, namun fitur dasar yang tersedia adalah kata utama dan kata sebelum kata utama. CRF biasanya digunakan untuk \textit{sequence labelling} teks.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth, trim=2 2 2 2, clip]{resources/4-design_token.pdf}
+	\caption{Rancangan proses tokenisasi}
+	\label{fig:design_token}
+\end{figure}
 
-Rasa NLU menggunakan \textit{library} Python yaitu sklearn-crfsuite. \textit{Library} ini merupakan pembungkus \textit{library} python-crfsuite yang mana menyediakan \textit{estimator} yang cocok dengan scikit-learn \parencite{sklearncrf}. Hal tersebut memudahkan penggunaan model CRF untuk pelatihan dan menyimpan model hasil latihan. Selain itu, fitur-fitur yang digunakan oleh Rasa NLU berupa elemen-elemen tiap kata, seperti \textit{part-of-speech, dependency,} dan lain-lain. Elemen tersebut didapatkan dari bantuan \textit{library} spaCy.
+\subsection{Ekstraksi Entitas}
 
-\subsection{Klasifikasi Maksud kalimat dengan \textit{Support Vector Machine}}
+Ekstraksi entitas adalah proses untuk mengambil entitas-entitas yang terkandung di dalam teks. Entitas tersebut akan digunakan sebagai masukan aksi yang akan dijalankan sistem NLU setelah memprediksi maksud kalimat dari teks tersebut.
 
-\textit{Support vector machine} (SVM), atau \textit{support vector network}, adalah sebuah metode pembelajaran yang memetakan vektor masukan menjadi ruang fitur dengan dimensi yang tinggi melalui pemetaan non linear yang telah dipilih sebelumnya \parencite{cortes1995support}. SVM biasanya digunakan untuk menjelaskan kegiatan klasifikasi dengan metode support vector, namun kegunaan SVM juga bisa digunakan untuk kegiatan regresi. Oleh karena itu, SVM terbagi menjadi dua, yaitu \textit{support vector classification} (SVC) untuk klasifikasi dan \textit{support vector regression} (SVR) untuk regresi \parencite{gunn1998support}.
+Gambar \ref{fig:design_entity} menunjukkan rancangan untuk proses ekstraksi entitas dalam sistem NLU baru. Dalam tahap latihan klasifikasi, entitas-entitas yang ada di dalam teks telah didefinisikan di dalam data latihan. Sistem akan menandakan token mana saja yang termasuk ke dalam entitas tersebut dengan menggunakan skema BILUO [cit]. Penanda tersebut akan berguna untuk melakukan latihan pengenalan entitas, yang mana model hasil dari latihan tersebut disimpan ke dalam direktori sistem. Untuk proses latihan klasifikasi, semua \textit{token} yang merupakan entitas diganti menjadi satu \textit{token} yang bernilai nama entitas tersebut.
 
-Rasa NLU menggunakan SVM untuk melakukan klasifikasi maksud kalimat dari scikit-learn. Dengan jumlah maksud kalimat yang berjumlah lebih dari dua, maka scikit-learn akan menggunakan metode-metode untuk mengakali SVM sehingga dapat digunakan untuk kasus melakukan klasifikasi lebih dari dua kelas.
+Dalam tahap klasifikasi teks, sebuah teks polos masukan dari sistem ASR akan ditebak entitas-entitas di dalamnya dengan menggunakan model latihan pengenalan entitas yang telah dijalankan sebelumnya. Setelah semua token telah ditandai, sistem akan mengambil nilai entitas-entitas yang terkandung dan menyimpan nilai tersebut untuk digunakan setelah klasifikasi maksud teks telah dijalankan.
 
-\section{Analisis Kekurangan Sistem}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth, trim=2 2 2 2, clip]{resources/4-design_entity.pdf}
+	\caption{Rancangan proses ekstraksi entitas}
+	\label{fig:design_entity}
+\end{figure}
 
-Selama pengerjaan sistem NLU berlangsung, terdapat kekurangan-kekurangan yang dimiliki oleh alat-alat yang digunakan untuk membangun sistem.
+Rasa NLU memiliki beberapa jenis pilihan metode untuk melakukan latihan pada proses ini. Namun, pilihan yang cocok dengan permasalahan ini adalah latihan pengenalan entitas dengan menggunakan conditional random field (CRF). Hal ini dikarenakan metode CRF adalah salah satu dari dua metode yang mendukung nama entitas selain nama standar entitas.
 
-\subsection{Model yang Digunakan Tidak Cukup}
+Penggunaan CRF dalam mengenali entitas dapat diperbaiki dengan menggunakan algoritma-algoritma yang lain. Beberapa pilihan algoritma yang cocok adalah sebagai berikut:
 
-Model vektor fastText digunakan untuk dapat membangun model bahasa Indonesia spaCy, dan digunakan dalam melakukan pengolahan teks di Rasa. Namun, model bahasa yang berhasil dibangun dari model vektor hanyalah pada bagian kosakata saja. Untuk dapat membangun model bahasa yang baik, model juga memerlukan bagian-bagian seperti \textit{named entity recognition}, \textit{parser}, serta \textit{tagger}.
+\begin{enumerate}
+	\item menggunakan \textit{recurrent neural network} dari Keras,
+	\item menggunakan \textit{convolutional neural network} dari Keras,
+	\item menggunakan \textit{convolutional neural network} dua arah [cit],
+\end{enumerate}
 
-\textit{Named entity recognition}, atau NER, merujuk kepada pengenalan \textit{token-token} yang merupakan sebuah entitas, seperti nama oganisasi, nama tempat, tanggal, waktu, angka urutan, dan lain-lain. NER diperlukan untuk membedakan antara \textit{token} biasa dengan \textit{token} entitas. \textit{Parser} merujuk kepada \textit{dependency parsing} yaitu melihat ketergantungan sebuah token dengan token yang lain. Sebagai contoh, kalimat “Budi memakan nasi” memiliki dua ketergantungan, yaitu “Budi” memiliki ketergantungan subyek dengan “memakan”, dan “nasi” memiliki ketergantungan obyek dengan “memakan”. Terakhir, \textit{tagger} merujuk kepada \textit{POS tagging} yaitu memberikan tanda kepada token berdasarkan sifat kata dari token tersebut, misal kata kerja, kata benda, tanda baca, dan lain-lain.
+\subsection{Menciptakan Tas Kata-Kata}
 
-Terdapat beberapa korpus untuk latihan yang menyediakan komponen seperti \textit{dependency parser} dan \textit{POS tag}, salah satunya berasal dari Universal Dependencies. Universal Dependencies menyediakan korpus yang diambil dari berbagai sumber, seperti berita, artikel blog, istilah hukum, istilah medis, Wikipedia, dan lain-lain.
+Tas kata-kata, atau lebih dikenal dengan \textit{bag-of-words} (BOW), adalah bentuk representasi sebuah kalimat dengan menunjukkan kehadiran kata-kata dalam kosakata di dalam kalimat tersebut. Pembentukan tas kata-kata dapat dilihat pada Gambar \ref{fig:design_bow}. Tas kata-kata diciptakan dengan menggunakan teknik \textit{one-hot encoding}, yaitu merepresentasikan kosakata yang muncul di dalam sebuah kalimat ke dalam bentuk biner. Pembuatan kosakata dilakukan dengan melacak semua kata yang muncul di dalam data latihan yang telah diberikan. Untuk kata-kata yang menjadi entitas, kata tersebut diganti menjadi satu token berisi nama entitas.
 
-\subsection{Perbaikan Algoritma yang Digunakan}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth, trim=3 3 3 3, clip]{resources/4-design_bow.pdf}
+	\caption{Rancangan proses menciptakan tas kata-kata}
+	\label{fig:design_bow}
+\end{figure}
 
-\subsection{Kebutuhan Ekstraksi Fitur untuk CRF}
+\subsection{Latihan Klasifikasi}
 
-CRF membutuhkan fitur-fitur yang telah didefinisikan sebelumnya untuk dapat melakukan latihan, seperti CRF yang diterapkan oleh Rasa membutuhkan fitur POS \textit{tag} pada sebuah kata. Fitur tersebut hanya bisa didapatkan dengan \textit{library} NLP, seperti spaCy, yang dapat melakukan latihan POS \textit{tag} berdasarkan model yang telah disediakan oleh pengguna. Oleh karena itu, sebuah kalimat masukan perlu melakukan klasifikasi dengan spaCy terlebih dahulu sebelum akhirnya diekstraksi dengan menggunakan Rasa.
+Latihan dijalankan untuk melatih sekumpulan tas kata-kata dan maksud kalimat yang terlibat, kemudian menciptakan model hasil latihan dan menyimpannya ke dalam direktori sistem. Gambar \ref{fig:design_train_class} menunjukkan bagaimana sistem melakukan latihan dan menciptakan model latihan. Sistem mendapatkan sekumpulan tas kata-kata dan label maksud kalimat secara bersamaan. Tas kata-kata menjadi masukan contoh masukan model, sedangkan label maksud kalimat menjadi masukan contoh keluaran model.
 
-Model vektor fastText digunakan untuk dapat membangun model bahasa Indonesia spaCy, dan digunakan dalam melakukan pengolahan teks di Rasa. Namun, model bahasa yang berhasil dibangun dari model vektor hanyalah pada bagian kosakata saja. Untuk dapat membangun model bahasa yang baik, model juga memerlukan bagian-bagian seperti \textit{named entity recognition}, \textit{parser}, serta \textit{tagger}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth, trim=3 3 3 3, clip]{resources/4-design_train_class.pdf}
+	\caption{Rancangan proses latihan klasifikasi}
+	\label{fig:design_train_class}
+\end{figure}
 
-Lalu, model dari fastText hanya tersedia dalam bahasa Indonesia yang baku. Hal ini dapat menyebabkan kesulitan dalam mengenal kata-kata yang baru diucapkan, atau kata yang tidak baku seperti kata-kata dalam percakapan sehari-hari. Oleh karena itu, pendekatan CRF tidak cocok untuk digunakan pada proyek ini.
+Dalam Rasa NLU, latihan klasifikasi dijalankan dengan menggunakan \textit{support vector machine} (SVM) dengan tambahan \textit{cross-validation} dan optimasi berbasis \textit{grid-search} dari scikit-learn. Untuk sistem NLU yang baru, terdapat beberapa pilihan yang bisa digunakan sebagai latihan klasifikasi, yaitu sebagai berikut:
 
-\subsection{Kecocokan SVM untuk Klasifikasi Lebih dari Dua Kelas}
+\begin{enumerate}
+	\item menggunakan SVM dengan tambahan \textit{cross-validation} dan optimasi berbasis \textit{random search} dari scikit-learn,
+	\item menggunakan \textit{artificial neural network} dari Keras,
+\end{enumerate}
 
-Rasa NLU menggunakan metode SVM dengan tambahan pengaturan grid-search dari scikit-learn untuk melakukan pelatihan klasifikasi maksud kalimat. Kelemahan yang terdapat pada SVM dalam melakukan klasifikasi adalah SVM hanya dapat melakukan klasifikasi pada dua kelas saja. SVM tidak dirancang untuk mengatasi permasalahan klasifikasi yang membutuhkan lebih dari dua kelas. Namun, scikit-learn dapat mengatasi permasalahan tersebut dengan menggunakan skema klasifikasi one-versus-one. Skema tersebut bekerja dengan cara membuat satu alat klasifikasi untuk tiap pasangan kelas yang ada. Pada saat prediksi, kelas yang menerima voting tertinggi akan terpilih [cit].
+\subsection{Klasifikasi}
 
-Kelemahan yang dimiliki oleh skema one-versus-one adalah jumlah klasifikasi yang dilakukan, yaitu (jumlah kelas * (jumlah kelas – 1) / 2) klasifikasi, membuat skema ini memiliki kompleksitas O(jumlah kelas \^{} 2). Dengan jumlah klasifikasi yang banyak, SVM dirasa tidak efisien untuk melakukan klasifikasi dengan jumlah kelas yang banyak. Oleh karena itu, metode klasifikasi yang tepat digunakan untuk mengatasi masalah jumlah kelas lebih dari dua tersebut adalah neural network.
+Proses klasifikasi dijalankan pada tahap klasifikasi teks. Gambaran mengenai proses ini terdapat pada Gambar \ref{fig:design_class_class}. Sistem terlebih dahulu memuat model latihan yang telah disimpan di dalam direktori sistem. Lalu, sistem menggunakan model tersebut untuk melakukan prediksi dari teks masukan yang telah diubah menjadi sebuah tas kata-kata.
 
-Keluaran dari neural network dapat diatur sesuai dengan jumlah kelas yang tersedia pada data latihan. Fleksibilitas yang dimiliki oleh neural network membuat metode ini dapat melakukan satu model dan satu kali latihan klasifikasi untuk dapat menghasilkan model yang bagus untuk digunakan.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth, trim=2 2 2 2, clip]{resources/4-design_class_class.pdf}
+	\caption{Rancangan proses klasifikasi}
+	\label{fig:design_class_class}
+\end{figure}
+
+\subsection{Memanggil Aksi Sistem}
+
+Maksud kalimat yang telah diprediksi di tahap klasifikasi teks, digunakan untuk memilih aksi yang akan dilakukan oleh sistem NLU kepada pengguna sistem. Aksi sistem ini pada umumnya adalah melakukan komunikasi REST API kepada sistem API SVARA. API SVARA akan memberikan respon berupa \textit{file} JSON kepada sistem NLU jika komunikasi sukses dijalankan. Kemudian, \textit{file} JSON yang diterima oleh sistem NLU diberikan kepada aplikasi yang dimiliki oleh pengguna secara langsung. Pengolahan \textit{file} JSON setelah berada di aplikasi pengguna diserahkan kepada aplikasi itu sendiri.
+
+Beberapa aksi memerlukan parameter masukan untuk dapat melengkapi komunikasi dengan API SVARA. Parameter masukan didapatkan dari entitas-entitas yang telah diambil nilainya setelah tiap \textit{token} kalimat ditandai pada saat proses ekstraksi entitas.
