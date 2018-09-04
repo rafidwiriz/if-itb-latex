@@ -64,9 +64,9 @@ Tokenisasi adalah proses untuk memecahkan sebuah teks kalimat menjadi sekumpulan
 
 Ekstraksi entitas adalah proses untuk mengambil entitas-entitas yang terkandung di dalam teks. Entitas tersebut akan digunakan sebagai masukan aksi yang akan dijalankan sistem NLU setelah memprediksi maksud kalimat dari teks tersebut.
 
-Gambar \ref{fig:design_entity} menunjukkan rancangan untuk proses ekstraksi entitas dalam sistem NLU baru. Dalam tahap latihan klasifikasi, entitas-entitas yang ada di dalam teks telah didefinisikan di dalam data latihan. Sistem akan menandakan token mana saja yang termasuk ke dalam entitas tersebut dengan menggunakan skema BILUO [cit]. Penanda tersebut akan berguna untuk melakukan latihan pengenalan entitas, yang mana model hasil dari latihan tersebut disimpan ke dalam direktori sistem. Untuk proses latihan klasifikasi, semua \textit{token} yang merupakan entitas diganti menjadi satu \textit{token} yang bernilai nama entitas tersebut.
+Gambar \ref{fig:design_entity} menunjukkan rancangan untuk proses ekstraksi entitas dalam sistem NLU baru. Dalam tahap latihan klasifikasi, entitas-entitas yang ada di dalam teks telah didefinisikan di dalam data latihan. Sistem akan menandakan \textit{token} mana saja yang termasuk ke dalam entitas tersebut dengan menggunakan skema \textit{tag} BILUO [cit]. Penanda tersebut akan berguna untuk melakukan latihan pengenalan entitas, yang mana model hasil dari latihan tersebut disimpan ke dalam direktori sistem. Untuk proses latihan klasifikasi, semua \textit{token} yang merupakan entitas diganti menjadi satu \textit{token} yang bernilai nama entitas tersebut.
 
-Dalam tahap klasifikasi teks, sebuah teks polos masukan dari sistem ASR akan ditebak entitas-entitas di dalamnya dengan menggunakan model latihan pengenalan entitas yang telah dijalankan sebelumnya. Setelah semua token telah ditandai, sistem akan mengambil nilai entitas-entitas yang terkandung dan menyimpan nilai tersebut untuk digunakan setelah klasifikasi maksud teks telah dijalankan.
+Dalam tahap klasifikasi teks, sebuah teks polos masukan dari sistem ASR akan ditebak entitas-entitas di dalamnya dengan menggunakan model latihan pengenalan entitas yang telah dijalankan sebelumnya. Setelah semua \textit{token} telah ditandai, sistem akan mengambil nilai entitas-entitas yang terkandung dan menyimpan nilai tersebut untuk digunakan setelah klasifikasi maksud teks telah dijalankan.
 
 \begin{figure}[H]
 	\centering
@@ -75,9 +75,7 @@ Dalam tahap klasifikasi teks, sebuah teks polos masukan dari sistem ASR akan dit
 	\label{fig:design_entity}
 \end{figure}
 
-Rasa NLU memiliki beberapa jenis pilihan metode untuk melakukan latihan pada proses ini. Namun, pilihan yang cocok dengan permasalahan ini adalah latihan pengenalan entitas dengan menggunakan conditional random field (CRF). Hal ini dikarenakan metode CRF adalah salah satu dari dua metode yang mendukung nama entitas selain nama standar entitas.
-
-Penggunaan CRF dalam mengenali entitas dapat diperbaiki dengan menggunakan algoritma-algoritma yang lain. Beberapa pilihan algoritma yang cocok adalah sebagai berikut:
+Beberapa algoritma dipilih untuk mengatasi kelemahan yang terdapat pada CRF milik Rasa NLU. Pilihan algoritma yang cocok adalah sebagai berikut:
 
 \begin{enumerate}
 	\item menggunakan \textit{recurrent neural network} dari Keras,
@@ -107,12 +105,7 @@ Latihan dijalankan untuk melatih sekumpulan tas kata-kata dan maksud kalimat yan
 	\label{fig:design_train_class}
 \end{figure}
 
-Dalam Rasa NLU, latihan klasifikasi dijalankan dengan menggunakan \textit{support vector machine} (SVM) dengan tambahan \textit{cross-validation} dan optimasi berbasis \textit{grid-search} dari scikit-learn. Untuk sistem NLU yang baru, terdapat beberapa pilihan yang bisa digunakan sebagai latihan klasifikasi, yaitu sebagai berikut:
-
-\begin{enumerate}
-	\item menggunakan SVM dengan tambahan \textit{cross-validation} dan optimasi berbasis \textit{random search} dari scikit-learn,
-	\item menggunakan \textit{artificial neural network} dari Keras,
-\end{enumerate}
+Untuk sistem NLU yang baru, \textit{neural network} digunakan. \textit{Neural network} diyakini dapat mengatasi kelemahan yang dimiliki oleh SVM saat melakukan klasifikasi dengan jumlah kelas lebih dari dua.
 
 \subsection{Klasifikasi}
 
