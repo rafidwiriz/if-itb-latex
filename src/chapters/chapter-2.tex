@@ -190,7 +190,7 @@ Untuk pengerjaan sistem NLU SVARA, digunakan model vektor yang telah tersedia ol
 
 \textit{Conditional random field} (CRF) adalah metode pembelajaran yang digunakan untuk data-data yang bersifat berurutan. CRF menggunakan fitur-fitur yang dimiliki oleh sebuah kata untuk melakukan pelatihan. Fitur yang digunakan untuk CRF dapat bervariasi sesuai kebutuhan, namun fitur dasar yang tersedia adalah kata utama dan kata sebelum kata utama. CRF biasanya digunakan untuk \textit{sequence labelling} teks.
 
-Rasa NLU menggunakan \textit{library} Python yaitu sklearn-crfsuite. \textit{Library} ini merupakan pembungkus \textit{library} python-crfsuite yang mana menyediakan \textit{estimator} yang cocok dengan scikit-learn \parencite{sklearncrf}. Hal tersebut memudahkan penggunaan model CRF untuk pelatihan dan menyimpan model hasil latihan. Selain itu, fitur-fitur yang digunakan oleh Rasa NLU berupa elemen-elemen tiap kata, seperti \textit{part-of-speech, dependency,} dan lain-lain. Elemen tersebut didapatkan dari bantuan \textit{library} spaCy.
+Rasa NLU menggunakan \textit{library} Python yaitu sklearn-crfsuite. \textit{Library} ini merupakan pembungkus \textit{library} python-crfsuite yang mana menyediakan \textit{estimator} yang cocok dengan scikit-learn \parencite{sklearncrf}. Hal tersebut memudahkan penggunaan model CRF untuk pelatihan dan menyimpan model hasil latihan. Selain itu, spaCy juga menyediakan fitur yang dapat digunakan oleh CRF milik Rasa NLU, yaitu fitur POS \textit{tag} untuk tiap kata dalam kalimat.
 
 \subsubsection{Klasifikasi Maksud kalimat dengan \textit{Support Vector Machine}}
 
@@ -200,7 +200,7 @@ Rasa NLU menggunakan SVM untuk melakukan klasifikasi maksud kalimat dari scikit-
 
 \subsection{Analisis Kekurangan Sistem}
 
-Selama pengerjaan sistem NLU berlangsung, terdapat kekurangan-kekurangan yang dimiliki oleh alat-alat yang digunakan untuk membangun sistem.
+Selama pengerjaan sistem NLU berlangsung, terdapat kekurangan-kekurangan yang dimiliki oleh alat-alat yang digunakan untuk membangun sistem. Kekurangan tersebut berkaitan dengan permasalahan proyek yang sedang dikerjakan.
 
 %\subsubsection{Model yang Digunakan Tidak Cukup}
 %
@@ -216,7 +216,7 @@ CRF membutuhkan fitur-fitur yang telah didefinisikan sebelumnya untuk dapat mela
 
 Model vektor fastText digunakan untuk dapat membangun model bahasa Indonesia spaCy, dan digunakan dalam melakukan pengolahan teks di Rasa. Namun, model bahasa yang berhasil dibangun dari model vektor hanyalah pada bagian kosakata saja. Untuk dapat membangun model bahasa yang baik, model juga memerlukan bagian-bagian seperti POS \textit{tagger}. Kekurangan informasi tersebut berakibat pada klasifikasi spaCy yang menjadi tidak maksimal.
 
-Lalu, model dari fastText hanya tersedia dalam bahasa Indonesia yang baku. Hal ini dapat menyebabkan kesulitan dalam mengenal kata-kata yang baru diucapkan, atau kata yang tidak baku seperti kata-kata dalam percakapan sehari-hari. Oleh karena itu, pendekatan CRF tidak cocok untuk digunakan pada proyek ini.
+Lalu, model dari fastText hanya tersedia dalam bahasa Indonesia yang baku. Hal ini dapat menyebabkan kesulitan dalam mengenal kata-kata yang baru diucapkan, atau kata yang tidak baku seperti kata-kata dalam percakapan sehari-hari. Oleh karena itu, pendekatan CRF dari Rasa NLU tidak cocok untuk digunakan pada proyek ini.
 
 \subsubsection{Penggunaan SVM untuk Klasifikasi Lebih dari Dua Kelas}
 

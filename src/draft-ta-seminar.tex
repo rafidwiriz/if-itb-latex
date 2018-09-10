@@ -1,0 +1,91 @@
+%--------------------------------------------------------------------%
+%
+% Berkas utama templat LaTeX.
+%
+% author Petra Barus, Peb Ruswono Aryan
+%
+%--------------------------------------------------------------------%
+%
+% Berkas ini berisi struktur utama dokumen LaTeX yang akan dibuat.
+%
+%--------------------------------------------------------------------%
+
+\documentclass[12pt, a4paper, onecolumn, oneside, final]{report}
+
+\input{config/if-itb-thesis.sty}
+
+\makeatletter
+
+\makeatother
+
+\bibliography{references}
+
+\begin{document}
+
+    %Basic configuration
+    \title{\textit{Voice Assistant} untuk Aplikasi Berbasis Audio di PT. Zamrud Technology}
+    \date{}
+    \author{
+        Rafi Dwi Rizqullah \\
+        NIM: 18214035
+    }
+
+    \pagenumbering{roman}
+    \setcounter{page}{0}
+
+    \input{chapters/cover}
+    \input{chapters/approval}
+    \input{chapters/statement}
+
+    \pagestyle{plain}
+
+    \input{chapters/abstract-id}
+    %\input{chapters/abstract-en}
+    \input{chapters/forewords}
+
+    \titleformat*{\section}{\centering\bfseries\Large\MakeUpperCase}
+	
+	\clearpage
+    \tableofcontents
+    
+    \clearpage
+    {%
+		\let\oldnumberline\numberline%
+		\renewcommand{\numberline}{\figurename~\oldnumberline}%
+		\listoffigures%
+	}
+    \newpage
+    \setcounter{savepage}{\arabic{page}}
+
+    \titleformat*{\section}{\bfseries\Large}
+
+    %----------------------------------------------------------------%
+    % Konfigurasi Bab
+    %----------------------------------------------------------------%    
+    \renewcommand{\chaptername}{BAB}
+    \renewcommand{\thechapter}{\Roman{chapter}}
+    \pagenumbering{bychapter}
+    \setlength{\parindent}{1cm}
+    %----------------------------------------------------------------%
+
+    %----------------------------------------------------------------%
+    % Dafter Bab
+    % Untuk menambahkan daftar bab, buat berkas bab misalnya `chapter-6` di direktori `chapters`, dan masukkan ke sini.
+    %----------------------------------------------------------------%
+    \input{chapters/chapter-1}
+    \input{chapters/chapter-2}
+    \input{chapters/chapter-3}
+    %\input{chapters/chapter-4}
+    %\input{chapters/chapter-5}
+    %----------------------------------------------------------------%
+
+    % Daftar pustaka
+    \begin{flushleft}
+    	\clearpage
+    	\pagenumbering{roman}
+    	\setcounter{page}{\thesavepage}
+    	\addcontentsline{toc}{chapter}{Daftar Pustaka}
+    	\printbibliography[title=Daftar Pustaka]
+    \end{flushleft}
+    
+\end{document}
