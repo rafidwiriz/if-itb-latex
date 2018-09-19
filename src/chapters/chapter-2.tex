@@ -50,37 +50,15 @@ Pembelajaran mesin diterapkan pada berbagai macam aplikasi, yang ditujukan untuk
 
 \section{Analisis Produk}
 
-Acuan yang digunakan sebagai analisis dalam pengerjaan Tugas Akhir adalah proyek sistem NLU yang dikerjakan oleh perusahaan PT. Zamrud Technology untuk salah satu aplikasi musik bernama SVARA.
-
-\subsection{Kebutuhan Proyek}
-
-Kebutuhan yang harus dipenuhi oleh sistem NLU ini adalah sebagai berikut:
-
-\begin{enumerate}
-	\item sistem dapat menerima masukan teks dari ASR luar perusahaan,
-	\item sistem dapat mengirimkan \textit{file} JSON menuju aplikasi yang telah dipasangkan oleh pengguna,
-	\item sistem dapat dipasangkan pada \textit{server} tersendiri, dan,
-	\item sistem dapat menampung masukan teks baru untuk dijadikan bahan latihan selanjutnya.
-\end{enumerate}
-
-\subsection{Arsitektur Produk}
-
-Untuk dapat menjelaskan bagaimana sistem ini bekerja, berikut adalah arsitektur keseluruhan dari seluruh sistem yang terlibat, ditunjukkan oleh Gambar \ref{fig:svara_arch}. Cara kerja sistem akhir dijelaskan dalam lima tahap proses. Proses pertama, pengguna akan melakukan perekaman suara menggunakan aplikasi yang dipasangkan pada ponsel. Rekaman tersebut akan dikirimkan menuju ASR untuk dapat diolah menjadi sebuah kalimat berbentuk teks. Proses kedua, ASR mengirimkan teks olahan menuju sistem NLU untuk dapat diproses menjadi sebuah \textit{query}. Sistem NLU menggunakan model yang telah dilatih sebelumnya untuk melakukan prediksi \textit{query}. Proses ketiga, \textit{query} hasil olahan sistem NLU dikirimkan ke API yang disediakan oleh SVARA. Proses keempat, API SVARA mengirimkan \textit{file} JSON hasil \textit{query} menuju sistem NLU. Dan proses terakhir, sistem NLU mengirimkan \textit{file} JSON menuju aplikasi pengguna.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.6\textwidth, trim=2 2 2 2, clip]{resources/3-svara_arch.pdf}
-	\caption{Aristektur keseluruhan untuk sistem NLU SVARA}
-	\label{fig:svara_arch}
-\end{figure}
+Produk terkait yang menjadi acuan dalam pengerjaan Tugas Akhir adalah Rasa NLU, produk NLU \textit{open source} yang dibangun oleh Rasa HQ.
 
 \subsection{Alat-Alat yang Digunakan}
 
-Sistem NLU SVARA dibangun dengan menggunakan bahasa pemrograman Python dan tiga \textit{library} utama, yaitu Rasa sebagai \textit{library} untuk membangun sistem NLU, spaCy sebagai \textit{library} pembantu Rasa dalam melakukan pengolahan teks, dan fastText sebagai model vektor kata yang digunakan untuk membantu spaCy dalam mengolah teks.
+Rasa NLU merupakan salah satu bagian dari Rasa Stack, \textit{library} Python yang digunakan untuk membangun sistem \textit{chatbot} berbasis NLU. Rasa NLU membutuhkan komponen-komponen sebagai berikut: spaCy sebagai \textit{library} pembantu Rasa NLU dalam melakukan pengolahan teks, dan fastText sebagai model vektor kata yang digunakan untuk membantu spaCy dalam mengolah teks.
 
 \subsubsection{Rasa}
 
-Rasa, terdiri dari Rasa NLU dan Rasa Core, adalah sepasang \textit{open-source library} Python yang digunakan untuk membangun perangkat lunak berbasis percakapan \parencite{bocklisch2017rasa}. Rasa biasanya digunakan untuk pengembangan robot percakapan atau dikenal dengan \textit{chatbot} berbentuk teks. Tujuan dari Rasa adalah membantu para pengembang untuk mengembangkan manajemen dialog dan pemahaman bahasa berdasarkan pembelajaran mesin. Pengembangan Rasa terinspirasi dari beberapa \textit{library} yang telah ada, seperti scikit-learn dan Keras untuk API, fastText untuk klasifikasi teks, dan GloVe untuk penyediaan data latih untuk \textit{word embedding}. Versi Rasa yang digunakan untuk pengerjaan sistem NLU SVARA, yaitu Rasa NLU versi 0.11.4 dan Rasa Core versi 0.8.6.
+Rasa, terdiri dari Rasa NLU dan Rasa Core, adalah sepasang \textit{open-source library} Python yang digunakan untuk membangun perangkat lunak berbasis percakapan \parencite{bocklisch2017rasa}. Rasa biasanya digunakan untuk pengembangan robot percakapan atau dikenal dengan \textit{chatbot} berbentuk teks. Tujuan dari Rasa adalah membantu para pengembang untuk mengembangkan manajemen dialog dan pemahaman bahasa berdasarkan pembelajaran mesin. Pengembangan Rasa terinspirasi dari beberapa \textit{library} yang telah ada, seperti scikit-learn dan Keras untuk API, fastText untuk klasifikasi teks, dan GloVe untuk penyediaan data latih untuk \textit{word embedding}. Versi Rasa yang digunakan dalam pengerjaan Tugas Akhir, yaitu Rasa NLU versi 0.11.4 dan Rasa Core versi 0.8.6.
 
 Arsitektur Rasa dapat dilihat pada Gambar \ref{fig:rasa_arch}. Terdapat empat bagian di dalam arsitektur Rasa, yaitu \textit{Interpreter, Tracker, Policy}, dan \textit{Action}. Bagian Interpreter ditangani oleh Rasa NLU, sedangkan bagian yang lain ditangani oleh Rasa Core. Rasa bersifat modular, sehingga \textit{library} dapat diintegrasikan dengan \textit{library} lain, seperti Rasa Core dapat dihubungkan dengan \textit{Interpreter} selain Rasa NLU, dan sebaliknya.
 
@@ -128,7 +106,7 @@ Proses-proses untuk melatih NLU dapat dilihat pada Gambar \ref{fig:rasaNLU_train
 	\label{fig:rasaNLU_train}
 \end{figure}
 
-Di dalam data konfigurasi, terdapat pengaturan \textit{pipeline} yang digunakan untuk mengatur data latihan akan dilatih dengan menggunakan komponen apa saja. Alur persiapan \textit{pipeline} yang digunakan adalah, pertama menginisiasi semua komponen, lalu melakukan latihan jika terdapat prosedur latihan didalamnya, dan terakhir menyimpan hasil latihan per komponen ke dalam direktori sistem. Untuk pengerjaan sistem NLU SVARA, \textit{pipeline template} yang digunakan adalah spacy\_sklearn yang berisikan komponen latih sebagai berikut:
+Di dalam data konfigurasi, terdapat pengaturan \textit{pipeline} yang digunakan untuk mengatur data latihan akan dilatih dengan menggunakan komponen apa saja. Alur persiapan \textit{pipeline} yang digunakan adalah, pertama menginisiasi semua komponen, lalu melakukan latihan jika terdapat prosedur latihan didalamnya, dan terakhir menyimpan hasil latihan per komponen ke dalam direktori sistem. Dalam pengerjaan Tugas Akhir ini, \textit{pipeline template} yang digunakan adalah spacy\_sklearn yang berisikan komponen latih sebagai berikut:
 
 \begin{enumerate}
 	\item nlp\_spacy, digunakan untuk inisialisasi spaCy sebelum menggunakan komponen latih spaCy yang lain,
@@ -182,7 +160,7 @@ Dengan menyimpan semua fakta di dalam satu sumber dapat menghemat penyimpanan di
 
 fastText adalah \textit{library} untuk klasifikasi dan representasi teks yang dibangun oleh peneliti AI dari Facebook \parencite{joulin2017bag}. Pemrosesan yang dilakukan adalah mengubah sebuah kalimat-kalimat yang tersedia menjadi sebuah model vektor. Model vektor merepresentasikan kedekatan antara suatu kata dengan kata yang lain, memiliki nilai rentang antara 0 hingga 1. Model vektor tersebut dapat dipakai tidak hanya oleh \textit{library} fastText, namun juga dapat digunakan oleh \textit{library} luar, seperti spaCy.
 
-Untuk pengerjaan sistem NLU SVARA, digunakan model vektor yang telah tersedia oleh fastText di dalam repositori GitHub. Model vektor yang digunakan adalah model vektor berbahasa Indonesia, yang diproses dari teks-teks yang tersedia di Wikipedia. Untuk dapat menggunakan model vektor, terlebih dahulu model vektor dikonversi menjadi model bahasa spaCy, dalam hal ini model bahasa Indonesia.
+Untuk pengerjaan Tugas Akhir ini, digunakan model vektor yang telah tersedia oleh fastText di dalam repositori GitHub. Model vektor yang digunakan adalah model vektor berbahasa Indonesia, yang diproses dari teks-teks yang tersedia di Wikipedia. Untuk dapat menggunakan model vektor, terlebih dahulu model vektor dikonversi menjadi model bahasa spaCy, dalam hal ini model bahasa Indonesia.
 
 \subsection{Teori yang Diterapkan}
 
@@ -192,7 +170,7 @@ Untuk pengerjaan sistem NLU SVARA, digunakan model vektor yang telah tersedia ol
 
 Rasa NLU menggunakan \textit{library} Python yaitu sklearn-crfsuite. \textit{Library} ini merupakan pembungkus \textit{library} python-crfsuite yang mana menyediakan \textit{estimator} yang cocok dengan scikit-learn \parencite{sklearncrf}. Hal tersebut memudahkan penggunaan model CRF untuk pelatihan dan menyimpan model hasil latihan. Selain itu, spaCy juga menyediakan fitur yang dapat digunakan oleh CRF milik Rasa NLU, yaitu fitur POS \textit{tag} untuk tiap kata dalam kalimat.
 
-\subsubsection{Klasifikasi Maksud kalimat dengan \textit{Support Vector Machine}}
+\subsubsection{Klasifikasi Maksud Kalimat dengan \textit{Support Vector Machine}}
 
 \textit{Support vector machine} (SVM), atau \textit{support vector network}, adalah sebuah metode pembelajaran yang memetakan vektor masukan menjadi ruang fitur dengan dimensi yang tinggi melalui pemetaan non linear yang telah dipilih sebelumnya \parencite{cortes1995support}. SVM biasanya digunakan untuk menjelaskan kegiatan klasifikasi dengan metode support vector, namun kegunaan SVM juga bisa digunakan untuk kegiatan regresi. Oleh karena itu, SVM terbagi menjadi dua, yaitu \textit{support vector classification} (SVC) untuk klasifikasi dan \textit{support vector regression} (SVR) untuk regresi \parencite{gunn1998support}.
 

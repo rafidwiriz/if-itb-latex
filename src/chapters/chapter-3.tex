@@ -1,3 +1,23 @@
-\chapter{Rancangan Algoritma Lain}
+\chapter{Rancangan Algoritma}
 
-\section{}
+\section{Algoritma untuk Pelatihan Pengenalan Entitas}
+
+Teknik yang dilakukan untuk bagian pengenalan entitas adalah teknik \textit{sequence labeling}, seperti yang tertera pada Gambar \ref{}. Sebuah kalimat yang disediakan oleh data latih menyertakan kata-kata yang merupakan bagian dari entitas. Kalimat tersebut dipecahkan menjadi \textit{token-token}. Tiap \textit{token} berisi sebuah kata dalam kalimat. Tiap \textit{token} ditandai dengan label-label, menandakan apakah \textit{token} tersebut merupakan entitas atau tidak. Susunan \textit{token} dan label tersebut akan menjadi acuan untuk pelatihan pengenalan entitas.
+
+Melihat kelemahan yang terdapat pada pengenalan entitas milik Rasa NLU, beberapa variasi algoritma dapat digunakan untuk mengganti pelatihan pengenalan entitas tersebut.
+
+\subsection{\textit{Convolutional Neural Network} (CNN)}
+
+\textit{Convolutional neural network} atau CNN biasa digunakan untuk mengenali objek-objek yang berada di dalam sebuah gambar. CNN mencoba memprediksi sebuah objek yang bersangkutan dengan mendeteksi fitur-fitur yang terdapat dalam sebuah gambar menggunakan \textit{filter}. Untuk penerapan di dalam teks, fitur-fitur tersebut didapatkan dengan melakukan \textit{embedding} pada sebuah kata yang bersangkutan. \textit{Embedding} adalah proses untuk merepresentasikan sebuah kata menjadi vektor multi dimensi.
+
+Keuntungan yang dimiliki oleh CNN, jika dibandingkan dengan \textit{recurrent neural network} (RNN), adalah kemampuan CNN dalam melihat kata yang berada di depan satu kata yang sedang dilatih. Dengan begitu, CNN dapat mempertimbangkan kata sebelum dan kata selanjutnya untuk memasangkan label pada sebuah kata.
+
+Gambar \ref{} menunjukkan arsitektur lapisan CNN yang digunakan untuk melakukan latihan pengenalan entitas ini, dibangun dengna menggunakan Keras. Lapisan pertama diawali dengan melakukan \textit{embedding} terhadap kumpulan kata dalam sebuah kalimat yang ingin dilatih. Kemudian, hasil \textit{embedding} dimasukkan ke lapisan \textit{convolutional} satu dimensi. Selanjutnya, luaran dari lapisan \textit{convolutional} dikurangi sebesar 0,25 persen pada lapisan \textit{dropout}. Hal ini bertujuan untuk meningkatkan kinerja pembelajaran sebuah model. Setelah itu, luaran yang telah dikurangi dimasukkan ke dalam lapisan \textit{gated recurrent unit} (GRU). Terakhir, luaran GRU dimasukkan ke lapisan \textit{neural network} yang terdistribusi berdasarkan \textit{timestep} dengan menggunakan pembungkus TimeDistributed.
+
+\subsection{LSTM Dua Arah dan CRF}
+
+\textit{Long short term memory} atau LSTM digunakan untuk mengatasi permasalahan latihan dengan menggunakan data yang bersifat \textit{sequential}. LSTM digunakan untuk mengatasi kelemahan yang dimiliki oleh RNN, yaitu RNN tidak mampu menyimpan informasi dalam jangka waktu yang sangat lama. LSTM dapat memutuskan apakah sebuah informasi akan diteruskan pada iterasi berikutnya atau dilupakan dengan bantuan dari gerbang pelupa (\textit{forget gate}).
+
+\subsection{LSTM Dua Arah dan CNN}
+
+

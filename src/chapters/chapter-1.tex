@@ -14,36 +14,27 @@ Selain itu, berbicara dengan aplikasi \textit{voice assistant} dapat menciptakan
 
 Pencarian dengan menggunakan suara semakin populer saat ini. Pada tahun 2020, diprediksi bahwa 50 persen dari seluruh pencarian merupakan pencarian yang menggunakan suara. Dan pada tahun yang sama, 30 persen pencarian dilakukan tanpa perlu menggunakan layar \parencite{kleinberg2018five}.
 
-Dengan melihat peluang untuk menghilangkan keterbatasan tersebut, Zamrud Technology mulai melakukan rencana inovasi untuk salah satu aplikasi \textit{internet radio} mereka, yaitu SVARA. SVARA adalah aplikasi internet radio yang menyediakan layanan berupa \textit{music streaming, radio streaming}, dan juga konten-konten khusus pada radio tertentu. SVARA juga menyediakan tempat bagi pemusik lokal untuk memasukkan karya mereka. Dengan penerapan \textit{voice assistant} dalam SVARA, diharapkan penggunaan SVARA menjadi lebih mudah daripada sebelumnya.
-
 \section{Rumusan Masalah}
 
-Masalah-masalah yang akan diselesaikan dalam pengerjaan Tugas Akhir ini adalah sebagai berikut:
-
-\begin{enumerate}
-    \item menentukan jenis pembelajaran yang cocok digunakan dalam kasus \textit{voice assistant},
-    \item merancang model baru pembelajaran \textit{voice assistant}, dan,
-    \item evaluasi model pembelajaran yang telah diterapkan.
-\end{enumerate}
+Masalah yang akan diselesaikan dalam pengerjaan Tugas Akhir ini adalah "algoritma apa yang cocok untuk pembelajaran SLU selain yang sudah ada dan dapat digunakan untuk melatih bahasa percakapan sehari-hari?"
 
 \section{Tujuan}
 
-Tugas Akhir ini dikerjakan untuk membangun sebuah sistem \textit{voice assistant} baru. Sistem \textit{voice assistant} ini akan mengatasi beberapa permasalahan algoritma yang digunakan oleh sistem \textit{voice assistant} yang sudah ada.
+Tugas Akhir ini dikerjakan untuk membuktikan bahwa terdapat algoritma lain yang cocok digunakan untuk pembelajaran bahasa percakapan yang biasa digunakan sehari-hari oleh masyarakat Indonesia.
 
 \section{Batasan Masalah}
 
-Perancangan dan implementasi dari sistem \textit{voice assistant} baru hanya terbatas pada pemrosesan teks yang dihasilkan oleh suara menjadi perintah yang telah didefinisikan oleh sistem dari awal.
+Batasan masalah dalam pengerjaan Tugas Akhir ini hanya terletak pada pelatihan dua aspek penting SLU, yaitu pengenalan entitas (\textit{entityt recognition}) dan klasifikasi maksud kalimat (\textit{intent classification}).
 
 \section{Metodologi}
 
 Metodologi yang digunakan dalam perancangan fitur \textit{voice assistant} dalam pengerjaan Tugas Akhir ini adalah sebagai berikut:
 
 \begin{enumerate}
-	\item melakukan studi literatur mengenai pemrosesan teks menjadi sebuah makna,
 	\item melakukan analisis terhadap produk terkait,
-	\item melakukan perancangan model tepat guna untuk fitur \textit{voice assistant},
-	\item melakukan pengembangan fitur \textit{voice assistant} dengan merujuk kepada model yang telah dirancang, dan,
-	\item melakukan implementasi fitur yang telah dikembangkan. 
+	\item melakukan studi literatur algoritma-algoritma pelatihan yang telah ada sebagai pengganti,
+	\item melakukan pengembangan algoritma yang telah ditentukan, dan,
+	\item melakukan evaluasi algoritma pelatihan produk terkait dengan algoritma yang lain. 
 \end{enumerate}
 
 \section{Sistematika Pembahasan}
@@ -53,7 +44,7 @@ Metodologi yang digunakan dalam perancangan fitur \textit{voice assistant} dalam
 	Bab ini membahas latar belakang, tujuan, batasan masalah, metodologi, dan sistematika penulisan.
 	\item Kajian Pustaka\\
 	Bab ini membahas teori yang digunakan untuk menyelesaikan rumusan masalah serta analisis terhadap produk terkait.
-	\item Rancangan Algoritma Baru\\
+	\item Rancangan Algoritma\\
 	Bab ini membahas rancangan algoritma yang diajukan untuk mengatasi rumusan masalah.
 	\item Hasil Pengujian\\
 	Bab ini membahas hasil pengujian rancangan algoritma baru yang telah dikerjakan.
