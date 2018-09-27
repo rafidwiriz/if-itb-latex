@@ -196,10 +196,10 @@ Model vektor fastText digunakan untuk dapat membangun model bahasa Indonesia spa
 
 Lalu, model dari fastText hanya tersedia dalam bahasa Indonesia yang baku. Hal ini dapat menyebabkan kesulitan dalam mengenal kata-kata yang baru diucapkan, atau kata yang tidak baku seperti kata-kata dalam percakapan sehari-hari. Oleh karena itu, pendekatan CRF dari Rasa NLU tidak cocok untuk digunakan pada proyek ini.
 
-\subsubsection{Penggunaan SVM untuk Klasifikasi Lebih dari Dua Kelas}
-
-Rasa NLU menggunakan metode SVM dengan tambahan pengaturan grid-search dari scikit-learn untuk melakukan pelatihan klasifikasi maksud kalimat. Kelemahan yang terdapat pada SVM dalam melakukan klasifikasi adalah SVM hanya dapat melakukan klasifikasi pada dua kelas saja. SVM tidak dirancang untuk mengatasi permasalahan klasifikasi yang membutuhkan lebih dari dua kelas. Namun, scikit-learn dapat mengatasi permasalahan tersebut dengan menggunakan skema klasifikasi one-versus-one. Skema tersebut bekerja dengan cara membuat satu alat klasifikasi untuk tiap pasangan kelas yang ada. Pada saat prediksi, kelas yang menerima voting tertinggi akan terpilih [cit].
-
-Kelemahan yang dimiliki oleh skema one-versus-one adalah jumlah klasifikasi yang dilakukan, yaitu (jumlah kelas * (jumlah kelas – 1) / 2) klasifikasi, membuat skema ini memiliki kompleksitas O(jumlah kelas \^{} 2). Dengan jumlah klasifikasi yang banyak, SVM dirasa tidak efisien untuk melakukan klasifikasi dengan jumlah kelas yang banyak. Oleh karena itu, metode klasifikasi yang tepat digunakan untuk mengatasi masalah jumlah kelas lebih dari dua tersebut adalah \textit{neural network}.
-
-Keluaran dari \textit{neural network} dapat diatur sesuai dengan jumlah kelas yang tersedia pada data latihan. Fleksibilitas yang dimiliki oleh \textit{neural network} membuat metode ini dapat melakukan satu model dan satu kali latihan klasifikasi untuk dapat menghasilkan model yang bagus untuk digunakan.
+%\subsubsection{Penggunaan SVM untuk Klasifikasi Lebih dari Dua Kelas}
+%
+%Rasa NLU menggunakan metode SVM dengan tambahan pengaturan grid-search dari scikit-learn untuk melakukan pelatihan klasifikasi maksud kalimat. Kelemahan yang terdapat pada SVM dalam melakukan klasifikasi adalah SVM hanya dapat melakukan klasifikasi pada dua kelas saja. SVM tidak dirancang untuk mengatasi permasalahan klasifikasi yang membutuhkan lebih dari dua kelas. Namun, scikit-learn dapat mengatasi permasalahan tersebut dengan menggunakan skema klasifikasi one-versus-one. Skema tersebut bekerja dengan cara membuat satu alat klasifikasi untuk tiap pasangan kelas yang ada. Pada saat prediksi, kelas yang menerima voting tertinggi akan terpilih [cit].
+%
+%Kelemahan yang dimiliki oleh skema one-versus-one adalah jumlah klasifikasi yang dilakukan, yaitu (jumlah kelas * (jumlah kelas – 1) / 2) klasifikasi, membuat skema ini memiliki kompleksitas O(jumlah kelas \^{} 2). Dengan jumlah klasifikasi yang banyak, SVM dirasa tidak efisien untuk melakukan klasifikasi dengan jumlah kelas yang banyak. Oleh karena itu, metode klasifikasi yang tepat digunakan untuk mengatasi masalah jumlah kelas lebih dari dua tersebut adalah \textit{neural network}.
+%
+%Keluaran dari \textit{neural network} dapat diatur sesuai dengan jumlah kelas yang tersedia pada data latihan. Fleksibilitas yang dimiliki oleh \textit{neural network} membuat metode ini dapat melakukan satu model dan satu kali latihan klasifikasi untuk dapat menghasilkan model yang bagus untuk digunakan.
