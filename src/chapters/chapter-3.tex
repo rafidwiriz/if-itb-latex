@@ -26,10 +26,6 @@ Melihat kelemahan yang terdapat pada pengenalan entitas milik Rasa NLU, beberapa
 
 \subsection{\textit{Convolutional Neural Network} (CNN)}
 
-\textit{Convolutional neural network} atau CNN biasa digunakan untuk mengenali objek-objek yang berada di dalam sebuah gambar. CNN mencoba memprediksi sebuah objek yang bersangkutan dengan mendeteksi fitur-fitur yang terdapat dalam sebuah gambar menggunakan \textit{filter}. Untuk penerapan di dalam teks, fitur-fitur tersebut didapatkan dengan melakukan \textit{embedding} pada sebuah kata yang bersangkutan. \textit{Embedding} adalah proses untuk merepresentasikan sebuah kata menjadi vektor multi dimensi.
-
-Keuntungan yang dimiliki oleh CNN, jika dibandingkan dengan \textit{recurrent neural network} (RNN), adalah kemampuan CNN dalam melihat kata yang berada di depan satu kata yang sedang dilatih. Dengan begitu, CNN dapat mempertimbangkan kata sebelum dan kata selanjutnya untuk memasangkan label pada sebuah kata.
-
 Gambar \ref{fig:cnn} menunjukkan arsitektur lapisan CNN yang digunakan untuk melakukan latihan pengenalan entitas ini, dibangun dengna menggunakan Keras \parencite{sasank2017spoken}. Lapisan pertama diawali dengan melakukan \textit{embedding} terhadap kumpulan kata dalam sebuah kalimat yang ingin dilatih. Kemudian, hasil \textit{embedding} dimasukkan ke lapisan \textit{convolutional} satu dimensi. Selanjutnya, luaran dari lapisan \textit{convolutional} dikurangi sebesar 0,25 persen pada lapisan \textit{dropout}. Hal ini bertujuan untuk meningkatkan kinerja pembelajaran sebuah model. Setelah itu, luaran yang telah dikurangi dimasukkan ke dalam lapisan \textit{gated recurrent unit} (GRU). Terakhir, luaran GRU dimasukkan ke lapisan \textit{neural network} yang terdistribusi berdasarkan \textit{timestep} dengan menggunakan pembungkus TimeDistributed.
 
 \begin{figure}[H]
@@ -40,17 +36,6 @@ Gambar \ref{fig:cnn} menunjukkan arsitektur lapisan CNN yang digunakan untuk mel
 \end{figure}
 
 \subsection{LSTM Dua Arah dan CRF}
-
-\textit{Long short term memory} atau LSTM digunakan untuk mengatasi permasalahan latihan dengan menggunakan data yang bersifat \textit{sequential}. LSTM digunakan untuk mengatasi kelemahan yang dimiliki oleh RNN, yaitu RNN tidak mampu menyimpan informasi dalam jangka waktu yang sangat lama. LSTM dapat memutuskan apakah sebuah informasi akan diteruskan pada iterasi berikutnya atau dilupakan dengan bantuan dari gerbang pelupa (\textit{forget gate}).
-
-Gambar \ref{fig:lstm} menunjukkan isi dari sebuah sel LSTM. Sel LSTM terdiri dari empat jenis gerbang, yaitu dua gerbang masukan, gerbang keluaran, dan gerbang pelupa. Semua gerbang mengandalkan masukan yang berasal dari masukan kata iterasi saat ini dan luaran dari iterasi sebelumnya. Kedua gerbang masuk mengolah nilai luaran dan masukan dengan menggunakan fungsi aktivasi sigmoid dan tanh, kemudian dilakukan operasi perkalian matriks pada kedua hasil tersebut. Gerbang pelupa mengolah kedua nilai dengan menggunakan fungsi aktivasi sigmoid. Terakhir, gerbang luaran mengolah kedua nilai dengan menggunakan fungsi aktivasi sigmoid. Kemudian terdapat sebuah nilai yang disebut dengan nilai keadaan sel. Nilai keadaan sel saat ini didapatkan dengan mengalikan nilai keadaan sel sebelumnya dengan nilai luaran gerbang pelupa, lalu ditambahkan dengan hasil dari kedua gerbang masukan.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth, trim=2 2 2 2, clip]{resources/3/lstm.pdf}
-	\caption{Arsitektur sel LSTM}
-	\label{fig:lstm}
-\end{figure}
 
 LSTM dua arah merujuk kepada penggunaan dua LSTM dengan dua arah berlawanan, yaitu maju dan mundur. Hal ini untuk menutup kelemahan LSTM yang hanya melihat pada kata sebelum kata yang sedang dilatih. LSTM pertama dipasang dari awal kalimat dan bergerak maju, sedangkan LSTM kedua dipasang dari akhir kalimat dan bergerak mundur.
 
