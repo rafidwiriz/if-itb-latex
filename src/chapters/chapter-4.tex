@@ -4,7 +4,7 @@
 
 \subsection{Lingkungan Pengujian}
 
-Pengujian untuk kedua sistem pelatihan yang akan diukur dan dibandingkan kemampuannya, dilakukan dengan menggunakan komputer lokal. Spesifikasi lingkungan untuk komputer adalah sebagai berikut:
+Pengujian untuk kedua sistem SLU bagian pelatihan, Rasa NLU dan sistem baru, yang akan diukur dan dibandingkan kemampuannya, dilakukan dengan menggunakan komputer lokal. Spesifikasi lingkungan untuk komputer adalah sebagai berikut:
 
 \begin{enumerate}
     \item Windows 10,
@@ -13,14 +13,16 @@ Pengujian untuk kedua sistem pelatihan yang akan diukur dan dibandingkan kemampu
     \item \textit{Library} scikit-learn.
 \end{enumerate}
 
-\subsecton{Hasil Pengujian}
+Sebelum melakukan pengujian, kedua sistem terlebih dahulu melakukan pelatihan pada sebuah \textit{file} JSON yang disiapkan sebagai data latih. \textit{File} JSON tersebut berisi kumpulan kalimat-kalimat perintah berbentuk teks, beserta dengan maksud kalimat tersebut dan entitas-entitas yang terkandung di dalamnya.
+
+\subsection{Hasil Pengujian}
 \blindtext
 
 \section{Implementasi}
 
 \subsection{Lingkungan Implementasi}
 
-Implementasi untuk sistem klasifikasi maksud kalimat dilakukan dengan menggunakan komputasi awan. Spesifikasi lingkungan untuk implementasi sistem adalah sebagai berikut:
+Implementasi untuk sistem SLU bagian klasifikasi dilakukan dengan menggunakan komputasi awan. Spesifikasi lingkungan untuk implementasi sistem adalah sebagai berikut:
 
 \begin{enumerate}
     \item Microsoft Azure, dengan sistem server Linux,
@@ -28,4 +30,4 @@ Implementasi untuk sistem klasifikasi maksud kalimat dilakukan dengan menggunaka
     \item \textit{Library} Flask untuk menangani HTTP \textit{request}.
 \end{enumerate}
 
-Sebagai penunjang keberjalanan sistem dalam implementasi, \textit{speech recognition} ditangani oleh entitas di luar sistem implementasi, yaitu menggunakan Wit AI.
+Sebagai penunjang keberjalanan sistem dalam implementasi, \textit{speech recognition} ditangani oleh entitas di luar sistem implementasi, yaitu menggunakan Wit AI. Dalam implementasi, Wit AI hanya digunakan untuk melakukan \textit{speech recognition} saja, dan tidak digunakan untuk melakukan pemrosesan SLU.
