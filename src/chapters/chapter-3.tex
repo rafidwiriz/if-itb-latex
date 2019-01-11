@@ -11,6 +11,33 @@ Pengerjaan Tugas Akhir yang meliputi pengembangan sistem mengikuti alur yang ter
 	\label{fig:waterfall}
 \end{figure}
 
+\section{Algoritma Rancangan}
+
+Algoritma yang digunakan untuk fungsi indeks kosakata ditunjukkan oleh diagram pada Gambar \ref{fig:ta_index}. Algoritma dimulai dengan fungsi menerima masukan berupa sebuah kata, kosakata, dan batas nilai jarak maksimal yang diperbolehkan. Pertama, sebuah kata digunakan pada kosakata untuk mendapatkan indeks sebuah kata yang sama. Jika ditemukan, maka indeks tersebut akan menjadi keluaran fungsi.
+
+Namun, jika tidak ditemukan kata yang sama, pemilihan indeks dilakukan dengan melihat kemiripan kata pembanding dengan semua kata di dalam kosakata. Kemiripan kata dilakukan dengan menggunakan teknik jarak Levenshtein. Nilai jarak terkecil didapatkan dengan membandingkan kata dengan semua kata dalam kosakata satu per satu, sehingga dapat ditemukan kata dengan nilai jarak terkecil. Setelah itu, nilai tersebut dibandingkan dengan batas nilai jarak maksimal. Jika nilai terkecil lebih kecil atau sama dengan batas nilai, maka indeks kata yang mirip akan terpilih. Namun, jika nilai terkecil lebih besar dari batas nilai, maka kata yang dibandingkan dikategorikan sebagai kata yang tidak diketahui oleh kosakata yang memiliki indeks khusus.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth, trim=2 2 2 2, clip]{resources/3/ta_index.pdf}
+	\caption{Diagram alur algoritma}
+	\label{fig:ta_index}
+\end{figure}
+
+\textit{Library} yang digunakan untuk mendukung fungsi ini tertera pada Tabel \ref{tbl:vocab_library}.
+
+\begin{table}[H]
+	\caption{\textit{Library} yang digunakan untuk fungsi kosakata}
+    \label{tbl:vocab_library}
+    \centering
+	\begin{tabularx}{\textwidth}{|c|c|X|}
+		\hline
+		\textit{\textbf{Library}} & \textbf{Fungsi/Prosedur}   & \multicolumn{1}{c|}{\textbf{Deskripsi}}                                              \\ \hline
+		NLTK                      & edit\_distance(str1, str2) & Menghitung jarak Levenshtein antara dua \textit{string}. Keluaran berupa nilai jarak. \\ \hline
+	\end{tabularx}
+\end{table}
+
+\begin{comment}
 \section{Algoritma untuk Pelatihan Pengenalan Entitas}
 
 Teknik yang dilakukan untuk bagian pengenalan entitas adalah teknik \textit{sequence labeling}, seperti yang tertera pada Gambar \ref{fig:sequence_labeling}. Sebuah kalimat yang disediakan oleh data latih menyertakan kata-kata yang merupakan bagian dari entitas. Kalimat tersebut dipecahkan menjadi \textit{token-token}. Tiap \textit{token} berisi sebuah kata dalam kalimat. Tiap \textit{token} ditandai dengan label-label, menandakan apakah \textit{token} tersebut merupakan entitas atau tidak. Susunan \textit{token} dan label tersebut akan menjadi acuan untuk pelatihan pengenalan entitas.
@@ -34,6 +61,8 @@ Gambar \ref{fig:cnn} menunjukkan arsitektur lapisan CNN yang digunakan untuk mel
 	\caption{Arsitektur CNN \parencite{sasank2017spoken}}
 	\label{fig:cnn}
 \end{figure}
+
+Model CNN yang digunakan hanya sebatas pada tingkatan kata. Untuk mempermudah pelatihan, kata-kata yang menjadi data latihan diubah terlebih dahulu menjadi sebuah indeks dari sekumpulan kosakata. Kata-kata yang termasuk ke dalam data latih dikumpulkan untuk diberikan indeks, termasuk indeks untuk kata yang tidak terdefinisi pada data latih. Setelah itu, semua kalimat dalam data latih diubah menjadi indeks yang bersangkutan.
 
 \subsection{LSTM Dua Arah dan CRF}
 
@@ -113,3 +142,4 @@ Pengembangan sistem ini dilakukan di dalam lingkungan sistem operasi Windows 10.
     \item scikit-learn, dengan versi 0.19.1
     \item sklearn-crfsuite, dengan versi 0.3.6
 \end{enumerate}
+\end{comment}
