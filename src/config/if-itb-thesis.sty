@@ -29,10 +29,11 @@
 \usepackage{tabularx}
 \usepackage{tabto}
 \usepackage{comment}
+\usepackage{amsmath}
 \usepackage[labelfont=bf]{caption}	% Package dengan opsi untuk mempertebal label caption
 \usepackage{enumitem}				
 \usepackage{tocbibind}				% Package untuk memasukkan Daftar Pustaka ke dalam Daftar Isi
-\usepackage{tocloft}				% Package untuk mengatur Daftar Isi, Daftar Gambar dan Daftar Tabel
+\usepackage[titles]{tocloft}				% Package untuk mengatur Daftar Isi, Daftar Gambar dan Daftar Tabel
 \usepackage{float}					% Package untuk membantu penetapan lokasi gambar
 \usepackage{indentfirst}			% Package untuk indentasi pada paragraf pertama
 \usepackage[auto]{chappg}			% Package untuk penomoran halaman Bab-Halaman
@@ -80,6 +81,13 @@
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
 
+% Pengaturan untuk Daftar Rumus
+\newcommand{\listequationsname}{Daftar Rumus}
+\newlistof{myequations}{equ}{\listequationsname}
+\newcommand{\myequations}[1]{%
+\addcontentsline{equ}{myequations}{\protect\numberline{\theequation}#1}\par}
+\setlength{\cftmyequationsnumwidth}{2.5em}
+
 % Pengaturan untuk title Daftar Isi, Tabel, dan Gambar
 \renewcommand{\cfttoctitlefont}{\hspace*{\fill}\Large\bfseries}
 \renewcommand{\cftaftertoctitle}{\hspace*{\fill}}
@@ -87,6 +95,8 @@
 \renewcommand{\cftafterlottitle}{\hspace*{\fill}}
 \renewcommand{\cftloftitlefont}{\hspace*{\fill}\Large\bfseries}
 \renewcommand{\cftafterloftitle}{\hspace*{\fill}} 
+\renewcommand{\cftequtitlefont}{\hspace*{\fill}\Large\bfseries}
+\renewcommand{\cftafterequtitle}{\hspace*{\fill}} 
 
 \renewcommand{\cftchappresnum}{Bab }
 \renewcommand{\cftchapaftersnum}{}
@@ -95,3 +105,4 @@
 \setlength{\cftbeforetoctitleskip}{-3em}
 \setlength{\cftbeforeloftitleskip}{-3em}
 \setlength{\cftbeforelottitleskip}{-3em}
+\setlength{\cftbeforeequtitleskip}{-3em}

@@ -1,32 +1,21 @@
-\chapter{Metodologi dan Rancangan}
+\chapter{Rancangan Normalisasi dengan Jarak Levenshtein}
 
-\section{Penjelasan Metodologi}
+Algoritme yang digunakan untuk fungsi indeks kosakata ditunjukkan oleh diagram pada Gambar \ref{fig:ta_index}. Algoritme dimulai dengan fungsi menerima masukan berupa sebuah kata, kosakata dalam bentuk \textit{dictionary} Python, dan batas nilai jarak maksimal yang diperbolehkan. Dimulai dari sebuah kata digunakan pada kosakata untuk mendapatkan indeks sebuah kata yang sama. Jika ditemukan, maka indeks tersebut akan menjadi keluaran fungsi.
 
-Pengerjaan Tugas Akhir yang meliputi pengembangan sistem mengikuti alur yang terdapat pada Gambar \ref{fig:waterfall}. Alur yang digunakan adalah alur \textit{waterfall}. Alur tersebut memungkinkan untuk kembali ke tahap sebelumnya jika pada tahap tertentu terjadi kesalahan. Tahap pertama dalam alur adalah penelitian. Penelitian dilakukan untuk menentukan algoritma yang cocok untuk diterapkan ke dalam sistem. Lalu, tahap kedua adalah perancangan sistem. Perancangan dilakukan untuk menentukan tahap-tahap yang akan dilakukan oleh sistem. Kemudian, tahap selanjutnya adalah pengembangan sistem, yang mana merupakan tahap untuk pengembangan dari rancangan sistem yang telah dibuat sebelumnya. Tahap terakhir pada alur pengembangan adalah pengujian sistem.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth, trim=2 2 2 2, clip]{resources/3/waterfall.pdf}
-	\caption{Alur \textit{waterfall} untuk pengembangan sistem}
-	\label{fig:waterfall}
-\end{figure}
-
-\section{Algoritma Rancangan}
-
-Algoritma yang digunakan untuk fungsi indeks kosakata ditunjukkan oleh diagram pada Gambar \ref{fig:ta_index}. Algoritma dimulai dengan fungsi menerima masukan berupa sebuah kata, kosakata, dan batas nilai jarak maksimal yang diperbolehkan. Pertama, sebuah kata digunakan pada kosakata untuk mendapatkan indeks sebuah kata yang sama. Jika ditemukan, maka indeks tersebut akan menjadi keluaran fungsi.
-
-Namun, jika tidak ditemukan kata yang sama, pemilihan indeks dilakukan dengan melihat kemiripan kata pembanding dengan semua kata di dalam kosakata. Kemiripan kata dilakukan dengan menggunakan teknik jarak Levenshtein. Nilai jarak terkecil didapatkan dengan membandingkan kata dengan semua kata dalam kosakata satu per satu, sehingga dapat ditemukan kata dengan nilai jarak terkecil. Setelah itu, nilai tersebut dibandingkan dengan batas nilai jarak maksimal. Jika nilai terkecil lebih kecil atau sama dengan batas nilai, maka indeks kata yang mirip akan terpilih. Namun, jika nilai terkecil lebih besar dari batas nilai, maka kata yang dibandingkan dikategorikan sebagai kata yang tidak diketahui oleh kosakata yang memiliki indeks khusus.
+Namun, jika tidak ditemukan kata yang sama, pemilihan indeks dilakukan dengan melihat kemiripan kata pembanding dengan semua kata di dalam kosakata. Kemiripan kata dilakukan dengan menggunakan teknik jarak Levenshtein. Nilai jarak terkecil didapatkan dengan membandingkan kata dengan semua kata dalam kosakata satu per satu, sehingga dapat ditemukan kata dengan nilai jarak terkecil. Setelah itu, nilai tersebut dibandingkan dengan batas nilai jarak maksimal. Jika nilai terkecil lebih kecil atau sama dengan batas nilai, maka indeks kata yang mirip akan terpilih. Namun, jika nilai terkecil lebih besar dari batas nilai, maka kata yang dibandingkan dikategorikan sebagai kata yang "tidak diketahui" oleh kosakata yang memiliki indeks khusus.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\textwidth, trim=2 2 2 2, clip]{resources/3/ta_index.pdf}
-	\caption{Diagram alur algoritma}
+	\caption{Diagram alur algoritme}
 	\label{fig:ta_index}
 \end{figure}
 
+\begin{comment}
 \textit{Library} yang digunakan untuk mendukung fungsi ini tertera pada Tabel \ref{tbl:vocab_library}.
 
 \begin{table}[H]
+	\captionsetup{justification=justified,singlelinecheck=false}
 	\caption{\textit{Library} yang digunakan untuk fungsi kosakata}
     \label{tbl:vocab_library}
     \centering
@@ -36,9 +25,23 @@ Namun, jika tidak ditemukan kata yang sama, pemilihan indeks dilakukan dengan me
 		NLTK                      & edit\_distance(str1, str2) & Menghitung jarak Levenshtein antara dua \textit{string}. Keluaran berupa nilai jarak. \\ \hline
 	\end{tabularx}
 \end{table}
-
+\end{comment}
 \begin{comment}
-\section{Algoritma untuk Pelatihan Pengenalan Entitas}
+	\section{Penjelasan Metodologi}
+	
+	Pengerjaan Tugas Akhir yang meliputi pengembangan sistem mengikuti alur yang terdapat pada Gambar \ref{fig:waterfall}. Alur yang digunakan adalah alur \textit{waterfall}. Alur tersebut memungkinkan untuk kembali ke tahap sebelumnya jika pada tahap tertentu terjadi kesalahan. Tahap pertama dalam alur adalah penelitian. Penelitian dilakukan untuk menentukan algoritme yang cocok untuk diterapkan ke dalam sistem. Lalu, tahap kedua adalah perancangan sistem. Perancangan dilakukan untuk menentukan tahap-tahap yang akan dilakukan oleh sistem. Kemudian, tahap selanjutnya adalah pengembangan sistem, yang mana merupakan tahap untuk pengembangan dari rancangan sistem yang telah dibuat sebelumnya. Tahap terakhir pada alur pengembangan adalah pengujian sistem.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\textwidth, trim=2 2 2 2, clip]{resources/3/waterfall.pdf}
+		\caption{Alur \textit{waterfall} untuk pengembangan sistem}
+		\label{fig:waterfall}
+	\end{figure}
+	
+	\section{Algoritme Rancangan}
+\end{comment}
+\begin{comment}
+\section{Algoritme untuk Pelatihan Pengenalan Entitas}
 
 Teknik yang dilakukan untuk bagian pengenalan entitas adalah teknik \textit{sequence labeling}, seperti yang tertera pada Gambar \ref{fig:sequence_labeling}. Sebuah kalimat yang disediakan oleh data latih menyertakan kata-kata yang merupakan bagian dari entitas. Kalimat tersebut dipecahkan menjadi \textit{token-token}. Tiap \textit{token} berisi sebuah kata dalam kalimat. Tiap \textit{token} ditandai dengan label-label, menandakan apakah \textit{token} tersebut merupakan entitas atau tidak. Susunan \textit{token} dan label tersebut akan menjadi acuan untuk pelatihan pengenalan entitas.
 
@@ -49,7 +52,7 @@ Teknik yang dilakukan untuk bagian pengenalan entitas adalah teknik \textit{sequ
 	\label{fig:sequence_labeling}
 \end{figure}
 
-Melihat kelemahan yang terdapat pada pengenalan entitas milik Rasa NLU, beberapa variasi algoritma dapat digunakan untuk mengganti pelatihan pengenalan entitas tersebut.
+Melihat kelemahan yang terdapat pada pengenalan entitas milik Rasa NLU, beberapa variasi algoritme dapat digunakan untuk mengganti pelatihan pengenalan entitas tersebut.
 
 \subsection{\textit{Convolutional Neural Network} (CNN)}
 

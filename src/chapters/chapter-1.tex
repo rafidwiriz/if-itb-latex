@@ -2,52 +2,54 @@
 
 \section{Latar Belakang}
 
-Suara atau audio menjadi media yang mulai kembali populer saat ini, termasuk diantaranya adalah \textit{digital audio}. Dengan adanya media digital audio, seluruh orang dapat menghibur diri sendiri sambil melakukan kegiatan sehari-hari. Menurut data \textit{survey} dari Activate pada Juni 2015, masyarakat AS menghabiskan 39 menit per hari, atau sekitar 19 persen dari waktu total per hari, pada mobile app untuk kategori audio \parencite{activate2015tech}. Dan dari sumber data yang sama pada tahun 2014, tipikal masyarakat AS berumur 13 tahun ke atas menghabiskan waktu 4 jam 5 menit per hari untuk mendengarkan audio.
+\textit{Voice assistant} mulai menjadi tren yang makin berkembang. Jejaknya mulai terlihat belakangan ini dalam kehidupan manusia. Gartner menyebutkan, pada tahun 2018, 30 persen interaksi dengan sebuah teknologi melibatkan media yang mendukung percakapan dengan mesin pintar \parencite{escherich2015market}. Tren tersebut diperkirakan akan terus berlanjut hingga beberapa tahun kedepan. ComScore memperkirakan bahwa tahun 2020, 50 persen pencarian dalam internet merupakan pencarian berbasis suara.
 
-Dengan melihat data tersebut, dapat dilihat bahwa bisnis audio dapat berkembang dengan konstan, khusunya dalam bidang \textit{internet radio}. Data dari eMarketer menunjukkan peningkatan pendengar bulanan \textit{internet radio} di AS yang menembus angka 50 persen dari jumlah pengguna internet sejak tahun 2012 \parencite{2013internet}. Dengan begitu, bisnis internet radio bisa menjanjikan keuntungan yang berlimpah.
+Berbicara dengan aplikasi \textit{voice assistant} dapat menciptakan pengalaman yang lebih baik untuk pengguna. 41 persen pengguna \textit{voice assistant} merasa bahwa berbicara dengan \textit{voice assistant} terasa seperti berbicara dengan teman atau orang lain \parencite{kleinberg2018five}. Dan data tersebut diperkuat dengan data bahwa hampir 70 persen pencarian dengan menggunakan Google Assistant menggunakan bahasa alami ketimbang bahasa terstruktur yang biasa diguakan pada pencarian web pada umumnya. Pengalaman tersebut menjadikan pengguna merasa nyaman menggunakan \textit{voice assistant} dalam kegiatan sehari-hari. Data dari Google menunjukkan 72 persen menggunakan aplikasi \textit{voice assistant} sebagai bagian dari rutinitas harian mereka \parencite{kleinberg2018five}.
 
-Namun, terdapat keterbatasan yang dihadapi oleh \textit{internet radio}, salah satunya adalah lamanya interaksi yang diperlukan untuk mencapai suatu tujuan tertentu, seperti mencari radio yang pas atau lagu yang ingin didengarkan. Interaksi yang dilakukan seperti mengetik dan melakukan klik ke berbagai tempat. Kebanyakan manusia dapat mengucapkan kalimat lebih cepat dibandingkan dengan mengetikkannya. Kecepatan rata-rata bicara seseorang dalam percakapan biasa berada pada rentang 120 hingga 150 kata per menit \parencite{barnard2018average}. Sedangkan, kecepatan rata-rata seseorang dalam mengetik yaitu 37 kata per menit untuk wanita dan 44 kata per menit untuk pria \parencite{ratatype}.
+Dengan keuntungan yang bagus, \textit{voice assistant} memiliki potensi untuk mempermudah kegiatan bagi masyarakat Indonesia. Namun, untuk dapat diterima oleh masyarakat, \textit{voice assistant} harus mengatasi sebuah keadaan yang mana hampir 20 persen dari seluruh masyarakat Indonesia yang berbicara dengan menggunakan bahasa Indonesia untuk percakapan sehari-hari \parencite{naim2012kewarganegaraan}. Masayarakat Indonesia terbiasa menggunakan bahasa selain bahasa Indonesia untuk berbicara dengan kerabat mereka dalam lingkungan tidak resmi, lebih banyak menggunakan bahasa Indonesia dengan campur kode. Campur kode menurut Chaer dan Agustina \parencite{chaer1995sosiolinguistik} adalah pemakaian dua bahasa atau lebih atau dua varian dari sebuah bahasa dalam satu masyarakat tutur, dimana salah satu merupakan kode utama atau kode dasar yang digunakan yang memiliki fungsi dan keotomiannya, sedangkan kode-kode lain yang terlibat dalam peristiwa tutur hanya berupa serpihan-serpihan saja. Dengan begitu, \textit{voice assistant} harus dapat mengerti bahasa campur kode tersebut dalam hal menambah pengalaman untuk para pengguna berupa masyarakat Indonesia.
 
-Untuk mengatasi keterbatasan tersebut, telah ditemukan sebuah solusi yaitu menerapkan \textit{voice assistant} untuk aplikasi, seperti apa yang sudah dilakukan oleh Google dan Apple. Hadirnya voice assistant terbukti dapat membantu interaksi manusia dengan teknologi, bahkan menurut Gartner, pada tahun 2018, 30 persen interaksi dengan teknologi akan dilakukan dengan media “\textit{conversation}” (percakapan) dengan mesin pintar \parencite{escherich2015market}.
+Namun, masalah terjadi pada model bahasa untuk \textit{voice assistant}. Masalah yang terjadi adalah terdapat kata-kata campur kode yang tidak termasuk ke dalam kamus bahasa Indonesia yang baku. Sebagai contoh, kata "\textit{puter}" yang biasa diartikan sebagai kata "putar", "\textit{maen}" yang diartikan sebagai "main", dan lain-lain. Selain itu, campur kode juga melibatkan kata-kata yang berasal dari bahasa selain bahasa Indonesia, termasuk bahasa daerah dan bahasa asing. Padahal, model bahasa yang sudah tersedia menggunakan media-media resmi sebagai acuan untuk membentuk model bahasanya. Sebagai contoh, model bahasa fastText milik Facebook dibangun dan dilatih dengan acuan kepada kata-kata dalam Wikipedia, termasuk untuk bahasa Indonesia \parencite{bojanowski2016enriching}. Model bahasa fastText yang telah dilatih terdiri dari kamus dan nilai vektor untuk tiap kata di dalam kamus tersebut. Nilai vektor tiap kata berguna untuk "meletakkan" kata dalam sebuah "tempat" multi dimensi dan menentukan kata yang saling berdekatan dengan kata yang lain. Dengan model yang sudah dilatih tersebut, menambah beberapa kata ke dalam model bahasa tidak dimungkinkan.
 
-Selain itu, berbicara dengan aplikasi \textit{voice assistant} dapat menciptakan pengalaman yang lebih baik untuk pengguna. 41 persen pengguna \textit{voice assistant} merasa bahwa berbicara dengan \textit{voice assistant} terasa seperti berbicara dengan teman atau orang lain \parencite{kleinberg2018five}. Lalu, 72 persen menggunakan aplikasi \textit{voice assistant} sebagai bagian dari rutinitas harian mereka. Terakhir, \textit{speaker} yang dilengkapi \textit{voice assistant} mempermudah pengguna untuk melakukan beberapa pekerjaan sekaligus.
+Untuk mengatasi masalah ketiadaan kata dalam kamus, diperlukan sebuah metode berupa normalisasi kata, yaitu mengubah kata yang tidak baku menjadi kata baku dalam suatu bahasa. Terdapat sebuah penelitian mengenai pembuatan sistem normalisasi teks pada suntingan Twitter bahasa Indonesia dengan menggunakan bahasa pemrograman R \parencite{saragih2017normalisasi}. Sistem tersebut mengukur jarak perbedaan kedua kata atau \textit{string} dengan menggunakan fungsi \textit{stringdist} dengan 10 variasi metode penghitungan jarak yang sudah disediakan. Namun, sistem tersebut memiliki beberapa kelemahan, seperti sistem harus mendefinisikan terlebih dahulu kamus kata-kata yang tidak baku beserta perbaikan kata bakunya secara manual, termasuk kata tidak baku yang hanya berjarak beberapa huruf dengan kata baku yang mirip. Pendefinisian tersebut menambah beban pekerjaan pengurus sistem, terlebih jika terdapat kata tidak baku yang baru. Lalu, kamus perbaikan kata tidak baku tersebut diletakkan sebelum pencarian dalam kamus kata baku menggunakan \textit{stringdist} sehingga peran terbesar dalam sistem tersebut ada pada kamus perbaikan kata tidak baku.
 
-Namun, \textit{voice assistant} yang ada saat ini hanya berlaku untuk bahasa-bahasa baku, termasuk di Indonesia. Padahal, kebanyakan masyarakat di Indonesia berbicara dengan menggunakan bahasa Indonesia tidak baku sehari-hari.
+Untuk menghindari penambahan kata kamus untuk normalisasi, dibutuhkan pendekatan berupa normalisasi dengan menggunakan kamus yang sudah tersedia, kemudian membuat nilai vektor untuk tiap kata dalam kamus dengan pelatihan sehingga sistem \textit{voice assistant} dapat memperkirakan kata masukan yang tidak terdapat dalam kamus. Selain itu, diperlukan penanganan kasus berupa kata yang sama sekali tidak memiliki kemiripan dengan kata yang ada di dalam kamus.
 
 \section{Rumusan Masalah}
 
-Masalah yang akan diselesaikan dalam pengerjaan Tugas Akhir ini adalah "algoritma apa yang cocok untuk pembelajaran SLU selain yang sudah ada dan dapat digunakan untuk melatih bahasa percakapan sehari-hari?"
+Dari latar belakang yang telah dijabarkan, masalah yang akan diselesaikan dalam pengerjaan Tugas Akhir ini adalah "bagaimana cara membangun fitur normalisasi untuk mengatasi kelemahan sistem yang tidak dapat memperkirakan kata yang tidak ada dalam kamus?"
 
 \section{Tujuan}
 
-Tugas Akhir ini dikerjakan untuk membuktikan bahwa terdapat algoritma lain yang cocok digunakan untuk pembelajaran bahasa percakapan yang biasa digunakan sehari-hari oleh masyarakat Indonesia.
+Berdasarkan masalah yang telah dirumuskan sebelumnya, Tugas Akhir ini dikerjakan dengan tujuan untuk membangun fitur normalisasi untuk mengatasi kelemahan sistem yang tidak dapat memperkirakan kata yang tidak ada dalam kamus.
 
 \section{Batasan Masalah}
 
-Batasan masalah dalam pengerjaan Tugas Akhir ini hanya terletak pada pelatihan dua aspek penting SLU, yaitu pengenalan entitas (\textit{entityt recognition}) dan klasifikasi maksud kalimat (\textit{intent classification}). Selain itu, batasan masalah juga terletak pada kata-kata yang diucapkan secara lisan saja, sehingga tidak ada kata yang disingkat.
+Batasan masalah dalam pengerjaan Tugas Akhir ini hanya terletak pada bagian klasifikasi teks. Pengerjaan Tugas Akhir tidak terlibat pada sistem suara menjadi teks. Selain itu, batasan masalah juga terletak pada kata-kata yang diucapkan secara lisan saja sehingga tidak ada kata yang disingkat.
 
 \section{Metodologi}
 
-Metodologi yang digunakan dalam perancangan fitur \textit{voice assistant} dalam pengerjaan Tugas Akhir ini adalah sebagai berikut:
+Metodologi yang digunakan dalam perancangan fitur nromalisasi sistem \textit{voice assistant} dalam pengerjaan Tugas Akhir ini adalah sebagai berikut:
 
 \begin{enumerate}
-	\item melakukan analisis terhadap produk terkait,
-	\item melakukan studi literatur algoritma-algoritma pelatihan yang telah ada sebagai pengganti,
-	\item melakukan pengembangan sistem untuk mengimplementasi algoritma yang telah ditentukan, dan,
-	\item melakukan evaluasi algoritma pelatihan produk terkait dengan algoritma yang lain. 
+	\item melakukan analisis terkait kebutuhan sistem \textit{voice assistant},
+	\item melakukan studi literatur mengenai metode-metode yang akan digunakan untuk fitur normalisasi,
+	\item melakukan pengembangan sistem untuk mengimplementasi fitur dengan metode yang telah ditentukan, dan,
+	\item melakukan evaluasi sistem setelah fitur diimplementasi. 
 \end{enumerate}
 
 \section{Sistematika Pembahasan}
 
+Laporan pengerjaan Tugas Akhir ini disusun dengan sistematika sebagai berikut:
+
 \begin{enumerate}[label=Bab \arabic*,itemindent=*]
 	\item Pendahuluan\\
 	Bab ini membahas latar belakang, tujuan, batasan masalah, metodologi, dan sistematika penulisan.
-	\item Kajian Pustaka\\
-	Bab ini membahas teori yang digunakan untuk menyelesaikan rumusan masalah serta analisis terhadap produk terkait.
+	\item Dasar Teori\\
+	Bab ini membahas teori yang digunakan untuk menyelesaikan rumusan masalah.
 	\item Metodologi dan Rancangan\\
-	Bab ini membahas metodologi pengerjaan Tugas Akhir dan rancangan algoritma yang diajukan untuk mengatasi rumusan masalah.
-	\item Hasil Pengujian\\
-	Bab ini membahas hasil pengujian rancangan algoritma baru yang telah dikerjakan.
-	\item Kesimpulan dan Saran\\
-	Bab ini berisi kesimpulan yang didapatkan dari implementasi algoritma serta saran yang dapat digunakan untuk memperbaiki fitur kedepan.
+	Bab ini membahas metodologi pengerjaan Tugas Akhir dan rancangan yang diajukan untuk mengatasi rumusan masalah.
+	\item Implementasi dan Pengujian\\
+	Bab ini membahas implementasi dan hasil pengujian rancangan baru yang telah dibangun beserta penjelasan spesifikasi lingkungan yang digunakan.
+	\item Penutup\\
+	Bab ini berisi kesimpulan dari rancangan yang telah diuji serta saran yang dapat digunakan untuk pengembangan kedepan.
 \end{enumerate}

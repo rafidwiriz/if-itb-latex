@@ -1,10 +1,8 @@
-\chapter{Implementasi dan Pengujian}
+\chapter{Pengujian}
 
-\section{Implementasi}
+\section{Deskripsi Lingkungan}
 
-\subsection{Lingkungan Implementasi}
-
-Sistem implementasi dan fungsi kosakata dikembangkan dan diuji pada lingkungan yang sama, yaitu lingkungan lokal dalam sebuah gawai laptop. Berikut adalah spesifikasi lingkungan yang digunakan:
+Pengujian kedua metode dilakukan dalam lingkungan lokal berupa sebuah gawai laptop. Berikut adalah spesifikasi lingkungan yang digunakan:
 
 \begin{enumerate}
     \item Spesifikasi Perangkat Keras:
@@ -17,69 +15,59 @@ Sistem implementasi dan fungsi kosakata dikembangkan dan diuji pada lingkungan y
     \end{enumerate}
     \item Alat Pengembangan: Visual Studio Code, Anaconda, Jupyter Notebook
     \item Bahasa Pemrograman: Python 3.6.5 64bit
-    \item \textit{Library} yang Digunakan: NLTK, Keras, Numpy
+    \item \textit{Library} yang Digunakan: \textit{csv}, \textit{json}
 \end{enumerate}
-
-\subsection{Sistem Implementasi}
-
-Untuk dapat mengimplementasikan fungsi kosakata, diperlukan sebuah sistem yang mendukung keberjalanan fungsi tersebut.
-
-\subsection{Implementasi Fungsi Kosakata}
-
-Fungsi kosakata yang telah dibangun diimplementasi
-
-Implementasi dari fungsi kosakata diterapkan dalam sistem klasifikasi kalimat. Gambar \ref{fig:design_classification} adalah diagram alur proses dari sistem klasifikasi kalimat, dengan penjelasan tiap proses adalah sebagai berikut:
-
-\begin{enumerate}
-	\item sistem menerima masukan teks dari \textit{speech recognition} yang dimasukkan oleh suara pengguna,
-	\item sistem memecahkan teks menjadi sekumpulan \textit{token},
-	\item sistem mengenali entitas yang berada di dalam teks, kemudian mengekstraksi entitas tersebut,
-	\item sistem menciptakan tas kata-kata untuk teks masukan,
-	\item sistem melakukan prediksi maksud kalimat dari masukan tas kata-kata menggunakan model klasifikasi yang dihasilkan pada tahap latihan klasifikasi,
-	\item maksud kalimat yang telah dihasilkan, bersama dengan kumpulan entitas hasil ekstrasi, dikumpulkan lalu diubah kedalam format JSON, dan,
-	\item JSON dikirimkan kepada pengguna.
-\end{enumerate}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth, trim=2 2 2 2, clip]{resources/4/design_classification.pdf}
-	\caption{Bagan rancangan sistem tahap klasifikasi teks}
-	\label{fig:design_classification}
-\end{figure}
-
-Proses yang akan diterapkan fungsi kosakata adalah proses pengenalan entitas. Kalimat yang entitasnya akan dikenali, terleih dahulu harus diubah menjadi sekumpulan indeks. Indeks tersebut mengacu kepada kosakata yang telah didefinisikan pada sistem latihan klasifikasi kalimat.
 
 \section{Pengujian}
 
-\subsection{Lingkungan Pengujian}
+\subsection{Skenario Pengujian}
 
-Pengujian untuk kedua sistem SLU bagian pelatihan, Rasa NLU dan sistem baru, yang akan diukur dan dibandingkan kemampuannya, dilakukan dengan menggunakan komputer lokal. Spesifikasi lingkungan untuk komputer adalah sebagai berikut:
+Pengujian dilakukan dengan melakukan perbandingan antara metode jarak LCS dengan jarak Levenshtein. Pengujian dilakukan dengan memasukan data uji berupa kumpulan kata tidak baku, melakukan pencarian jarak terkecil dengan kata di dalam kamus, lalu mengeluarkan kumpulan kata baku dengan jarak perubahan minimum yang akan disesuaikan dengan jawaban yang sesuai. Hasil yang akan dibandingkan antara kedua metode adalah persentase akurasi kesesuaian perbaikan kata tidak baku tersebut. Penilaian persentase akurasi dilakukan dengan menggunakan persamaan:
+\begin{equation*}
+	\text{Persentase akurasi}=\frac{\text{x}}{y}*100\%
+\end{equation*}
+%\myequations{Penghitungan akurasi fungsi \textit{stringdist}}
+\noindent
+yang mana $x$ adalah jumlah kata yang tepat, yaitu kata tersebut sesuai dengan kata luaran yang diharapkan, dan $y$ adalah jumlah seluruh kata yang diuji.
 
-\begin{enumerate}
-    \item Windows 10,
-    \item Python 3.6 dari Anaconda,
-    \item \textit{Library} Keras, dan,
-    \item \textit{Library} scikit-learn.
-\end{enumerate}
+Kamus kata baku yang akan digunakan adalah kamus KBBI dari perangkat lunak KBBI \textit{offline} \parencite{sinaukbbi} yang telah dibersihkan dari kata-kata tidak baku, lalu dilakukan pengurutan kata yang lebih sering digunakan menggunakan korpus arsip Kompas tahun 2012 \parencite{lanin2013distribusi}. Data yang akan diujikan merupakan kumpulan kata tidak baku yang didapatkan dari pembersihan kamus KBBI dan ditambahkan kata baku yang menjadi perbaikan kata tidak baku tersebut. Kata yang dijadikan data uji berjumlah 2398 kata. Data uji tersebut dipilih karena seluruh kumpulan kata bukan kata-kata yang disingkat, melainkan kata-kata yang memiliki perubahan pada vokal atau konsonan, penambahan huruf atau pengurangan huruf saja, dan kata-kata tersebut dapat diucapkan secara lisan. Sebagai contoh, salah satu kata dalam data uji adalah "\textit{apotik}" dengan kata perbaikan berupa "apotek", namun tidak ada kata "aptk" dalam data uji.
 
-Sebelum melakukan pengujian, kedua sistem terlebih dahulu melakukan pelatihan pada sebuah \textit{file} JSON yang disiapkan sebagai data latih. \textit{File} JSON tersebut berisi kumpulan kalimat-kalimat perintah berbentuk teks, beserta dengan maksud kalimat tersebut dan entitas-entitas yang terkandung di dalamnya.
-
-Pengujian dilakukan dengan memasukkan data pengujian dari survey kepada beberapa orang. Masukan tersebut diubah terlebih dahulu menjadi format JSON. Lalu, kedua sistem harus melakukan prediksi dari data pengujian yang telah diberikan. Kemudian, hasil prediksi tersebut dievaluasi menggunakan skrip Perl untuk evaluasi CoNLL tahun 2000 \parencite{tjong2000introduction}.
-
-Parameter yang digunakan untuk hasil pengujian adalah \textit{precision}, \textit{F1-score}, dan \textit{recall}.
+Pengujian akan dilakukan dua kali dengan menggunakan skenario yang berbeda. Skenario pertama yaitu penghitungan akurasi dilakukan dengan menyesuaikan kata baku perbaikan dari kata tidak baku dalam data uji dengan hasil kata urutan pertama dari keluaran kumpulan kata hasil kedua metode, yang berarti kata yang terpilih adalah kata yang lebih sering digunakan. Skenario kedua yaitu penghitungan akurasi dilakukan dengan menentukan apakah terdapat kata baku perbaikan dari kata tidak baku dalam kumpulan kata yang berasal dari keluaran hasil kedua metode.
 
 \subsection{Hasil Pengujian}
 
-Tabel \ref{tbl:result} menunjukkan hasil dari pengujian kedua sistem.
+\subsubsection{Hasil Pengujian Skenario Pertama}
+
+Hasil pengujian untuk skenario pertama ditunjukkan pada Tabel \ref{tbl:result_1}. Hasil akurasi untuk pengujian dengan skenario pertama tidak menunjukkan hasil yang tinggi dan hasil akurasi tertinggi diraih oleh metode jarak Levenshtein dengan 31,03 persen. Hasil akurasi yang rendah dapat disebabkan oleh jarak perubahan antara kata tidak baku dan perbaikan kata baku tidak termasuk dalam kumpulan kata dengan  jarak perubahan minimum, dan jika perbaikan kata baku termasuk dalam kumpulan kata dengan jarak perubahan minimum maka kata perbaikan tidak termasuk kata yang sering digunakan menurut korpus Kompas.
 
 \begin{table}[H]
-    \caption{Hasil Pengujian}
-    \label{tbl:result}
+    \captionsetup{justification=justified,singlelinecheck=false}
+    \caption{Hasil pengujian skenario pertama untuk kedua metode}
+    \label{tbl:result_1}
     \centering
-    \begin{tabular}{|l|c|c|c|}
+    \begin{tabularx}{\textwidth}{|X|c|c|c|}
         \hline
-                                                       & \textit{\textbf{Precision}} & \textit{\textbf{F1}} & \textit{\textbf{Recall}} \\ \hline
-        \textit{\textbf{Conditional Random Field}}     & 17.07                       & 29.17                & 21.54                    \\ \hline
-        \textit{\textbf{Convolutional Neural Network}} & 31.71                       & 35.14                & 33.33                    \\ \hline
-    \end{tabular}
+        \multicolumn{1}{|c|}{\textbf{Metode}} & \textbf{Jumlah kata benar} & \textbf{Akurasi} \\ \hline
+        Jarak LCS & 622 & 23,94\% \\ \hline
+        Jarak Levenshtein & 744 & 31,03\% \\ \hline
+    \end{tabularx}
+\end{table}
+
+Untuk melihat apakah ada kata perbaikan yang masuk ke dalam kumpulan kata dengan jarak perubahan minimum, pengujian dilakukan kembali dengan menggunakan skenario kedua. Skenario tersebut yaitu hasil metode dianggap benar jika kata perbaikan berada di dalam kumpulan kata dengan jarak minimum.
+
+\subsubsection{Hasil Pengujian Skenario Kedua}
+
+Hasil pengujian untuk skenario kedua ditunjukkan pada Tabel \ref{tbl:result_2}. Hasil pengujian untuk skenario kedua menunjukkan peningkatan yang signifikan untuk kedua metode, termasuk jarak Levenshtein yang tetap mendominasi hasil dengan 70,31 persen. Peningkatan tersebut menunjukkan bahwa, untuk jarak Levenshtein, sekitar 39 persen hasil keluaran kumpulan kata dengan jarak minimum terdapat kata yang termasuk perbaikan kata baku namun tidak termasuk kata yang sering digunakan.
+
+\begin{table}[H]
+    \captionsetup{justification=justified,singlelinecheck=false}
+    \caption{Hasil pengujian skenario kedua untuk kedua metode}
+    \label{tbl:result_2}
+    \centering
+    \begin{tabularx}{\textwidth}{|X|c|c|c|}
+        \hline
+        \multicolumn{1}{|c|}{\textbf{Metode}} & \textbf{Jumlah kata benar} & \textbf{Akurasi} \\ \hline
+        Jarak LCS & 1233 & 51,42\% \\ \hline
+        Jarak Levenshtein & 1686 & 70,31\% \\ \hline
+    \end{tabularx}
 \end{table}
