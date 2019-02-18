@@ -2,8 +2,12 @@
 
 \section{Kesimpulan}
 
-Pengerjaan Tugas Akhir menunjukkan bahwa terdapat cara yang digunakan untuk mengatasi kata yang tidak tersedia pada kosakata sebuah bahasa. Cara yang digunakan adalah dengan menerapkan kategori "kata tidak diketahui" dan jarak Levenshtein untuk mencari kata yang mirip dengan yang ada di dalam kosakata. Diperlukan keputusan untuk menentukan seberapa jauh perbandingan sebuah kata dengan kata dalam kosakata sehingga diputuskan bahwa kata tersebut termasuk ke dalam "kata tidak diketahui".
+Dalam Tugas Akhir ini, telah dibuat sebuah metode normalisasi teks menggunakan algoritme jarak Levenshtein. Pengujian salah satu skenario dalam Tugas Akhir ini menunjukkan bahwa metode normalisasi usulan dengan menggunakan jarak Levenshtein unggul dalam akurasi dibandingkan dengan metode normalisasi \parencite{saragih2017normalisasi} yang menggunakan jarak LCS, dengan selisih persentase akurasi sebesar 8,34 persen. Setelah itu, dilakukan pengujian dengan skenario yang lain. Pengujian tersebut menunjukkan metode normalisasi usulan masih tetap unggul dengan selisih persentase akurasi sebesar 18,89 persen. Hal tersebut menunjukkan bahwa metode normalisasi ajuan lebih cocok digunakan dalam sistem \textit{voice assistant} karena algoritme jarak Levenshtein mendukung operasi penggantian karakter dibandingkan algoritme jarak LCS.
 
 \section{Saran}
 
-Fungsi kosakata telah berjalan dengan baik, namun masih diperlukan perbaikan agar fungsi dapat menjadi lebih baik. Fungsi kosakata hanya dapat mencari kata yang mirip secara huruf-huruf yang dimiliki. Perlu dikembangkan lebih lanjut untuk fungsi kosakata sehingga fungsi kosakata diharapkan dapat mengetahui kata yang mirip secara makna.
+Saran-saran yang diberikan untuk penelitian selanjutnya adalah sebagai berikut:
+\begin{enumerate}
+    \item mencari solusi untuk kasus perbaikan kata yang tidak termasuk dalam kumpulan kata prediksi dengan jarak minimum; dan
+    \item menentukan algoritme yang dapat digunakan untuk menentukan kata dalam kumpulan kata prediksi yang tepat digunakan.
+\end{enumerate}

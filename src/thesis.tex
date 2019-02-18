@@ -23,12 +23,11 @@
 \begin{document}
 
     %Basic configuration
-    \title{Penerapan Jarak Levenshtein untuk Fungsi Kosakata dalam \textit{Voice Assistant}}
-    \date{}
-    \author{
-        Rafi Dwi Rizqullah \\
-        NIM: 18214035
-    }
+    \title{Penerapan Jarak Levenshtein untuk Metode Normalisasi dalam \textit{Voice Assistant}}
+    \date{12 Februari}
+    \newcommand{\yearsidang}{2019}
+    \author{Rafi Dwi Rizqullah}
+    \newcommand{\nim}{18214035}
 
     \pagenumbering{roman}
     \setcounter{page}{0}
@@ -53,7 +52,7 @@
 		\let\oldnumberline\numberline%
 		\renewcommand{\numberline}{\figurename~\oldnumberline}%
 		\listoffigures%
-	}
+	  }
 	
 	\clearpage
     {%
@@ -68,6 +67,13 @@
         \renewcommand{\numberline}{Rumus~\oldnumberline}%
         \listofmyequations%
         \addcontentsline{toc}{chapter}{Daftar Rumus}
+    }
+
+    \clearpage
+    {%
+		\let\oldnumberline\numberline%
+        \renewcommand{\numberline}{Algoritme~\oldnumberline}%
+        \lstlistoflistings%
     }
     %\input{chapters/abbreviation.tex}
     \newpage
@@ -96,13 +102,11 @@
     %----------------------------------------------------------------%
 
     % Daftar pustaka
-    \begin{flushleft}
-    	\clearpage
-    	\pagenumbering{roman}
-    	\setcounter{page}{\thesavepage}
-    	\printbibliography[title=Daftar Pustaka]
-    	\addcontentsline{toc}{chapter}{Daftar Pustaka}
-    \end{flushleft}
+    \clearpage
+    \pagenumbering{roman}
+    \setcounter{page}{\thesavepage}
+    \addcontentsline{toc}{chapter}{Daftar Pustaka}
+    \printbibliography[title=Daftar Pustaka]
 
     % Index
     \clearpage
@@ -112,7 +116,7 @@
     \renewcommand{\chaptername}{Lampiran}
     \pagenumbering{bychapter}
     	
-    %\input{chapters/appendix-1}
-    %\input{chapters/appendix-2}
+    \input{chapters/appendix-1}
+    \input{chapters/appendix-2}
     
 \end{document}

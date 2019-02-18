@@ -1,1 +1,20 @@
-\chapter{Rincian Kasus Uji}
+\chapter{\textit{Source Code} Python untuk Normalisasi Kata dengan Jarak Levenshtein}
+
+\begin{lstlisting}
+def findWord_lv(txt, kam):
+    minVal = 30
+    similarWords = [txt]
+    
+    for word, i in kam.items():
+        val = lv_distance(txt, word)
+        if (val < minVal):
+            if (val == 0):
+                return [word], val
+            else:
+                similarWords = [word]
+                minVal = val
+        elif (val == minVal):
+            similarWords.append(word)
+            
+    return similarWords, minVal
+\end{lstlisting}

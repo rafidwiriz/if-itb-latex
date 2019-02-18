@@ -1,148 +1,95 @@
-\chapter{Rancangan Normalisasi dengan Jarak Levenshtein}
+\chapter{Normalisasi Teks dengan Jarak Levenshtein}
 
-Algoritme yang digunakan untuk fungsi indeks kosakata ditunjukkan oleh diagram pada Gambar \ref{fig:ta_index}. Algoritme dimulai dengan fungsi menerima masukan berupa sebuah kata, kosakata dalam bentuk \textit{dictionary} Python, dan batas nilai jarak maksimal yang diperbolehkan. Dimulai dari sebuah kata digunakan pada kosakata untuk mendapatkan indeks sebuah kata yang sama. Jika ditemukan, maka indeks tersebut akan menjadi keluaran fungsi.
+\section{Alur Proses Normalisasi Teks dengan Jarak Levenshtein}
 
-Namun, jika tidak ditemukan kata yang sama, pemilihan indeks dilakukan dengan melihat kemiripan kata pembanding dengan semua kata di dalam kosakata. Kemiripan kata dilakukan dengan menggunakan teknik jarak Levenshtein. Nilai jarak terkecil didapatkan dengan membandingkan kata dengan semua kata dalam kosakata satu per satu, sehingga dapat ditemukan kata dengan nilai jarak terkecil. Setelah itu, nilai tersebut dibandingkan dengan batas nilai jarak maksimal. Jika nilai terkecil lebih kecil atau sama dengan batas nilai, maka indeks kata yang mirip akan terpilih. Namun, jika nilai terkecil lebih besar dari batas nilai, maka kata yang dibandingkan dikategorikan sebagai kata yang "tidak diketahui" oleh kosakata yang memiliki indeks khusus.
-
-\begin{figure}[H]
+Gambar \ref{fig:side_to_side} bagian (a) menunjukkan alur proses untuk rancangan metode normalisasi yang diusulkan. Metode normalisasi usulan menggunakan jarak Levenshtein sebagai penghitungan jarak antara kedua teks. Deskripsi alur proses yang dijalankan dapat dijelaskan sebagai berikut:
+\begin{enumerate}
+	\item diberikan kata masukan dan kamus kata baku,
+	\item melakukan pencarian kata-kata dalam kamus kata baku yang memiliki jarak minimum dengan kata masukan menggunakan jarak Levenshtein, menghasilkan kumpulan kata, dan,
+	\item melakukan seleksi kata yang menjadi kata keluaran. Jika terdapat lebih dari satu kata, maka kata yang dipilih adalah kata yang pertama kali ditemukan.
+\end{enumerate}
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.9\textwidth, trim=2 2 2 2, clip]{resources/3/ta_index.pdf}
-	\caption{Diagram alur algoritme}
-	\label{fig:ta_index}
+	\includegraphics[width=0.8\textwidth, trim=2 2 2 2, clip]{resources/3/side_to_side.pdf}
+	\caption{Alur proses normalisasi teks dengan (a) jarak Levenshtein, dan (b) jarak LCS \parencite{saragih2017normalisasi}}
+	\label{fig:side_to_side}
 \end{figure}
 
-\begin{comment}
-\textit{Library} yang digunakan untuk mendukung fungsi ini tertera pada Tabel \ref{tbl:vocab_library}.
+Terdapat perbedaan alur proses antara metode normalisasi \parencite{saragih2017normalisasi} dengan metode normalisasi menggunakan jarak Levenshtein. Perbedaan tersebut dapat dilihat pada blok proses dengan garis tepi tebal pada Gambar \ref{fig:side_to_side}. Perbedaan pertama terletak pada penggantian algoritme jarak LCS dengan jarak Levenshtein. Kedua, metode normalisasi usulan mempersingkat proses normalisasi dengan menemukan kumpulan kata prediksi dengan jarak minimum secara langsung dibandingkan metode normalisasi \parencite{saragih2017normalisasi} yang harus mencari jarak minimum terlebih dahulu kemudian menemukan kumpulan kata prediksi dengan jarak tersebut.
 
-\begin{table}[H]
-	\captionsetup{justification=justified,singlelinecheck=false}
-	\caption{\textit{Library} yang digunakan untuk fungsi kosakata}
-    \label{tbl:vocab_library}
+\section{Algoritme Normalisasi Teks dengan Jarak Levenshtein}
+
+Algoritme \ref{lst:lv} merupakan algoritme persamaan jarak Levenshtein yang dapat dilihat pada Rumus \ref{eq:lv} \parencite{levenshtein1966binary}. Algoritme menerima masukan berupa dua kata dan mengeluarkan nilai jarak perubahan berupa bilangan bulat. Penghitungan jarak perubahan kedua kata masukan dilakukan dengan menggunakan matriks dua dimensi dengan ukuran matriks disesuaikan dengan kedua masukan kata tersebut.
+\begin{lstlisting}[caption={Algoritme Fungsi Jarak Levenshtein},label={lst:lv},float,floatplacement=H]
+Masukan: str1, str2		: string
+Keluaran: integer
+
+Deklarasi:
+str1, str2 				: string
+len1, len2, i, j, actv 	: integer
+matrix					: array[][] integer
+
+Deskripsi:
+Mulai
+1. Menambah str1 dan str2 dengan spasi di depan;
+2. masukkan secara berurutan nilai panjang str1 dan str2 ke dalam variabel len1 dan len2;
+3. membuat matrix dengan ukuran len1 x len2 lalu isi semua sel dengan nilai 0;
+4. selama i diantara 1 dan len1 - 1, isi sel matrix[i][0] dengan nilai i;
+5. selama j diantara 1 dan len2 - 1, isi sel matrix[0][j] dengan nilai j;
+6. selama i diantara 1 dan len1 - 1 dan j diantara 1 dan len2 - 1:
+	a) masukkan variabel actv dengan nilai 1;
+	b) jika str1[i] sama dengan str2[j], ubah nilai actv dengan nilai 0;
+	c) masukkan variabel matrix[i][j] dengan nilai terkecil antara matrix[i-1][j] + 1, matrix[i][j-1] + 1, atau matrix[i-1][j-1] + actv.
+7. keluarkan nilai dalam variabel matrix[len1-1][len2-1].
+Selesai
+\end{lstlisting}
+
+Fungsi dalam Algoritme \ref{lst:lv} digunakan untuk metode normalisasi kata pada Algoritme \ref{lst:lev_find} dengan tujuan untuk mencari kumpulan kata yang memiliki jarak perubahan paling kecil. Terdapat dua masukan metode yaitu sebuah kata dan sebuah kamus dalam bentuk vektor. Metode menghasilkan dua keluaran, yaitu nilai jarak terkecil antara kata masukan dengan seluruh kata dalam kamus dan vektor berisi kumpulan kata dengan jarak terkecil dengan kata masukan.
+\begin{lstlisting}[caption={Algoritme Fungsi Normalisasi Kata dengan Jarak Levenshtein},label={lst:lev_find},float,floatplacement=h]
+Masukan: txt : string, kam : dictionary
+Keluaran: array, integer
+
+Deklarasi:
+txt, word		: string
+val, minVal 	: integer
+kam				: dictionary
+similarWords	: array[] string
+
+Deskripsi:
+Mulai
+1. Masukkan nilai 30 ke dalam variabel minVal;
+2. masukkan nilai txt ke dalam vektor similarWords;
+3. untuk seluruh kata dalam kam:
+	a) Masukkan nilai kata ke dalam variabel word;
+	b) hitung jarak Levenshtein antara txt dengan word, simpan hasil ke dalam variabel val;
+	c) jika val lebih kecil dari minVal:
+		i) jika val sama dengan nol (0), jadikan word sebagai vektor lalu keluarkan vektor bersama dengan nilai 0;
+		ii) jika val tidak sama dengan nol, ganti similarWords dengan vektor berisi word lalu ganti minVal dengan val.
+	d) jika val sama dengan minVal, tambah nilai ke dalam array similarWords.
+4. keluarkan array similarWords dan nilai dalam variabel minVal.
+Selesai
+\end{lstlisting}
+
+Berbagai kondisional yang tercantum dalam Algoritme \ref{lst:lev_find} dijelaskan sebagai berikut:
+\begin{enumerate}
+	\item "jika \textit{val} sama dengan nol (0)" yaitu kata masukan (\textit{txt}) dan kata dalam kamus (\textit{word}) adalah kata yang sama persis, ditunjukkan dengan jarak perubahan (\textit{val}) bernilai nol. Oleh karena itu, \textit{word} langsung diubah menjadi vektor lalu dijadikan sebagai keluaran fungsi beserta nilai jaraknya yaitu nol;
+	\item "jika \textit{val} tidak sama dengan nol" yaitu ditemukan \textit{word} dengan jarak yang lebih kecil dibandingkan jarak terkecil (\textit{minVal}) sebelumnya sehingga seluruh isi vektor kumpulan kata (\textit{similarWords}) terdahulu harus dibuang lalu digantikan dengan \textit{word}; dan
+	\item "jika \textit{val} sama dengan \textit{minVal}" yaitu ditemukan \textit{word} yang memiliki jarak yang sama dengan seluruh kata dalam \textit{similarWords} sehingga \textit{word} harus dimasukkan ke dalam \textit{similarWords}.
+\end{enumerate}
+
+\section{Contoh Normalisasi Teks dengan Jarak Levenshtein}
+
+Contoh normalisasi teks dengan jarak Levenshtein tertera pada Tabel \ref{tbl:eg_output}. Salah satu contoh yang digunakan adalah kata "\textit{mikir}". Kata "\textit{mikir}" memiliki keluaran kumpulan kata-kata baku, yaitu "pikir", "bikir", "kikir", "likir", "milir", dan "zikir". Semua kata baku tersebut memiliki jarak perubahan yang sama dengan kata "\textit{mikir}" yaitu 1. Jarak tersebut juga merupakan jarak terkecil yang dapat dicapai antara kata masukan dengan seluruh kata yang ada di dalam kamus.
+\begin{table}[ht]
+    \captionsetup{justification=justified,singlelinecheck=false}
+    \caption{Contoh keluaran Normalisasi Teks dengan Jarak Levenshtein}
+    \label{tbl:eg_output}
     \centering
-	\begin{tabularx}{\textwidth}{|c|c|X|}
-		\hline
-		\textit{\textbf{Library}} & \textbf{Fungsi/Prosedur}   & \multicolumn{1}{c|}{\textbf{Deskripsi}}                                              \\ \hline
-		NLTK                      & edit\_distance(str1, str2) & Menghitung jarak Levenshtein antara dua \textit{string}. Keluaran berupa nilai jarak. \\ \hline
-	\end{tabularx}
+    \begin{tabularx}{\textwidth}{|Y|X|X|}
+        \hline
+        \textbf{Contoh kata masukan} & \multicolumn{1}{Y|}{\textbf{Contoh keluaran kumpulan kata}} & \multicolumn{1}{Y|}{\textbf{Contoh keluaran jarak terkecil}} \\ \hline
+        \textit{mikir} & {[}'pikir', 'bikir', 'kikir', 'likir', 'milir', 'zikir'] & 1 \\ \hline
+        \textit{maen} & {[}'main', 'man', 'men'] & 1 \\ \hline
+        \textit{begimana} & {[}'bagaimana', 'begana']& 2 \\ \hline
+    \end{tabularx}
 \end{table}
-\end{comment}
-\begin{comment}
-	\section{Penjelasan Metodologi}
-	
-	Pengerjaan Tugas Akhir yang meliputi pengembangan sistem mengikuti alur yang terdapat pada Gambar \ref{fig:waterfall}. Alur yang digunakan adalah alur \textit{waterfall}. Alur tersebut memungkinkan untuk kembali ke tahap sebelumnya jika pada tahap tertentu terjadi kesalahan. Tahap pertama dalam alur adalah penelitian. Penelitian dilakukan untuk menentukan algoritme yang cocok untuk diterapkan ke dalam sistem. Lalu, tahap kedua adalah perancangan sistem. Perancangan dilakukan untuk menentukan tahap-tahap yang akan dilakukan oleh sistem. Kemudian, tahap selanjutnya adalah pengembangan sistem, yang mana merupakan tahap untuk pengembangan dari rancangan sistem yang telah dibuat sebelumnya. Tahap terakhir pada alur pengembangan adalah pengujian sistem.
-	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.7\textwidth, trim=2 2 2 2, clip]{resources/3/waterfall.pdf}
-		\caption{Alur \textit{waterfall} untuk pengembangan sistem}
-		\label{fig:waterfall}
-	\end{figure}
-	
-	\section{Algoritme Rancangan}
-\end{comment}
-\begin{comment}
-\section{Algoritme untuk Pelatihan Pengenalan Entitas}
-
-Teknik yang dilakukan untuk bagian pengenalan entitas adalah teknik \textit{sequence labeling}, seperti yang tertera pada Gambar \ref{fig:sequence_labeling}. Sebuah kalimat yang disediakan oleh data latih menyertakan kata-kata yang merupakan bagian dari entitas. Kalimat tersebut dipecahkan menjadi \textit{token-token}. Tiap \textit{token} berisi sebuah kata dalam kalimat. Tiap \textit{token} ditandai dengan label-label, menandakan apakah \textit{token} tersebut merupakan entitas atau tidak. Susunan \textit{token} dan label tersebut akan menjadi acuan untuk pelatihan pengenalan entitas.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.9\textwidth, trim=2 2 2 2, clip]{resources/3/sequence_labeling.pdf}
-	\caption{Teknik \textit{sequence labeling}}
-	\label{fig:sequence_labeling}
-\end{figure}
-
-Melihat kelemahan yang terdapat pada pengenalan entitas milik Rasa NLU, beberapa variasi algoritme dapat digunakan untuk mengganti pelatihan pengenalan entitas tersebut.
-
-\subsection{\textit{Convolutional Neural Network} (CNN)}
-
-Gambar \ref{fig:cnn} menunjukkan arsitektur lapisan CNN yang digunakan untuk melakukan latihan pengenalan entitas ini, dibangun dengna menggunakan Keras \parencite{sasank2017spoken}. Lapisan pertama diawali dengan melakukan \textit{embedding} terhadap kumpulan kata dalam sebuah kalimat yang ingin dilatih. Kemudian, hasil \textit{embedding} dimasukkan ke lapisan \textit{convolutional} satu dimensi. Selanjutnya, luaran dari lapisan \textit{convolutional} dikurangi sebesar 0,25 persen pada lapisan \textit{dropout}. Hal ini bertujuan untuk meningkatkan kinerja pembelajaran sebuah model. Setelah itu, luaran yang telah dikurangi dimasukkan ke dalam lapisan \textit{gated recurrent unit} (GRU). Terakhir, luaran GRU dimasukkan ke lapisan \textit{neural network} yang terdistribusi berdasarkan \textit{timestep} dengan menggunakan pembungkus TimeDistributed.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.9\textwidth, trim=2 2 2 2, clip]{resources/3/cnn.pdf}
-	\caption{Arsitektur CNN \parencite{sasank2017spoken}}
-	\label{fig:cnn}
-\end{figure}
-
-Model CNN yang digunakan hanya sebatas pada tingkatan kata. Untuk mempermudah pelatihan, kata-kata yang menjadi data latihan diubah terlebih dahulu menjadi sebuah indeks dari sekumpulan kosakata. Kata-kata yang termasuk ke dalam data latih dikumpulkan untuk diberikan indeks, termasuk indeks untuk kata yang tidak terdefinisi pada data latih. Setelah itu, semua kalimat dalam data latih diubah menjadi indeks yang bersangkutan.
-
-\subsection{LSTM Dua Arah dan CRF}
-
-LSTM dua arah merujuk kepada penggunaan dua LSTM dengan dua arah berlawanan, yaitu maju dan mundur. Hal ini untuk menutup kelemahan LSTM yang hanya melihat pada kata sebelum kata yang sedang dilatih. LSTM pertama dipasang dari awal kalimat dan bergerak maju, sedangkan LSTM kedua dipasang dari akhir kalimat dan bergerak mundur.
-
-Arsitektur yang akan digunakan ditunjukkan pada Gambar \ref{fig:blstmcrf} \parencite{lample2016neural}. Arsitektur ini melibatkan LSTM dua arah. Masukan kedua LSTM didapatkan dari proses \textit{embedding} sebuah kata, tergantung pada urutan luaran \textit{embedding} itu terhadap kedua LSTM. Kedua luaran LSTM tersebut akhirnya disatukan untuk menjadi masukan lapisan CRF.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth, trim=2 2 2 2, clip]{resources/3/blstmcrf.pdf}
-	\caption{Arsitektur LSTM dua arah dengan CRF \parencite{lample2016neural}}
-	\label{fig:blstmcrf}
-\end{figure}
-
-\subsection{LSTM Dua Arah dan CNN}
-
-Gambar \ref{fig:blstmcnn} menunjukkan arsitektur LSTM dua arah dengan CNN \parencite{chiu2015named}. Arsitektur ini melibatkan CNN sebagai eksraksi fitur sebuah kata dalam kalimat. Hasil dari ekstraksi tersebut menjadi masukan untuk kedua LSTM yang berbeda arah untuk melakukan latihan \textit{sequence labeling}.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth, trim=2 2 2 2, clip]{resources/3/blstmcnn.pdf}
-	\caption{Arsitektur LSTM dua arah dengan CNN \parencite{chiu2015named}}
-	\label{fig:blstmcnn}
-\end{figure}
-
-\section{Rancangan Sistem}
-
-\subsection{Rancangan Latihan Klasifikasi}
-
-Rancangan sistem untuk tahap latihan klasifikasi disajikan dalam bagan pada Gambar \ref{fig:design_training} berikut. Proses-proses yang harus dilewati dalam tahap latihan klasifikasi dapat dijelaskan sebagai berikut:
-
-\begin{enumerate}
-	\item sistem akan memuat \textit{file} JSON yang berisi data latihan yang digunakan untuk membangun NLU,
-	\item sistem mengambil data latihan tersebut lalu mengubahnya menjadi sekumpulan obyek SentenceData,
-	\item sistem mengambil informasi maksud kalimat yang telah didefinisikan di dalam data latihan dan menyimpan sekumpulan maksud kalimat,
-	\item sistem memecahkan sebuah kalimat menjadi sekumpulan \textit{token} kata,
-	\item sistem mengekstraksi entitas yang telah didefinisikan di dalam data latihan dan mengumpulkan semua entitas yang terekstrasi,
-	\item sistem menciptakan tas kata-kata dengan menggunakan metode \textit{one-hot encoding},
-	\item sekumpulan maksud kalimat dan tas kata-kata digunakan sebagai masukan untuk latihan model NLU, menghasilkan model klasifikasi, dan,
-	\item model klasifikasi disimpan ke dalam direktori sistem untuk digunakan pada tahap klasifikasi teks.
-\end{enumerate}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth, trim=2 2 2 2, clip]{resources/3/design_training.pdf}
-	\caption{Bagan rancangan sistem tahap latihan klasifikasi}
-	\label{fig:design_training}
-\end{figure}
-
-\subsection{Rancangan Klasifikasi Teks}
-
-Rancangan sistem untuk tahap klasifikasi teks disajikan dalam bagan pada Gambar \ref{fig:design_classification}. Proses-proses yang harus dilewati dalam tahap klasifikasi teks dapat dijelaskan sebagai berikut:
-
-\begin{enumerate}
-	\item sistem menerima masukan teks dari \textit{speech recognition} yang dimasukkan oleh suara pengguna,
-	\item sistem memecahkan teks menjadi sekumpulan \textit{token},
-	\item sistem mengenali entitas yang berada di dalam teks, kemudian mengekstraksi entitas tersebut,
-	\item sistem menciptakan tas kata-kata untuk teks masukan,
-	\item sistem melakukan prediksi maksud kalimat dari masukan tas kata-kata menggunakan model klasifikasi yang dihasilkan pada tahap latihan klasifikasi,
-	\item maksud kalimat yang telah dihasilkan, bersama dengan kumpulan entitas hasil ekstrasi, menjadi masukan untuk memenggil aksi sistem, dan,
-	\item sistem melakukan aksi kepada pengguna sebagai tanggapan dari masukan teks dari sistem ASR.
-\end{enumerate}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth, trim=2 2 2 2, clip]{resources/3/design_classification.pdf}
-	\caption{Bagan rancangan sistem tahap klasifikasi teks}
-	\label{fig:design_classification}
-\end{figure}
-
-\section{Alat-Alat yang Digunakan untuk Pengembangan}
-
-Pengembangan sistem ini dilakukan di dalam lingkungan sistem operasi Windows 10. Pengembangan sistem menggunakan bahasa Python versi 3.6.6 dalam lingkungan Anaconda, dan \textit{library} yang digunakan adalah sebagai berikut:
-
-\begin{enumerate}
-    \item Keras, dengan versi 2.1.6
-    \item scikit-learn, dengan versi 0.19.1
-    \item sklearn-crfsuite, dengan versi 0.3.6
-\end{enumerate}
-\end{comment}

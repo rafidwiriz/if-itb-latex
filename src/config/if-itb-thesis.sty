@@ -27,13 +27,14 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{tabularx}
+\usepackage{listings}
 \usepackage{tabto}
 \usepackage{comment}
 \usepackage{amsmath}
 \usepackage[labelfont=bf]{caption}	% Package dengan opsi untuk mempertebal label caption
 \usepackage{enumitem}				
 \usepackage{tocbibind}				% Package untuk memasukkan Daftar Pustaka ke dalam Daftar Isi
-\usepackage[titles]{tocloft}				% Package untuk mengatur Daftar Isi, Daftar Gambar dan Daftar Tabel
+\usepackage{tocloft}				% Package untuk mengatur Daftar Isi, Daftar Gambar dan Daftar Tabel
 \usepackage{float}					% Package untuk membantu penetapan lokasi gambar
 \usepackage{indentfirst}			% Package untuk indentasi pada paragraf pertama
 \usepackage[auto]{chappg}			% Package untuk penomoran halaman Bab-Halaman
@@ -45,6 +46,7 @@
 \usepackage{hyperref}       		% Package untuk link di daftar isi.
 \usepackage{titlesec}       		% Package Format judul
 \usepackage{parskip}
+\usepackage[htt]{hyphenat}
 
 % Line satu setengah spasi
 \renewcommand{\baselinestretch}{1.5}
@@ -78,8 +80,8 @@
 % Pengaturan spasi untuk justify
 \tolerance=1
 \emergencystretch=\maxdimen
-\hyphenpenalty=10000
-\exhyphenpenalty=10000
+%\hyphenpenalty=10000
+%\exhyphenpenalty=10000
 
 % Pengaturan untuk Daftar Rumus
 \newcommand{\listequationsname}{Daftar Rumus}
@@ -88,15 +90,25 @@
 \addcontentsline{equ}{myequations}{\protect\numberline{\theequation}#1}\par}
 \setlength{\cftmyequationsnumwidth}{2.5em}
 
+\newcommand{\listalgorithmname}{Daftar Algoritme}
+\newlistof{algorithm}{alg}{\listalgorithmname}
+\newcommand{\algorithm}[1]{%
+\refstepcounter{algorithm}
+\par\noindent\centering\normalsize\textbf{Algoritme {\thechapter.\thealgorithm\ }\normalfont #1}
+\addcontentsline{alg}{algorithm}{\protect\numberline{\thechapter.\thealgorithm}#1}\par}
+\setlength{\cftalgorithmnumwidth}{2.5em}
+
 % Pengaturan untuk title Daftar Isi, Tabel, dan Gambar
-\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\Large\bfseries}
+\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\Large\bfseries\MakeUppercase}
 \renewcommand{\cftaftertoctitle}{\hspace*{\fill}}
-\renewcommand{\cftlottitlefont}{\hspace*{\fill}\Large\bfseries}
+\renewcommand{\cftlottitlefont}{\hspace*{\fill}\Large\bfseries\MakeUppercase}
 \renewcommand{\cftafterlottitle}{\hspace*{\fill}}
-\renewcommand{\cftloftitlefont}{\hspace*{\fill}\Large\bfseries}
+\renewcommand{\cftloftitlefont}{\hspace*{\fill}\Large\bfseries\MakeUppercase}
 \renewcommand{\cftafterloftitle}{\hspace*{\fill}} 
-\renewcommand{\cftequtitlefont}{\hspace*{\fill}\Large\bfseries}
+\renewcommand{\cftequtitlefont}{\hspace*{\fill}\Large\bfseries\MakeUppercase}
 \renewcommand{\cftafterequtitle}{\hspace*{\fill}} 
+\renewcommand{\cftalgtitlefont}{\hspace*{\fill}\Large\bfseries\MakeUppercase}
+\renewcommand{\cftafteralgtitle}{\hspace*{\fill}} 
 
 \renewcommand{\cftchappresnum}{Bab }
 \renewcommand{\cftchapaftersnum}{}
@@ -106,3 +118,29 @@
 \setlength{\cftbeforeloftitleskip}{-3em}
 \setlength{\cftbeforelottitleskip}{-3em}
 \setlength{\cftbeforeequtitleskip}{-3em}
+\setlength{\cftbeforealgtitleskip}{-3em}
+
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+\lstset{frame=single,
+  columns=fullflexible,
+  basicstyle={\small\ttfamily},
+  breaklines=true,
+  breakatwhitespace=false,
+  postbreak=\mbox{$\hookrightarrow$\space},
+  tabsize=3
+}
+
+\renewcommand{\lstlistingname}{Algoritme}
+\renewcommand{\lstlistlistingname}{Daftar \lstlistingname}
+
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+
+\cftsetpnumwidth{3em}
+
+\DefineBibliographyStrings{english}{%
+    urlseen = {Waktu akses},
+    url = {URL:},
+    and = {dan},
+    andothers = {dkk\adddot}
+}
