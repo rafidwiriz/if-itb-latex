@@ -45,7 +45,7 @@ Selesai
 \end{lstlisting}
 
 Fungsi dalam Algoritme \ref{lst:lv} digunakan untuk metode normalisasi kata pada Algoritme \ref{lst:lev_find} dengan tujuan untuk mencari kumpulan kata yang memiliki jarak perubahan paling kecil. Terdapat dua masukan metode yaitu sebuah kata dan sebuah kamus dalam bentuk vektor. Metode menghasilkan dua keluaran, yaitu nilai jarak terkecil antara kata masukan dengan seluruh kata dalam kamus dan vektor berisi kumpulan kata dengan jarak terkecil dengan kata masukan.
-\begin{lstlisting}[caption={Algoritme Fungsi Normalisasi Kata dengan Jarak Levenshtein},label={lst:lev_find},float,floatplacement=h]
+\begin{lstlisting}[caption={Algoritme Fungsi Normalisasi Kata dengan Jarak Levenshtein},label={lst:lev_find},float=ht]
 Masukan: txt : string, kam : dictionary
 Keluaran: array, integer
 
@@ -85,9 +85,10 @@ Contoh normalisasi teks dengan jarak Levenshtein tertera pada Tabel \ref{tbl:eg_
     \caption{Contoh keluaran Normalisasi Teks dengan Jarak Levenshtein}
     \label{tbl:eg_output}
     \centering
-    \begin{tabularx}{\textwidth}{|Y|X|X|}
-        \hline
-        \textbf{Contoh kata masukan} & \multicolumn{1}{Y|}{\textbf{Contoh keluaran kumpulan kata}} & \multicolumn{1}{Y|}{\textbf{Contoh keluaran jarak terkecil}} \\ \hline
+    \begin{tabularx}{\textwidth}{|c|X|Y|}
+		\hline
+		\textbf{Contoh kata} & \multicolumn{1}{Y|}{\textbf{Contoh keluaran}} & \textbf{Contoh keluaran} \\
+        \textbf{masukan} & \multicolumn{1}{Y|}{\textbf{kumpulan kata}} & \textbf{jarak terkecil} \\ \hline
         \textit{mikir} & {[}'pikir', 'bikir', 'kikir', 'likir', 'milir', 'zikir'] & 1 \\ \hline
         \textit{maen} & {[}'main', 'man', 'men'] & 1 \\ \hline
         \textit{begimana} & {[}'bagaimana', 'begana']& 2 \\ \hline

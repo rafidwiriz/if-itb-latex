@@ -6,7 +6,7 @@
 
 Gambaran besar mengenai \textit{voice assistant} dapat dilihat pada Gambar \ref{fig:slu_early} yang merupakan alur proses pemahaman bahasa terucap atau \textit{spoken language understanding} (SLU) \parencite{tur2011spoken}. Suara yang diberikan pengguna diterima oleha pengenal suara atau \textit{speech recognition} dan diubah menjadi sebuah teks. Pengenalan suara menggunakan pengetahuan akustik, leksikal, dan bahasa yang tersimpan dalam sumber pengetahuan (\textit{knowledge source}) untuk pengenalan suara itu sendiri. Pengetahuan tersebut diterjemahkan oleh pengendali atau \textit{control} sehingga dapat digunakan oleh pengenalan suara.
 
-Teks yang berasal dari pengenal suara diberikan ke pemahaman bahasa alami atau \textit{natural language understanding} (NLU) untuk menemukan maksud pengguna menggunakan teks tersebut. Seperti pada pengetahuan suara, pemahaman bahasa alami juga memiliki sumber pengetahuan tersendiri untuk menyimpan pengetahuan mengenai sintaksis dan semantik yang diterjemahkan oleh pengendali untuk menciptakan hipotesis maksud dari sebuah kalimat. Setelah asisten dapat mengetahui maksud dari apa yang diucapkan oleh pengguna, asisten kemudian melakukan serangkaian aksi yang berkaitan dengan maksud ucapan pengguna tersebut.
+Teks yang berasal dari pengenal suara diberikan ke pemahaman bahasa alami atau \textit{natural language understanding} (NLU) untuk menemukan maksud pengguna menggunakan teks tersebut. Seperti pada pengetahuan suara, pemahaman bahasa alami juga memiliki sumber pengetahuan tersendiri untuk menyimpan pengetahuan mengenai sintaksis dan semantik yang diterjemahkan oleh pengendali untuk menciptakan hipotesis maksud dari sebuah kalimat. Setelah asisten dapat mengetahui maksud dari apa yang diucapkan oleh pengguna, asisten kemudian melakukan serangkaian aksi yang berkaitan dengan maksud ucapan pengguna tersebut. Bagian \textit{voice assistant} yang menjadi fokus dalam pengerjaan Tugas Akhir adalah bagian NLU.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.6\textwidth, trim=2 2 2 2, clip]{resources/2/early_slu.pdf}
@@ -14,7 +14,9 @@ Teks yang berasal dari pengenal suara diberikan ke pemahaman bahasa alami atau \
 	\label{fig:slu_early}
 \end{figure}
 
-Bagian \textit{voice assistant} yang menjadi fokus dalam pengerjaan Tugas Akhir adalah bagian NLU. NLU merupakan ranah dalam linguistik komputasional yang didedikasikan untuk memahami bahasa alami \parencite{harris2004voice}. Gartner \parencite{gartnernatural} mendefinisikan NLU sebagai pemahaman komputer terhadap struktur dan makna dari bahasa manusia sehingga pengguna dapat berinteraksi dengan komputer menggunakan bahasa yang digunakan oleh pengguna. Dari kedua definisi tersebut, dapat disimpulkan bahwa NLU merupakan bagian komputasional untuk memahami bahasa yang sering digunakan oleh manusia.
+\subsection{\textit{Natural Language Understanding} (NLU)}
+
+NLU merupakan ranah dalam linguistik komputasional yang didedikasikan untuk memahami bahasa alami \parencite{harris2004voice}. Gartner \parencite{gartnernatural} mendefinisikan NLU sebagai pemahaman komputer terhadap struktur dan makna dari bahasa manusia sehingga pengguna dapat berinteraksi dengan komputer menggunakan bahasa yang digunakan oleh pengguna. Dari kedua definisi tersebut, dapat disimpulkan bahwa NLU merupakan bagian komputasional untuk memahami bahasa yang sering digunakan oleh manusia.
 
 Perlu diperhatikan bahwa komputer berusaha untuk memahami bahasa manusia sehingga komputer perlu memiliki pengetahuan yang dasarnya dimiliki oleh manusia dalam berbahasa. James Allen \parencite{allen1995natural} menyebutkan bahwa terdapat enam bentuk pengetahuan yang diketahui dan dipelajari oleh manusia. Pengetahuan tersebut didefinisikan sebagai berikut:
 \begin{enumerate}
@@ -34,17 +36,25 @@ Pengetahuan yang dicakup dalam NLU saja adalah pengetahuan sintaksis, semantik, 
 	\item pendekatan pembelajaran interaktif, yaitu penggunaan  lingkungan interaktif antara manusia dengan komputer.
 \end{enumerate}
 
-Pendekatan yang menjadi fokus dalam pengerjaan Tugas Akhir adalah pendekatan distribusi, yang mana menggunakan pembelajaran mesin. Tom Mitchell \parencite{mitchell1997machine} mendefinisikan pembelajaran mesin sebagai sebuah program komputer yang dirancang untuk belajar dari pengalaman \textit{E} dengan acuan berupa kelas tugas-tugas \textit{T} dan pengukuran kinerja \textit{P}, kinerja pada suatu tugas \textit{T}, yang diukur dengan \textit{P}, dan diperbaiki dengan pengalaman \textit{E}. Sebagai contoh, program menjalankan tugas (\textit{T}) untuk bermain dam. Ukuran program tersebut (\textit{P}) adalah persentase sebuah program menang dalam permainan dam. Untuk meningkatkan persentase tersebut, program harus belajar dari pengalaman (\textit{E}) berupa permainan yang telah dilakukan melawan program itu sendiri.
+Pendekatan yang menjadi fokus dalam pengerjaan Tugas Akhir adalah pendekatan distribusi, yang mana menggunakan pembelajaran mesin.
+
+\subsection{Pembelajaran Mesin}
+
+Tom Mitchell \parencite{mitchell1997machine} mendefinisikan pembelajaran mesin sebagai sebuah program komputer yang dirancang untuk belajar dari pengalaman \textit{E} dengan acuan berupa kelas tugas-tugas \textit{T} dan pengukuran kinerja \textit{P}, kinerja pada suatu tugas \textit{T}, yang diukur dengan \textit{P}, dan diperbaiki dengan pengalaman \textit{E}. Sebagai contoh, program menjalankan tugas (\textit{T}) untuk bermain dam. Ukuran program tersebut (\textit{P}) adalah persentase sebuah program menang dalam permainan dam. Untuk meningkatkan persentase tersebut, program harus belajar dari pengalaman (\textit{E}) berupa permainan yang telah dilakukan melawan program itu sendiri.
 
 Terdapat tiga kategori umum untuk pembelajaran mesin berdasarkan cara belajar \parencite{ray2015essentials}. Tiga kategori tersebut adalah pembelajaran terkontrol, pembelajaran tidak terkontrol, dan pembelajaran penguatan. Algoritme pembelajaran terkontrol mengandung variabel terikat atau keluaran yang akan diprediksi jika diberikan sekumpulan variabel bebas sehingga membentuk fungsi yang dapat memetakan masukan menjadi keluaran yang diinginkan. Algoritme pembelajaran tidak terkontrol tidak memiliki variabel terikat untuk diprediksi sehingga algoritme harus mengelompokkan sendiri. Pembelajaran tidak terkontrol biasa digunakan untuk pengelompokan populasi ke dalam kelompok yang berbeda. Terakhir, algoritme pembelajaran penguatan menggunakan teknik coba-coba sebagai metode pembelajaran sehingga dapat membentuk program dengan keputusan yang spesifik. Algoritme yang menjadi fokus dalam Tugas Akhir adalah algoritme pembelajaran terkontrol, misalnya \textit{Naive Bayes}, \textit{Decision Tree}, \textit{Support Vector Machine} (SVM), dan \textit{Artificial Neural Network} (ANN).
+
+\subsection{\textit{Artificial Neural Network} (ANN)}
 
 Menurut Caudill \parencite{caudill1987neural}, ANN adalah sistem komputasi yang memiliki elemen-elemen pemrosesan sederhana yang saling terhubung, yang mana dapat memproses informasi dengan respon keadaan dinamisnya kepada masukan dari luar. Rupa ANN yang paling dasar dapat dilihat pada Gambar \ref{fig:ann} yang hanya terdiri dari tiga bagian lapisan, yaitu lapisan masukan, lapisan tersembunyi, dan lapisan keluaran. Satu lapisan terdiri dari kumpulan beberapa neuron yang digunakan sebagai fungsi aktivasi, dan neuron antarlapisan dihubungkan dengan bobot yang didefinisikan saat latihan berlangsung.
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.7\textwidth, trim=2 2 2 2, clip]{resources/2/ann.pdf}
-	\caption{Rupa dasar ANN}
+	\includegraphics[width=0.9\textwidth, trim=2 2 2 2, clip]{resources/2/ann.pdf}
+	\caption{Rupa dasar ANN \parencite{caudill1987neural}}
 	\label{fig:ann}
 \end{figure}
+
+\subsection{\textit{Word Embedding}}
 
 Salah satu penerapan ANN untuk NLU adalah operasi \textit{word embedding}, yaitu representasi yang telah belajar untuk teks dengan kata-kata yang memiliki makna yang sama saling berdekatan satu sama lain \parencite{brownlee2017what}. Terdapat dua cara untuk menggunakan \textit{word embedding}, yaitu dengan mempelajari \textit{embedding} baru atau menggunakan kembali \textit{embedding} yang sudah ada. Cara yang akan digunakan dalam fokus pengerjaan Tugas Akhir adalah dengan mempelajari \textit{embedding} baru.
 
@@ -57,6 +67,8 @@ Cara \textit{embedding} belajar dapat dilihat pada Gambar \ref{fig:cbow}, yang m
 \end{figure}
 
 Namun, terdapat permasalahan terhadap kamus yang dibentuk, salah satunya adalah kata yang akan diubah menjadi indeks harus ada di dalam kamus. Meskipun dalam kamus tersebut terdapat indeks khusus yang menyatakan kata yang tidak diketahui, kata tidak dapat diubah menjadi indeks kata yang tidak diketahui. Oleh karena itu, diperlukan salah satu fungsi yang dipasangkan sebelum menjadi masukan pada lapisan \textit{embedding}. Fungsi tersebut harus dapat menemukan kata dalam kamus yang mirip dengan kata yang sedang diubah menjadi indeks. Metode yang dapat digunakan untuk mencari kata yang mirip dalam kamus adalah dengan menggunakan metode jarak perbedaan antara kedua kata.
+
+\subsection{Jarak Perubahan}
 
 Jarak perubahan adalah jumlah operasi perubahan terkecil yang dibutuhkan untuk mengubah teks, misal teks A menjadi teks B \parencite{schutze2008introduction}. Terdapat beberapa variasi metode untuk mencari jarak perubahan kedua teks. Dengan kemampuan dalam menebak kata yang mirip, jarak perubahan dapat digunakan untuk melakukan normalisasi sebuah teks. Normalisasi menurut KBBI \parencite{kbbi} adalah tindakan menjadikan normal kembali. Dengan definisi tersebut, dapat disimpulkan bahwa normalisasi teks adalah tindakan untuk menjadikan teks yang berantakan kembali normal, dalam hal ini teks yang sesuai dengan bahasa yang baku.
 
@@ -83,7 +95,7 @@ Penelitian dilakukan dengan menggunakan fungsi \textit{stringdist} pada bahasa R
 Berdasarkan \parencite{saragih2017normalisasi} alur proses normalisasi teks yang dibangun dapat dilihat pada Gambar \ref{fig:flow_saragih}. Alur tersebut merupakan alur untuk tiap kata yang terdapat dalam \textit{tweet} berbahasa Indonesia. Proses membutuhkan dua jenis kamus, yaitu kamus kata tidak baku beserta perbaikannya dan kamus kata baku. Kamus kata tidak baku disusun secara manual, yaitu dengan menentukan kata yang termasuk kata tidak baku bahasa Indonesia, baik kata dari bahasa daerah, bahasa gaul, atau bahasa asing, lalu menentukan kata baku yang merupakan makna dari kata tidak baku tersebut. Untuk kamus kata baku, terdapat tiga jenis kamus yang digunakan, yaitu kamus kata baku dari KBBI diambil dari sebuah perangkat lunak, kamus yang diambil dari korpus arsip situs web Kompas tahun 2012, serta kamus dari korpus Kompas yang telah disaring sehingga hanya mengandung kata yang sesuai dalam KBBI.
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.7\textwidth, trim=2 2 2 2, clip]{resources/2/flow_saragih.pdf}
+	\includegraphics[width=0.8\textwidth, trim=2 2 2 2, clip]{resources/2/flow_saragih.pdf}
 	\caption{Alur proses normalisasi teks \parencite{saragih2017normalisasi}}
 	\label{fig:flow_saragih}
 \end{figure}
