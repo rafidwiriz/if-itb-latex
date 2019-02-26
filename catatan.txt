@@ -1,8 +1,0 @@
-- "sedangkan" tidak boleh pada awal kalimat.
-- Jangan "melompat"
-- Perlu tabel istilah
-- Bab 1: Latar Belakang masih kurang
-- Bab 2: hanya berisi Dasar Teori, bikin diagram blok, analsis teknologi bukan produk, umum ke khusus, jangan kebanyakan istilah, bikin tabel untuk hal-hal teknis
-- Bahas edit_distance NLTK
-
-- Buat studi kasus penggunaan bahasa alami untuk pengujian
