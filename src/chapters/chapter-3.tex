@@ -1,23 +1,58 @@
-\chapter{Normalisasi Teks dengan Jarak Levenshtein}
+\chapter{Normalisasi Teks dengan Jarak Perubahan}
 
-\section{Alur Proses Normalisasi Teks dengan Jarak Levenshtein}
+\section{Alur Pengerjaan Tugas Akhir}
+
+Alur pengerjaan Tugas Akhir ini dapat dilihat pada Gambar \ref{fig:alur_pengerjaan}. Pengerjaan Tugas Akhir melibatkan empat tahap, yaitu identifikasi masalah, tinjau pustaka, perancangan, dan pengujian. Tahap-tahap dalam pengerjaan Tugas Akhir dijelaskan sebagai berikut:
+\begin{enumerate}
+	\item identifikasi masalah, yaitu melakukan sebuah identifikasi untuk menentukan permasalahan yang akan diselesaikan dalam pengerjaan Tugas Akhir, yang mana permasalahan tersebut adalah normalisasi terhadap kata tidak baku yang tidak disingkat;
+	\item tinjau pustaka, yaitu melakukan peninjauan referensi yang terkait dengan pengerjaan Tugas Akhir serta menjadikan referensi tersebut sebagai acuan perbandingan, yaitu referensi \parencite{saragih2017normalisasi}. Selain itu, dilakukan peninjauan algoritme yang akan dipilih sebagai usulan, yaitu algoritme jarak Levenshtein dan jarak Jaro-Winkler;
+	\item perancangan, yaitu melakukan rancangan masukan, proses, dan keluaran yang diharapkan sebagai usulan untuk metode normalisasi dalam pengerjaan Tugas AKhir;
+	\item pembangunan, yaitu melakukan pembangunan terhadap metode normalisasi usulan dalam pengerjaan Tugas Akhir; dan
+	\item pengujian, yaitu melakukan perbandingan antara metode normalisasi yang berasal dari referensi \parencite{saragih2017normalisasi} dengan metode normalisasi usulan.
+\end{enumerate}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth, trim=2 2 2 2, clip]{resources/3/alur_pengerjaan.pdf}
+	\caption{Alur pengerjaan Tugas Akhir}
+	\label{fig:alur_pengerjaan}
+\end{figure}
+
+\section{Alur Proses Normalisasi Teks dengan Jarak Perubahan}
+
+Rancangan untuk keseluruhan metode normalisasi teks usulan terdapat dalam Gambar \ref{fig:ta_sistem}. Metode normalisasi teks usulan memiliki tiga bagian utama, yaitu bagian masukan, proses, dan keluaran.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth, trim=2 2 2 2, clip]{resources/3/ta_sistem.pdf}
+	\caption{Alur metode normalisasi teks}
+	\label{fig:ta_sistem}
+\end{figure}
+
+\subsection{Bagian Masukan Normalisasi Teks}
+
+Metode normalisasi usulan memiliki dua jenis masukan, yaitu kata dan kamus kata baku. Kedua masukan diperlukan sehingga metode normalisasi dapat mencari kemiripan antara kata masukan dengan kamus kata baku. Kedua masukan metode dijelaskan sebagai berikut:
+\begin{enumerate}
+	\item masukan kata, yaitu sebuah \textit{string} mengandung kata tidak baku yang berasal dari masukan pengguna. Contoh dari masukan kata seperti "\textit{asem}", "\textit{puter}", dan lain-lain; dan
+	\item masukan berkas kamus, yaitu kumpulan kata-kata yang berasal dari kamus kata baku dalam bentuk berkas CSV. Sebelum dapat digunakan, berkas CSV harus melalui pra-proses berupa konversi berkas CSV menjadi kamus yang dapat digunakan oleh metode normalisasi.
+\end{enumerate}
+
+\subsection{Bagian Proses Normalisasi Teks}
 
 Gambar \ref{fig:side_to_side} bagian (a) menunjukkan alur proses untuk rancangan metode normalisasi yang diusulkan. Metode normalisasi usulan menggunakan jarak Levenshtein sebagai penghitungan jarak antara kedua teks. Deskripsi alur proses yang dijalankan dapat dijelaskan sebagai berikut:
 \begin{enumerate}
 	\item diberikan kata masukan dan kamus kata baku,
-	\item melakukan pencarian kata-kata dalam kamus kata baku yang memiliki jarak minimum dengan kata masukan menggunakan jarak Levenshtein, menghasilkan kumpulan kata, dan,
+	\item melakukan pencarian kata-kata dalam kamus kata baku yang memiliki kemiripan yang tinggi dengan kata masukan, menghasilkan kumpulan kata, dan,
 	\item melakukan seleksi kata yang menjadi kata keluaran. Jika terdapat lebih dari satu kata, maka kata yang dipilih adalah kata yang pertama kali ditemukan.
 \end{enumerate}
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.8\textwidth, trim=2 2 2 2, clip]{resources/3/side_to_side.pdf}
-	\caption{Alur proses normalisasi teks dengan (a) jarak Levenshtein, dan (b) jarak LCS \parencite{saragih2017normalisasi}}
+	\caption{Alur proses normalisasi teks dengan (a) metode usulan, dan (b) metode \parencite{saragih2017normalisasi}}
 	\label{fig:side_to_side}
 \end{figure}
 
-Terdapat perbedaan alur proses antara metode normalisasi \parencite{saragih2017normalisasi} dengan metode normalisasi menggunakan jarak Levenshtein. Perbedaan tersebut dapat dilihat pada blok proses dengan garis tepi tebal pada Gambar \ref{fig:side_to_side}. Perbedaan pertama terletak pada penggantian algoritme jarak LCS dengan jarak Levenshtein. Kedua, metode normalisasi usulan mempersingkat proses normalisasi dengan menemukan kumpulan kata prediksi dengan jarak minimum secara langsung dibandingkan metode normalisasi \parencite{saragih2017normalisasi} yang harus mencari jarak minimum terlebih dahulu kemudian menemukan kumpulan kata prediksi dengan jarak tersebut.
+Terdapat perbedaan alur proses antara metode normalisasi \parencite{saragih2017normalisasi} dengan metode normalisasi usulan. Perbedaan tersebut dapat dilihat pada blok proses dengan garis tepi tebal pada Gambar \ref{fig:side_to_side}. Perbedaan pertama terletak pada penggantian algoritme jarak LCS dengan algoritme usulan, yaitu jarak Levenshtein dan jarak Jaro-Winkler. Kedua, metode normalisasi usulan mempersingkat proses normalisasi dengan menemukan kumpulan kata prediksi dengan jarak minimum secara langsung dibandingkan metode normalisasi \parencite{saragih2017normalisasi} yang harus mencari jarak minimum terlebih dahulu kemudian menemukan kumpulan kata prediksi dengan jarak tersebut.
 
-\section{Algoritme Normalisasi Teks dengan Jarak Levenshtein}
+\subsubsection{Algoritme Jarak Levenshtein}
 
 Algoritme \ref{lst:lv} merupakan algoritme persamaan jarak Levenshtein yang dapat dilihat pada Rumus \ref{eq:lv} \parencite{levenshtein1966binary}. Algoritme menerima masukan berupa dua kata dan mengeluarkan nilai jarak perubahan berupa bilangan bulat. Penghitungan jarak perubahan kedua kata masukan dilakukan dengan menggunakan matriks dua dimensi dengan ukuran matriks disesuaikan dengan kedua masukan kata tersebut.
 \begin{lstlisting}[caption={Algoritme Fungsi Jarak Levenshtein},label={lst:lv},float,floatplacement=H]
@@ -44,7 +79,40 @@ Mulai
 Selesai
 \end{lstlisting}
 
-Fungsi dalam Algoritme \ref{lst:lv} digunakan untuk metode normalisasi kata pada Algoritme \ref{lst:lev_find} dengan tujuan untuk mencari kumpulan kata yang memiliki jarak perubahan paling kecil. Terdapat dua masukan metode yaitu sebuah kata dan sebuah kamus dalam bentuk vektor. Metode menghasilkan dua keluaran, yaitu nilai jarak terkecil antara kata masukan dengan seluruh kata dalam kamus dan vektor berisi kumpulan kata dengan jarak terkecil dengan kata masukan.
+\subsubsection{Algoritme Jarak Jaro-Winkler}
+
+Algoritme \ref{lst:jw} \parencite{orsiniumtext} merupakan algoritme persamaan jarak Jaro-Winkler yang dapat dilihat pada Rumus \ref{eq:jaro} dan Rumus \ref{eq:jw}. Algoritme menerima masukan berupa dua kata dan mengeluarkan nilai jarak perubahan berupa bilangan bulat. Penghitungan kemiripan kedua kata masukan dilakukan dengan menghitung rata-rata dari ketiga pembagian yang ada di dalam algoritme, lalu melakukan perkalian dengan faktor skala dan panjang \textit{common string} yang digunakan.
+\begin{lstlisting}[caption={Algoritme Fungsi Jarak Jaro-Winkler \parencite{orsiniumtext}},label={lst:jw},float,floatplacement=H]
+	Masukan: s1, s2	: string, prefix_weight = 0.1 : float
+	Keluaran: float
+	
+	Deklarasi:
+	s1, s2 							: string
+	s1_len, s2_len, common_chars, i	: integer
+	weight, prefix_weight			: float
+	
+	Deskripsi:
+	Mulai
+	1. Masukkan secara berurutan nilai panjang s1 dan s2 ke dalam s1_len dan s2_len;
+	2. hitung jumlah karakter yang sesuai, lalu masukkan nilainya ke common_chars;
+	3. hitung jumlah transposisi yang terjadi, bagi dengan dua, lalu masukkan nilainya ke trans_count;
+	4. hitung rata-rata dari common_chars/s1_len, common_chars/s2_len, dan (common_chars-trans_count)/common_chars, lalu masukkan nilainya ke weight;
+	5. masukkan nilai j dengan nilai terkecil antara min_len dan empat (4);
+	6. hitung nilai i dengan jumlah karakter awal yang sesuai, maksimal bernilai empat;
+	7. kalikan i, prefix_weight, dan 1-weight, jumlahkan dengan nilai weight, lalu masukkan nilainya ke weight;
+	8. keluarkan nilai weight.
+	Selesai
+\end{lstlisting}
+
+\subsubsection{Algoritme Normalisasi Teks Usulan}
+
+Fungsi dalam Algoritme \ref{lst:lv} dan Algoritme \ref{lst:jw} digunakan untuk metode normalisasi kata pada Algoritme Normalisasi Teks Usulan dengan tujuan untuk mencari kumpulan kata baku yang memiliki kemiripan dengan kata masukan. Algoritme tersebut dibedakan satu sama lain dikarenakan perbedaan keluaran antara Levenshtein dan Jaro-Winkler, yang mana Levenshtein mengeluarkan jarak perubahan berbentuk bilangan bulat dan Jaro-Winkler mengeluarkan tingkat kemiripan berbentuk bilangan desimal.
+
+\begin{enumerate}[label=\textit{\Alph*)}, itemindent=*, series=process_list]
+	\item Algoritme Normalisasi Kata dengan Jarak Levenshtein
+\end{enumerate}
+
+Algoritme normalisasi kata dengan jarak Levenshtein, ditunjukkan oleh Algoritme \ref{lst:lev_find}, bertujuan untuk mencari kumpulan kata yang memiliki jarak perubahan paling kecil dengan menggunakan jarak Levenshtein. Terdapat dua masukan metode yaitu sebuah kata dan sebuah kamus dalam bentuk vektor. Metode menghasilkan dua keluaran, yaitu nilai jarak terkecil antara kata masukan dengan seluruh kata dalam kamus dan vektor berisi kumpulan kata dengan jarak terkecil dengan kata masukan.
 \begin{lstlisting}[caption={Algoritme Fungsi Normalisasi Kata dengan Jarak Levenshtein},label={lst:lev_find},float=ht]
 Masukan: txt : string, kam : dictionary
 Keluaran: array, integer
@@ -77,9 +145,46 @@ Berbagai kondisional yang tercantum dalam Algoritme \ref{lst:lev_find} dijelaska
 	\item "jika \textit{val} sama dengan \textit{minVal}" yaitu ditemukan \textit{word} yang memiliki jarak yang sama dengan seluruh kata dalam \textit{similarWords} sehingga \textit{word} harus dimasukkan ke dalam \textit{similarWords}.
 \end{enumerate}
 
-\section{Contoh Normalisasi Teks dengan Jarak Levenshtein}
+\begin{enumerate}[resume*=process_list]
+	\item Algoritme Normalisasi Kata dengan Jarak Jaro-Winkler
+\end{enumerate}
 
-Contoh normalisasi teks dengan jarak Levenshtein tertera pada Tabel \ref{tbl:eg_output}. Salah satu contoh yang digunakan adalah kata "\textit{mikir}". Kata "\textit{mikir}" memiliki keluaran kumpulan kata-kata baku, yaitu "pikir", "bikir", "kikir", "likir", "milir", dan "zikir". Semua kata baku tersebut memiliki jarak perubahan yang sama dengan kata "\textit{mikir}" yaitu 1. Jarak tersebut juga merupakan jarak terkecil yang dapat dicapai antara kata masukan dengan seluruh kata yang ada di dalam kamus.
+Algoritme normalisasi kata dengan jarak Jaro-Winkler, ditunjukkan oleh Algoritme \ref{lst:jw_find}, bertujuan untuk mencari kumpulan kata yang memiliki kemiripan paling tinggi dengan menggunakan jarak Jaro-Winkler. Terdapat dua masukan metode yaitu sebuah kata dan sebuah kamus dalam bentuk vektor. Metode menghasilkan dua keluaran, yaitu nilai kemiripan antara kata masukan dengan seluruh kata dalam kamus dan vektor berisi kumpulan kata dengan nilai kemiripan dengan kata masukan.
+\begin{lstlisting}[caption={Algoritme Fungsi Normalisasi Kata dengan Jarak Jaro-Winkler},label={lst:jw_find},float=ht]
+	Masukan: txt : string, kam : dictionary
+	Keluaran: array, float
+	
+	Deklarasi:
+	txt, word		: string
+	val, maxVal 	: float
+	kam				: dictionary
+	similarWords	: array[] string
+	
+	Deskripsi:
+	Mulai
+	1. Masukkan nilai 0 ke dalam variabel maxVal;
+	2. masukkan nilai txt ke dalam vektor similarWords;
+	3. untuk seluruh kata dalam kam:
+		a) Masukkan nilai kata ke dalam variabel word;
+		b) hitung jarak Jaro-Winkler antara txt dengan word, simpan hasil ke dalam variabel val;
+		c) jika val lebih besar dari maxVal:
+			i) jika val sama dengan satu (1), jadikan word sebagai vektor lalu keluarkan vektor bersama dengan nilai 1;
+			ii) jika val tidak sama dengan satu, ganti similarWords dengan vektor berisi word lalu ganti maxVal dengan val.
+		d) jika val sama dengan maxVal, tambah nilai ke dalam array similarWords.
+	4. keluarkan array similarWords dan nilai dalam variabel maxVal.
+	Selesai
+\end{lstlisting}
+
+Berbagai kondisional yang tercantum dalam Algoritme \ref{lst:jw_find} dijelaskan sebagai berikut:
+\begin{enumerate}
+	\item "jika \textit{val} sama dengan satu (1)" yaitu kata masukan (\textit{txt}) dan kata dalam kamus (\textit{word}) adalah kata yang sama persis, ditunjukkan dengan nilai kemiripan (\textit{val}) bernilai 1. Oleh karena itu, \textit{word} langsung diubah menjadi vektor lalu dijadikan sebagai keluaran fungsi beserta nilai kemiripannya yaitu satu;
+	\item "jika \textit{val} tidak sama dengan satu" yaitu ditemukan \textit{word} dengan nilai kemiripan yang lebih besar dibandingkan nilai kemiripan terbesar (\textit{maxVal}) sebelumnya sehingga seluruh isi vektor kumpulan kata (\textit{similarWords}) terdahulu harus dibuang lalu digantikan dengan \textit{word}; dan
+	\item "jika \textit{val} sama dengan \textit{maxVal}" yaitu ditemukan \textit{word} yang memiliki nilai kemiripan yang sama dengan seluruh kata dalam \textit{similarWords} sehingga \textit{word} harus dimasukkan ke dalam \textit{similarWords}.
+\end{enumerate}
+
+\subsection{Bagian Keluaran Normalisasi Teks}
+
+Contoh keluaran metode normalisasi teks usulan tertera pada Tabel \ref{tbl:eg_output}. Salah satu contoh yang digunakan adalah kata "\textit{mikir}". Kata "\textit{mikir}", berdasarkan jarak Levenshtein, memiliki keluaran kumpulan kata-kata baku, yaitu "pikir", "bikir", "kikir", "likir", "milir", dan "zikir". Semua kata baku tersebut memiliki jarak perubahan yang sama dengan kata "\textit{mikir}" yaitu 1. Jarak tersebut juga merupakan jarak terkecil yang dapat dicapai antara kata masukan dengan seluruh kata yang ada di dalam kamus.
 \begin{table}[ht]
     \captionsetup{justification=justified,singlelinecheck=false}
     \caption{Contoh keluaran Normalisasi Teks dengan Jarak Levenshtein}

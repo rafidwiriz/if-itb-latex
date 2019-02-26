@@ -1,10 +1,10 @@
 \chapter{Pengujian}
 
-Bab ini membahas pengujian normalisasi teks pada metode normalisasi teks \parencite{saragih2017normalisasi} dengan metode normalisasi teks dengan jarak Levenshtein. Pembahasan yang tertera meliputi perangkat dan lingkungan yang digunakan untuk pengujian, metode pengujian, skenario pengujian, serta hasil dan analisis pengujian.
+Bab ini membahas pengujian normalisasi teks pada metode normalisasi teks \parencite{saragih2017normalisasi}, metode normalisasi teks dengan jarak Jaro-Winkler, dan metode normalisasi teks dengan jarak Levenshtein. Pembahasan yang tertera meliputi perangkat dan lingkungan yang digunakan untuk pengujian, metode pengujian, skenario pengujian, serta hasil dan analisis pengujian.
 
 \section{Perangkat dan Lingkungan Pengujian}
 
-Pengujian kedua metode dilakukan dengan menggunakan perangkat laptop dengan spesifikasi sebagai berikut:
+Pengujian ketiga metode dilakukan dengan menggunakan perangkat laptop dengan spesifikasi sebagai berikut:
 \begin{enumerate}
     \item Spesifikasi Perangkat Keras:
     \begin{enumerate}
@@ -18,18 +18,18 @@ Pengujian kedua metode dilakukan dengan menggunakan perangkat laptop dengan spes
     \end{enumerate}
     \item Alat Bantu Pengembangan: Visual Studio Code, Anaconda, Jupyter Notebook
     \item Bahasa Pemrograman: Python 3.6.5 64bit
-    \item \textit{Library} Python yang Digunakan: \textit{csv} \parencite{pythoncsv}
+    \item \textit{Library} Python yang Digunakan: \textit{csv} \parencite{pythoncsv}, \textit{textdistance} \parencite{orsiniumtext}
 \end{enumerate}
 
 \section{Metode Pengujian}
 
-Pengujian dilakukan dengan melakukan perbandingan antara metode normalisasi teks \parencite{saragih2017normalisasi} dengan metode normalisasi teks dengan jarak Levenshtein. Kedua metode normalisasi diberikan masukan yang sama. Keluaran dari kedua metode dinilai dengan menggunakan persentase akurasi yang disesuaikan dengan skenario yang berbeda. Penilaian persentase akurasi dilakukan dengan menggunakan persamaan:
+Pengujian dilakukan dengan melakukan perbandingan antara metode normalisasi teks \parencite{saragih2017normalisasi}, metode normalisasi dengan jarak Jaro-Winkler, dan metode normalisasi teks dengan jarak Levenshtein. Ketiga metode normalisasi diberikan masukan yang sama. Keluaran dari ketiga metode dinilai dengan menggunakan persentase akurasi yang disesuaikan dengan skenario yang berbeda. Penilaian persentase akurasi dilakukan dengan menggunakan persamaan:
 \begin{equation*}
 	\text{Persentase akurasi}=\frac{\text{x}}{y} \times 100\%
 \end{equation*}
 %\myequations{Penghitungan akurasi fungsi \textit{stringdist}}
 \noindent
-dengan $x$ adalah jumlah kata yang sesuai dengan perbaikan kata, dan $y$ adalah jumlah seluruh kata yang termasuk dalam data uji.
+dengan $x$ adalah jumlah kata yang sesuai dengan perbaikan kata, dan $y$ adalah jumlah seluruh kata yang termasuk dalam data uji \parencite{saragih2017normalisasi}.
 
 \subsection{Masukan}
 
@@ -98,25 +98,25 @@ Kamus kata baku yang digunakan berasal dari penggabungan antara kamus dalam pera
 
 \subsection{Keluaran}
 
-Keluaran dari kedua metode normalisasi adalah sebuah vektor yang berisi kumpulan kata prediksi dalam kamus kata baku yang memiliki jarak paling kecil dari kata dalam data uji. Tabel \ref{tbl:output} menunjukkan contoh keluaran yang muncul jika kedua metode normalisasi diberikan masukan tertentu.
+Keluaran dari ketiga metode normalisasi adalah sebuah vektor yang berisi kumpulan kata prediksi dalam kamus kata baku yang memiliki jarak paling kecil dari kata dalam data uji. Tabel \ref{tbl:output} menunjukkan contoh keluaran yang muncul jika ketiga metode normalisasi diberikan masukan tertentu.
 \begin{table}[ht]
     \captionsetup{justification=justified,singlelinecheck=false}
-    \caption{Contoh keluaran kedua metode terhadap masukan kata}
+    \caption{Contoh keluaran ketiga metode terhadap masukan kata}
     \label{tbl:output}
     \centering
-    \begin{tabularx}{\textwidth}{|c|X|X|}
+    \begin{tabularx}{\textwidth}{|c|X|X|X|}
         \hline
-        \textbf{Contoh kata} & \multicolumn{1}{c|}{\textbf{Contoh keluaran}} & \multicolumn{1}{c|}{\textbf{Contoh keluaran}} \\
-        \textbf{masukan} & \multicolumn{1}{c|}{\textbf{metode \parencite{saragih2017normalisasi}}} & \multicolumn{1}{c|}{\textbf{metode usulan}} \\ \hline
-        \textit{abadiat} & {[}'abadi', 'abadiah', 'ahadiat', 'baiat'] & {[}'abadiah', 'ahadiat'] \\ \hline
-        \textit{abdul} & {[}'abdu', 'abul'] & {[}'abdu', 'abul'] \\ \hline
-        \textit{abimana} & {[}'abaimana'] & {[}'abaimana'] \\ \hline
+        \textbf{Contoh kata} & \multicolumn{1}{c|}{\textbf{Contoh keluaran}} & \multicolumn{1}{c|}{\textbf{Contoh keluaran}} & \multicolumn{1}{c|}{\textbf{Contoh keluaran}} \\
+        \textbf{masukan} & \multicolumn{1}{c|}{\textbf{metode \parencite{saragih2017normalisasi}}} & \multicolumn{1}{c|}{\textbf{metode Jaro-Winkler}} & \multicolumn{1}{c|}{\textbf{metode Levenshtein}} \\ \hline
+        \textit{abadiat} & {[}'abadi', 'abadiah', 'ahadiat', 'baiat'] & {[}'abadi', 'abadiah'] & {[}'abadiah', 'ahadiat'] \\ \hline
+        \textit{abdul} & {[}'abdu', 'abul'] & {[}'abdu'] & {[}'abdu', 'abul'] \\ \hline
+        \textit{abimana} & {[}'abaimana'] & {[}'abian'] & {[}'abaimana'] \\ \hline
     \end{tabularx}
 \end{table}
 
 \section{Skenario Pengujian}
 
-Penilaian akurasi keluaran kedua metode normalisasi ditentukan oleh skenario pengujian yang dilakukan. Terdapat dua skenario yang akan dijalankan dalam pengujian ini.
+Penilaian akurasi keluaran ketiga metode normalisasi ditentukan oleh skenario pengujian yang dilakukan. Terdapat dua skenario yang akan dijalankan dalam pengujian ini.
 
 \subsection{Skenario Pertama: Melihat Kata Pertama dalam Kumpulan Kata}
 
@@ -142,21 +142,26 @@ Skenario kedua adalah penilaian dilakukan dengan melihat apakah terdapat perbaik
 
 \subsection{Hasil Pengujian Skenario Pertama}
 
-Hasil pengujian untuk skenario pengujian ditunjukkan pada Tabel \ref{tbl:result_1}. Hasil pengujian menunjukkan bahwa metode normalisasi yang diajukan mengungguli metode normalisasi \parencite{saragih2017normalisasi} dengan selisih akurasi sebesar 8,34 persen. Meskipun begitu, hasil akurasi pengujian untuk kedua metode masih menunjukkan angka di bawah 50 persen. Hal tersebut disebabkan oleh perbaikan kata uji bukan merupakan kata yang berada dalam urutan pertama kumpulan kata prediksi. Hal tersebut berarti perbaikan kata uji bukan merupakan kata yang sering digunakan dalam korpus Kompas. Sebagai contoh, perbaikan kata "\textit{asem}" seharusnya adalah "asam", namun dalam metode normalisasi usulan, kata "\textit{asem}" diidentifikasi sebagai "aset" yang mana "aset" adalah kata yang berada pada urutan pertama dalam kumpulan kata prediksi. Setelah melihat isi kumpulan kata prediksi, ternyata kata "asam" terdapat dalam kumpulan kata tersebut.
+Hasil pengujian untuk skenario pengujian ditunjukkan pada Tabel \ref{tbl:result_1}. Hasil pengujian menunjukkan bahwa metode normalisasi yang diusulkan mengungguli kedua metode normalisasi yang lain dengan selisih akurasi dengan metode \parencite{saragih2017normalisasi} sebesar 6,35 persen. Metode normalisasi dengan Jaro-Winkler menempati peringkat terakhir dengan selisih akurasi dengan metode normalisasi \parencite{saragih2017normalisasi} sebesar 0,83 persen.
 \begin{table}[ht]
     \captionsetup{justification=justified,singlelinecheck=false}
-    \caption{Hasil akurasi untuk pengujian kedua metode normalisasi dalam skenario pertama}
+    \caption{Hasil akurasi untuk pengujian ketiga metode normalisasi dalam skenario pertama}
     \label{tbl:result_1}
     \centering
     \begin{tabularx}{\textwidth}{|X|c|c|c|}
         \hline
         \multicolumn{1}{|Y|}{\textbf{Metode}} & \textbf{Jumlah kata benar} & \textbf{Akurasi} \\ \hline
-        Metode Normalisasi \parencite{saragih2017normalisasi} dalam Skenario Pertama & 622 & 23,94\% \\ \hline
-        Metode Normalisasi Usulan dalam Skenario Pertama & 774 & 32,28\% \\ \hline
+        Metode Normalisasi \parencite{saragih2017normalisasi} & 622 & 25,93\% \\ \hline
+        Metode Normalisasi dengan Jaro-Winkler & 602 & 25,10\% \\ \hline
+        Metode Normalisasi dengan Levenshtein & 774 & 32,28\% \\ \hline
     \end{tabularx}
 \end{table}
 
-Untuk melihat adanya kata perbaikan yang masuk ke dalam kumpulan kata dengan jarak perubahan minimum, diperlukan skenario baru, yaitu dengan modifikasi algoritme penilaian pada kedua metode normalisasi (skenario kedua). Gambar \ref{fig:skenario_side_to_side} menunjukkan perbedaan antara skenario pertama dengan skenario kedua. Jika skenario pertama hanya memeriksa urutan pertama dari kumpulan kata prediksi, skenario kedua memeriksa seluruh kumpulan kata prediksi hingga ditemukan kata yang sesuai dengan perbaikan kata.
+Hasil metode normalisasi Jaro-Winkler yang berada di posisi terakhir disebabkan oleh teknik Jaro-Winkler dalam menentukan kemiripan antara kedua kata. Jaro-Winkler menganggap bahwa kedua kata dikatakan mirip jika terdapat karakter yang sesuai dengan jumlah yang banyak serta tidak ada transposisi dengan karakter yang sesuai tersebut. Maka, Jaro-Winkler akan menganggap kata dengan penambahan satu karakter memiliki kemiripan yang lebih tinggi dibandingkan kata dengan penggantian satu karakter saja, mengakibatkan kata yang mengalami penggantian karakter tergusur dari pencarian kata baku. Sebagai contoh, kata "\textit{asem}" memiliki kemiripan yang lebih tinggi dengan "rasem" dibandingkan dengan "asam", dengan nilai kemiripan masing-masing adalah 93,33 persen dan 86,67 persen.
+
+Meskipun begitu, hasil akurasi pengujian untuk ketiga metode masih menunjukkan angka di bawah 50 persen. Hal tersebut disebabkan oleh perbaikan kata uji bukan merupakan kata yang berada dalam urutan pertama kumpulan kata prediksi. Hal tersebut berarti perbaikan kata uji bukan merupakan kata yang sering digunakan dalam korpus Kompas. Sebagai contoh, perbaikan kata "\textit{asem}" seharusnya adalah "asam", namun dalam metode normalisasi Levenshtein, kata "\textit{asem}" diidentifikasi sebagai "aset" yang mana "aset" adalah kata yang berada pada urutan pertama dalam kumpulan kata prediksi. Setelah melihat isi kumpulan kata prediksi, ternyata kata "asam" terdapat dalam kumpulan kata tersebut.
+
+Untuk melihat adanya kata perbaikan yang masuk ke dalam kumpulan kata dengan jarak perubahan minimum, diperlukan skenario baru, yaitu dengan modifikasi algoritme penilaian pada ketiga metode normalisasi (skenario kedua). Gambar \ref{fig:skenario_side_to_side} menunjukkan perbedaan antara skenario pertama dengan skenario kedua. Jika skenario pertama hanya memeriksa urutan pertama dari kumpulan kata prediksi, skenario kedua memeriksa seluruh kumpulan kata prediksi hingga ditemukan kata yang sesuai dengan perbaikan kata.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.5\textwidth, trim=2 2 2 2, clip]{resources/4/skenario_side_to_side.pdf}
@@ -166,20 +171,33 @@ Untuk melihat adanya kata perbaikan yang masuk ke dalam kumpulan kata dengan jar
 
 \subsection{Hasil Pengujian Skenario Kedua}
 
-Hasil pengujian untuk skenario kedua ditunjukkan pada Tabel \ref{tbl:result_2}. Hasil pengujian tersebut menunjukkan peningkatan yang signifikan untuk selisih antara kedua metode, yaitu 18,89 persen. Hasil akurasi untuk metode normalisasi usulan masih mengungguli metode normalisasi \parencite{saragih2017normalisasi}. Namun, persentase akurasi belum menyentuh angka 100 persen.
+Hasil pengujian untuk skenario kedua disajikan pada Tabel \ref{tbl:result_2}, dan hasil untuk kedua pengujian dapat dilihat pada Gambar \ref{fig:ss_pengujian} Hasil pengujian tersebut menunjukkan peningkatan yang signifikan untuk selisih antara metode normalisasi Levenshtein dengan kedua metode normalisasi yang lain. Hasil akurasi untuk metode normalisasi Levenshtein masih mengungguli metode normalisasi \parencite{saragih2017normalisasi} dengan selisih sebesar 18,89 persen. Metode normalisasi dengan Jaro-Winkler masih tetap berada di posisi terakhir dengan selisih akurasi 21,6 persen dari metode normalisasi \parencite{saragih2017normalisasi}.
 \begin{table}[ht]
     \captionsetup{justification=justified,singlelinecheck=false}
-    \caption{Hasil akurasi untuk pengujian kedua metode normalisasi dalam skenario kedua}
+    \caption{Hasil akurasi untuk pengujian ketiga metode normalisasi dalam skenario kedua}
     \label{tbl:result_2}
     \centering
     \begin{tabularx}{\textwidth}{|X|c|c|c|}
         \hline
         \multicolumn{1}{|Y|}{\textbf{Metode}} & \textbf{Jumlah kata benar} & \textbf{Akurasi} \\ \hline
-        Metode Normalisasi \parencite{saragih2017normalisasi} dalam Skenario Kedua & 1233 & 51,42\% \\ \hline
-        Metode Normalisasi Usulan dalam Skenario Kedua & 1686 & 70,31\% \\ \hline
+        Metode Normalisasi \parencite{saragih2017normalisasi} & 1233 & 51,42\% \\ \hline
+        Metode Normalisasi dengan Jaro-Winkler & 715 & 29,82\% \\ \hline
+        Metode Normalisasi dengan Levenshtein & 1686 & 70,31\% \\ \hline
     \end{tabularx}
 \end{table}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.7\textwidth, trim=2 2 2 2, clip]{resources/4/ss_pengujian.png}
+	\caption{Seluruh hasil pengujian ketiga metode dengan menggunakan Jupyter Notebook}
+	\label{fig:ss_pengujian}
+\end{figure}
 
-Hal tersebut dapat disebabkan oleh jarak perubahan antara kata tidak baku dan perbaikan kata uji tidak termasuk dalam kumpulan kata dengan  jarak perubahan minimum. Sebagai contoh, kata "\textit{telepa}" merupakan kata tidak baku dari kata "telap" dan jarak perubahan antara kedua kata adalah 3 dengan jarak LCS dan 2 dengan jarak Levenshtein. Namun, kedua metode normalisasi dapat menemukan kumpulan kata prediksi yang memiliki jarak perubahan yang lebih kecil dibandingkan jarak perubahan antara "\textit{telepa}" dan "telap" sehingga kata "telap" tidak dapat ditemukan.
+Hasil akurasi metode normalisasi dengan Jaro-Winkler yang masih di bawah 50 persen masih disebabkan oleh satuan penilaian kemiripan yang digunakan oleh Jaro-Winkler. Satuan penilaian yang digunakan adalah bilangan desimal, yang mana bilangan tersebut lebih sensitif terhadap perubahan dibandingkan dengan bilangan bulat. Hal tersebut mengakibatkan kumpulan kata dengan kemiripan tertinggi sementara tergusur dengan mudah oleh kata baru dengan kemiripan yang lebih tinggi, meskipun dengan selisih yang sangat kecil seperti 0.0001.
+
+Meskipun hasil akurasi bertambah dibandingkan sebelumnya, persentase akurasi belum menyentuh angka 100 persen. Hal tersebut dapat disebabkan oleh jarak perubahan antara kata tidak baku dan perbaikan kata uji tidak termasuk dalam kumpulan kata dengan jarak perubahan minimum.Beberapa kata perbaikan dalam data uji memiliki jarak yag lebih besar dari jarak minimum yang ditemukan antara kata dalam data uji dengan beberapa kata dalam kamus kata baku. Sebagai contoh, kata "\textit{telepa}" merupakan kata tidak baku dari kata "telap" dan jarak perubahan antara kedua kata adalah 3 dengan jarak LCS dan 2 dengan jarak Levenshtein. Namun, ketiga metode normalisasi dapat menemukan kumpulan kata prediksi yang memiliki jarak perubahan yang lebih kecil dibandingkan jarak perubahan antara "\textit{telepa}" dan "telap" sehingga kata "telap" tidak dapat ditemukan.
 
 Hasil pengujian tersebut menunjukkan bahwa masalah yang terjadi jika perbaikan kata uji telah diselesaikan, jika algoritme dalam metode normalisasi dapat melhat seluruh kata yang terkandung pada kumpulan kata prediksi. Namun, algoritme tersebut hanya dapat melihat kumpulan kata. Algoritme tidak dapat menentukan kata yang tepat digunakan, jika algoritme ingin diterapkan dalam sistem \textit{voice assistant}. Untuk penerapan dalam sistem \textit{voice assistant}, metode normalisasi juga harus dapat menentukan kata dalam kumpulan kata prediksi yang tepat digunakan.
+
+\section{Kesimpulan Pengujian}
+
+Pengujian yang telah dilakukan menghasilkan kesimpulan, bahwa metode normalisasi dengan jarak Levenshtein lebih cocok digunakan untuk digunakan sebagai normalisasi kata tidak baku yang tidak disingkat dibandingkan dengan metode normalisasi dengan jarak Jaro-Winkler. Hal tersebut ditunjukkan dengan unggulnya metode normalisasi dengan Levenshtein dalam semua skenario pengujian, sedangkan metode normalisasi dengan Jaro-Winkler tidak mampu mengungguli metode normalisasi \parencite{saragih2017normalisasi}.

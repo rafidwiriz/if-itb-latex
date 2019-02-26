@@ -86,7 +86,7 @@ Penelitian dilakukan dengan menggunakan fungsi \textit{stringdist} pada bahasa R
 	\item jarak \textit{q-gram} (\textit{qgram});
 	\item jarak \textit{cosine} (\textit{cosine});
 	\item jarak Jaccard (\textit{jaccard});
-	\item jarak Jaro-Winker (\textit{jw}); dan
+	\item jarak Jaro-Winkler (\textit{jw}); dan
 	\item jarak \textit{Soundex} (\textit{soundex}).
 \end{enumerate}
 
@@ -130,6 +130,8 @@ dengan $x$ adalah jumlah kata yang tepat, yaitu kata tersebut sesuai dengan kata
 
 Beberapa kelemahan dimiliki oleh dua kamus baku yaitu yang berasal dari KBBI dan korpus Kompas tanpa penyaringan. Kamus kata baku dari KBBI memiliki masalah dengan pengubahan menjadi kata baku yang jarang digunakan oleh masyarakat. Sebagai contoh, kata "\textit{asem}" yang biasa diartikan sebagai "asam" justru diartikan sebagai "rasem" yang berarti bunga tandan. Untuk menangani masalah tersebut, diperlukan kamus dengan urutan berupa frekuensi sebuah kata dipakai atau muncul, yang mana merupakan karakteristik dari kamus berdasarkan korpus Kompas. Namun, kamus korpus Kompas memiliki kelemahan, yaitu beberapa perbaikan kata keluarannya termasuk dalam kata tidak baku, seperti "\textit{entr}" menjadi "\textit{center}" yaitu kata bahasa Inggris dari "tengah", "\textit{ckp}" berubah menjadi "\textit{kpk}" yang kemungkinan mengacu kepada singkatan dari Komisi Pemberantasan Korupsi, dan lain-lain. Solusi yang diterapkan untuk masalah yang terdapat pada kedua kamus adalah dengan menggunakan kamus dari korpus Kompas, namun disaring sehingga kamus hanya mengandung kata-kata yang baku menurut kamus KBBI.
 
+Hasil evaluasi menunjukkan bahwa algoritme jarak Jaro-Winkler unggul dalam pengujian pertama. Algoritme jarak Jaro-Winkler unggul dengan persentase akurasi sebesar 55,5 persen, diikuti dengan algoritme jarak LCS dengan akurasi sebesar 50 persen. Setelah dilakukan perbaikan terhadap kamus kata baku yang digunakan dalam penelitian, algoritme yang unggul berubah menjadi jarak LCS dengan persentase akurasi sebesar 69 persen diikuti oleh algoritme jarak Jaro-Winkler dengan akurasi sebesar 66,5 persen.
+\begin{comment}
 Hasil evaluasi ketiga pengujian disajikan dalam Tabel \ref{tbl:ipb_eval_1}, Tabel \ref{tbl:ipb_eval_2}, dan Tabel \ref{tbl:ipb_eval_3}. Semua tabel menunjukkan persentase dari 10 algoritme pengukuran jarak dalam fungsi \textit{stringdist}. Tabel \ref{tbl:ipb_eval_1}, yaitu pengujian dengan kamus dari KBBI, menunjukkan hanya dua metode saja yang dapat mencapai persentase akurasi lebih dari 50 persen. Tabel \ref{tbl:ipb_eval_2}, yaitu hasil pengujian dengan kamus korpus Kompas, menunjukkan peningkatan yang signifikan sehingga sudah ada 5 metode dengan persentase akurasi lebih dari 50 persen, dua diantaranya sudah melebihi 60 persen. Terakhir Tabel \ref{tbl:ipb_eval_3}, yaitu hasil pengujian dengan kamus Korpus Kompas yang telah disaring, menunjukkan peningkatan persentase akurasi namun tidak setinggi perubahan pada Tabel \ref{tbl:ipb_eval_2}. Lalu, terdapat satu metode yang mengalami penurunan persentase akurasi, yaitu algoritme jarak Jaccard. Persentase akurasi semua tabel didominasi oleh metode jarak LCS.
 \begin{table}[H]
 	\captionsetup{justification=justified,singlelinecheck=false}
@@ -193,10 +195,11 @@ Hasil evaluasi ketiga pengujian disajikan dalam Tabel \ref{tbl:ipb_eval_1}, Tabe
 		10 & \textit{soundex} & 71 & 35,5\% \\ \hline
 	\end{tabular}
 \end{table}
+\end{comment}
 
 \subsection{Jarak \textit{Longest Common Substring} (LCS)}
 
-Jarak LCS menghitung jarak antara dua teks dengan cara menghitung berapa kali terjadi penghapusan dan penambahan karakter suatu teks sehingga menjadi teks yang lain. Dengan kata lain, metode jarak LCS hanya mengaplikasikan dua operasi, yaitu penambahan dan pengurangan karakter. Jarak LCS yang digunakan dalam fungsi \textit{stringdist} menggunakan metode yang digunakan untuk mencari kemiripan urutan asam amino dari dua protein \parencite{needleman1970general}. Nilai jarak dengan metode LCS mengikuti persamaan:
+Jarak LCS menghitung jarak antara dua teks dengan cara menghitung berapa kali terjadi penghapusan dan penambahan karakter suatu teks sehingga menjadi teks yang lain \parencite{van2014stringdist}. Dengan kata lain, metode jarak LCS hanya mengaplikasikan dua operasi, yaitu penambahan dan pengurangan karakter. Jarak LCS yang digunakan dalam fungsi \textit{stringdist} menggunakan metode yang digunakan untuk mencari kemiripan urutan asam amino dari dua protein \parencite{needleman1970general}. Nilai jarak dengan metode LCS mengikuti persamaan \parencite{van2014stringdist}:
 \begin{equation} \label{eq:lcs}
 	\text{lcs}_{a,b}(i,j)=\begin{cases}
 		\text{max}(i,j) & \text{ jika min} (i,j)=0, \\ 
@@ -210,6 +213,9 @@ dengan $\text{lcs}_{a,b}(i,j)$ adalah jarak LCS antara $i$ karakter pertama untu
 
 \subsection{Kelemahan Algoritme Jarak LCS}
 
+Hasil evaluasi menunjukkan bahwa jarak LCS menempati urutan pertama dari 10 algoritme pengukuran jarak dengan persentase akurasi tertinggi. Meskipun begitu, jarak LCS hanya memiliki dua operasi perubahan saja, yaitu penambahan dan pengurangan karakter. Tidak ada operasi untuk penggantian karakter dalam jarak LCS. Dengan begitu, untuk melakukan penggantian karakter dibutuhkan dua operasi yang digunakan secara bersamaan, yaitu operasi penambahan dan pengurangan karakter. Hal tersebut menyebabkan operasi penggantian karakter dalam jarak LCS memiliki nilai jarak perubahan sebesar dua, dan dapat mengakibatkan tergusurnya kata perbaikan yang hanya memerlukan penggantian karakter dengan kata yang bertambah atau berkurang satu karakter saja. Sebagai contoh, kata "\textit{asem}" dengan "rasem", dalam jarak LCS, memiliki jarak perubahan yang lebih kecil dibandingkan dengan jarak antara kata "\textit{asem}" dengan "asam" karena dari "\textit{asem}" ke "rasem" hanya perlu menambahkan huruf "r".
+
+\begin{comment}
 Hasil evaluasi menunjukkan bahwa jarak LCS menempati urutan pertama dari 10 algoritme pengukuran jarak dengan persentase akurasi tertinggi. Meskipun begitu, terdapat kekurangan analisis yang dilakukan di dalam penelitian sehingga dapat berakibat pada kesalahan pemilihan solusi. Kekurangan tersebut dapat dijelaskan apabila mengacu pada karakteristik dari algoritme jarak LCS. Sebagai contoh, analisis dalam penelitian menyatakan bahwa hasil persentase akurasi rendah pengujian pertama pada Tabel \ref{tbl:ipb_eval_1} disebabkan oleh terpilihnya kata yang jarang digunakan oleh masyarakat dan mengambil contoh berupa kata "\textit{asem}" menjadi "rasem", dan bukan "asam" seperti yang diharapkan dalam penelitian sehingga kamus kata baku KBBI diganti dengan kamus korpus Kompas. Padahal, jika ditelusur lebih jauh, terdapat beberapa keganjilan dengan analisis tersebut, yaitu:
 \begin{enumerate}
 	\item Alur proses normalisasi dalam penelitian menunjukkan jika terdapat lebih dari satu kata dalam kamus yang memiliki jarak minimum dengan kata masukan, maka kata yang pertama ditemukan yang akan dipilih. Kamus KBBI diurutkan berdasarkan abjad sehingga terpilihnya "rasem" daripada "asam" sangat tidak wajar. Setelah ditelusur lebih jauh, masalah "rasem" tersebut berasal dari algoritme yang digunakan, dalam hal ini algoritme salah satu metode yang dominan yaitu jarak LCS. Jarak LCS hanya memiliki dua operasi karakter, yaitu penambahan dan pengurangan \parencite{van2014stringdist}. Untuk penggantian karakter, jarak LCS menggunakan cara penambahan dan pengurangan karakter sekaligus sehingga nilai jarak untuk penggantian satu karakter bernilai 2. Jika dihubungkan dengan masalah "rasem", maka masalah tersebut menjadi lebih jelas. Masalah "rasem" terjadi karena jarak antara "\textit{asem}" dengan "rasem" lebih kecil dibandingkan dengan "\textit{asem}" dengan "asam", karena "rasem" hanya membutuhkan penambahan karakter "r" sedangkan "asam" harus mengganti karakter "e" dengan "a" yang berarti, dalam LCS, menghapus karakter "e" lalu menambah karakter "a".
@@ -217,8 +223,9 @@ Hasil evaluasi menunjukkan bahwa jarak LCS menempati urutan pertama dari 10 algo
 \end{enumerate}
 
 Meskipun begitu, penelitian \parencite{saragih2017normalisasi} menunjukkan bahwa jarak LCS dengan memiliki dua operasi karakter sangat bagus digunakan untuk mengatasi kata yang disingkat atau kelebihan huruf dari kata baku asalnya, yakni kata yang disingkat lebih sering terjadi mengingat bahwa kata yang diuji dalam penelitian menggunakan kumpulan kata dari \textit{tweet} berbahasa Indonesia. Namun, untuk kasus seperti \textit{voice assistant}, jarak LCS tidak terlalu bagus untuk digunakan karena tidak ada kata yang disingkat dan perubahan kata yang sering terjadi adalah penggantian karakter.
+\end{comment}
 
-Jarak LCS mendominasi persentase akurasi untuk semua pengujian dalam penelitian sehingga jarak LCS cocok digunakan untuk normalisasi teks dalam \textit{tweet} berbahasa Indonesia, namun tidak cocok digunakan untuk kasus \textit{voice assistant}. Untuk menutupi kelemahan tersebut, diperlukan metode penghitungan jarak yang dapat menangani operasi penggantian karakter, yaitu jarak Levenshtein.
+Jarak LCS mendominasi persentase akurasi untuk pengujian terakhir dalam penelitian \parencite{saragih2017normalisasi} sehingga jarak LCS cocok digunakan untuk normalisasi teks dalam \textit{tweet} berbahasa Indonesia, namun tidak cocok digunakan untuk kasus \textit{voice assistant} yang mana sebagian besar kata tidak baku merupakan kata baku dengan penggantian karakter. Untuk menutupi kelemahan tersebut, diperlukan metode penghitungan jarak yang dapat menangani operasi penggantian karakter, beberapa diantaranya yaitu dengan menggunakan jarak Levenshtein dan jarak Jaro-Winkler.
 
 \subsection{Jarak Levenshtein}
 
@@ -238,3 +245,26 @@ Jarak Levenshtein, diciptakan oleh Vladimir Levenshtein, adalah jarak yang terci
 dengan $1_{(a_{i}\neq b_{j})}$ adalah fungsi indikator yang bernilai 0 jika $(a_{i} = b_{j})$ dan sebaliknya, dan $\text{lev}_{a,b}(i,j)$ adalah jarak Levenshtein untuk $i$ karakter pertama pada teks $a$ dengan $j$ karakter pertama pada teks $b$. Sebagai catatan, ketiga persamaan yang berada dalam fungsi min menunjukkan ketiga operasi dari jarak Levenshtein. Persamaan pertama menunjukkan penambahan karakter, persamaan kedua menunjukkan pengurangan karakter, dan persamaan ketiga menunjukkan operasi penggantian karakter jika karakter yang dibandingkan tidak sama.
 
 Jarak Levenshtein diaplikasikan untuk pengoreksi kata, misalnya pemeriksaan ejaan. Dengan kemampuan untuk memeriksa ejaan, jarak Levenshtein dapat digunakan untuk melakukan normalisasi kata atau teks untuk sebuah bahasa.
+
+\subsection{Jarak Jaro-Winkler}
+
+Jarak Jaro-Winkler merupakan jarak Jaro dengan tambahan oleh William E. Winkler \parencite{winkler1990string}. Algoritme jarak Jaro menentukan kemiripan kedua teks dengan menghitung banyaknya karakter yang sesuai antara kedua teks dan posisi yang tidak terlalu jauh, serta mengurangi banyak karakter yang sesuai tersebut dengan setengah dari banyaknya karakter yang mengalami transposisi \parencite{van2014stringdist}. Transposisi adalah perpindahan posisi \parencite{kbbi} sehingga dapat disimpulkan bahwa transposisi yang dimaksud oleh Jaro adalah karakter-karakter yang sesuai mengalami perpindahan urutan kemunculan. Nilai kemiripan kedua teks berdasarkan Jaro mengikuti persamaan \parencite{jaro1989advances}:
+\begin{equation} \label{eq:jaro}
+	sim_{j}=\begin{cases}
+		0 & \text{ jika m}=0, \\ 
+		\frac{1}{3}\left ( \frac{m}{\left | s_{1} \right |} + \frac{m}{\left | s_{2} \right |} + \frac{m - t}{m} \right ) & \text{ jika m}\neq 0
+	\end{cases}
+\end{equation}
+\myequations{Persamaan Kemiripan Jaro}
+\noindent
+dengan $sim_{j}$ adalah nilai kemiripan Jaro dalam nilai desimal dengan rentang nilai 0 hingga 1, $\left | s_{i} \right |$ adalah panjang dari teks $i$, $m$ adalah jumlah karakter yang sesuai, serta $t$ adalah setengah dari jumlah karakter sesuai yang mengalami transposisi. Karakter yang sama dalam $s_{1}$ dan $s_{2}$ dianggap sesuai jika selisih posisinya tidak lebih dari $\left \lfloor \frac{\text{max}\left ( |s_{1}|, |s_{2}| \right )}{2} \right \rfloor - 1$. Metode jarak Jaro sukses diaplikasikan ke dalam masalah kecocokan statistik yang melibatkan teks kecil, seperti nama orang dan alamat \parencite{jaro1989advances}.
+
+Winkler menambahkan algoritme tersebut dengan menerapkan penalti terhadap karakter yang tidak sesuai dalam empat karakter pertama \parencite{van2014stringdist}. Nilai kemiripan Jaro-Winkler mengikuti persamaan \parencite{winkler1990string}:
+\begin{equation} \label{eq:jw}
+	sim_{w} = sim_{j} + \ell p(1-sim_{j})
+\end{equation}
+\myequations{Persamaan Kemiripan Jaro-Winkler}
+\noindent
+dengan $sim_{w}$ adalah nilai kemiripan Jaro-Winkler dalam nilai desimal dengan rentang nilai 0 hingga 1, $sim_{j}$ adalah nilai kemiripan Jaro, $\ell$ adalah panjang dari \textit{common string} dengan nilai maksimal yaitu empat, dan $p$ adalah faktor skala yang ditentukan oleh pengguna.
+
+Dengan kemampuan Jaro yang sukses di aplikasikan ke pencocokan nama dan alamat, maka Jaro-Winkler memiliki potensi untuk menyelesaikan masalah normalisasi teks untuk kata yang tidak disingkat.

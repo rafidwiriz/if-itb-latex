@@ -1,0 +1,22 @@
+\chapter{\textit{Source Code} Python untuk Normalisasi Kata dengan Jarak Jaro-Winkler}
+
+\begin{lstlisting}
+from textdistance import jaro_winkler
+
+def findWord_jw(txt, kam):
+    maxVal = 1
+    similarWords = [txt]
+    
+    for word, i in kam.items():
+        val = jaro_winkler(txt, word)
+        if (val > maxVal):
+            if (val == 1):
+                return [word], val
+            else:
+                similarWords = [word]
+                maxVal = val
+        elif (val == maxVal):
+            similarWords.append(word)
+            
+    return similarWords, maxVal
+\end{lstlisting}
